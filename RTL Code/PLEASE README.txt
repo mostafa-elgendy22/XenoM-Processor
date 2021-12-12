@@ -1,4 +1,9 @@
-The number of files in the project will be large, So it is better to structure the file into directories
+/* 
+ Note that structuring the project is done so that if anyone wants to use vscode, 
+ that will be easier than if the code files are in one directory
+*/
+
+The number of files in the project will be large, So it is better to structure the code into directories
 but ModelSim doesn't do this by default, however there is a way to do so by following these instructions:
 
 // Note that the ModelSim project is already created.
