@@ -3,6 +3,8 @@
  that will be easier than if the code files are in one directory
 */
 
+!!!!___ Use the snake_case convention in naming of files and directories ___!!!!
+
 The number of files in the project will be large, So it is better to structure the code into directories
 but ModelSim doesn't do this by default, however there is a way to do so by following these instructions:
 
