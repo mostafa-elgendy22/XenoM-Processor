@@ -1,0 +1,8 @@
+TYPE C is std_logic_vector(2 DOWNTO 0);
+	CONSTANT ALU_ADD : C = "000" ;
+	CONSTANT ALU_SUB : C = "001" ;
+	CONSTANT ALU_AND : C = "010" ;
+	CONSTANT ALU_INC : C = "011" ;
+	CONSTANT ALU_NOT : C = "100" ;
+	CONSTANT ALU_NOP : C = "101" ;
+	CONSTANT ALU_SETC: C = "110" ;

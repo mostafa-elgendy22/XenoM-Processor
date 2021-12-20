@@ -1,0 +1,19 @@
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+
+ENTITY IO_Port IS
+       PORT (
+              Input : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
+              Io_read, Io_write ,reset: IN STD_LOGIC;
+              Output : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+       );
+END ENTITY;
+
+ARCHITECTURE DFF_register OF DFF_register IS
+
+BEGIN
+       IF Io_read = 1 THEN 
+
+
+       
+END ARCHITECTURE;
