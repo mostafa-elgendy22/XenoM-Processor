@@ -8,3 +8,81 @@ z2
 !i10f 100
 cModel Technology
 dC:/Users/mostafa/Downloads/New folder
+Edff_register
+Z0 w1639950917
+Z1 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z2 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z3 dE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code
+Z4 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd
+Z5 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd
+l0
+L4
+VY;3ILc6QLJXG@GiEO6<P31
+!s100 NdCzL7<C46=1bBJd?2ImN0
+Z6 OV;C;10.5b;63
+32
+Z7 !s110 1640001930
+!i10b 1
+Z8 !s108 1640001930.000000
+Z9 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd|
+Z10 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd|
+!i113 1
+Z11 o-work work -2002 -explicit
+Z12 tExplicit 1 CvgOpt 0
+Adff_register
+R1
+R2
+DEx4 work 12 dff_register 0 22 Y;3ILc6QLJXG@GiEO6<P31
+l14
+L13
+V^DLNo`[=>X<P[4eK2Ai<j0
+!s100 I2nYoFLV4Dd0]0?fb`eG>0
+R6
+32
+R7
+!i10b 1
+R8
+R9
+R10
+!i113 1
+R11
+R12
+Etri_state_buffer
+R0
+R1
+R2
+R3
+Z13 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd
+Z14 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd
+l0
+L4
+VfQNQfL8j^llT4=T4Q]lNU1
+!s100 WhhP@^?a_DmYYE6VePT1h1
+R6
+32
+Z15 !s110 1640001931
+!i10b 1
+Z16 !s108 1640001931.000000
+Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd|
+Z18 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd|
+!i113 1
+R11
+R12
+Atri_state_buffer
+R1
+R2
+Z19 DEx4 work 16 tri_state_buffer 0 22 fQNQfL8j^llT4=T4Q]lNU1
+l14
+L13
+Z20 VDcT20TK=jdI;CT?6@::6j1
+Z21 !s100 ?H6LY[i0VmB`6YGa1bL900
+R6
+32
+R15
+!i10b 1
+R16
+R17
+R18
+!i113 1
+R11
+R12
