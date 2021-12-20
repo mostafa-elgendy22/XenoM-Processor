@@ -8,81 +8,122 @@ z2
 !i10f 100
 cModel Technology
 dC:/Users/mostafa/Downloads/New folder
+Econtrol_unit
+Z0 w1640036490
+Z1 DPx4 ieee 11 numeric_std 0 22 :ASDNFgHXf_ih3J@9F3Ze1
+Z2 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
+Z3 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
+Z4 dE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code
+Z5 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd
+Z6 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd
+l0
+L6
+V<^>He[z2ATi67ZDFbMJVf0
+!s100 ;<k`An3NJM7Z;1ZMJ^5gO2
+Z7 OV;C;10.5b;63
+32
+Z8 !s110 1640036517
+!i10b 1
+Z9 !s108 1640036517.000000
+Z10 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd|
+Z11 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd|
+!i113 1
+Z12 o-work work -2002 -explicit
+Z13 tExplicit 1 CvgOpt 0
+Acontrolunit
+R1
+R2
+R3
+Z14 DEx4 work 12 control_unit 0 22 <^>He[z2ATi67ZDFbMJVf0
+l75
+L49
+VjD]5TbLi@33OEgIG>6cmb1
+!s100 nPFNIYbCW[0RzW[XPOHLJ3
+R7
+32
+R8
+!i10b 1
+R9
+R10
+R11
+!i113 1
+R12
+R13
 Edff_register
-Z0 w1639950917
-Z1 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
-Z2 DPx4 ieee 14 std_logic_1164 0 22 eNV`TJ_GofJTzYa?f<@Oe1
-Z3 dE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code
-Z4 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd
-Z5 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd
+Z15 w1639950917
+R2
+R3
+R4
+Z16 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd
+Z17 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd
 l0
 L4
 VY;3ILc6QLJXG@GiEO6<P31
 !s100 NdCzL7<C46=1bBJd?2ImN0
-Z6 OV;C;10.5b;63
+R7
 32
-Z7 !s110 1640001930
+R8
 !i10b 1
-Z8 !s108 1640001930.000000
-Z9 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd|
-Z10 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd|
+R9
+Z18 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd|
+Z19 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/register.vhd|
 !i113 1
-Z11 o-work work -2002 -explicit
-Z12 tExplicit 1 CvgOpt 0
+R12
+R13
 Adff_register
-R1
 R2
+R3
 DEx4 work 12 dff_register 0 22 Y;3ILc6QLJXG@GiEO6<P31
 l14
 L13
 V^DLNo`[=>X<P[4eK2Ai<j0
 !s100 I2nYoFLV4Dd0]0?fb`eG>0
-R6
-32
 R7
-!i10b 1
+32
 R8
+!i10b 1
 R9
-R10
+R18
+R19
 !i113 1
-R11
 R12
+R13
 Etri_state_buffer
-R0
-R1
+R15
 R2
 R3
-Z13 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd
-Z14 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd
+R4
+Z20 8E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd
+Z21 FE:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd
 l0
 L4
 VfQNQfL8j^llT4=T4Q]lNU1
 !s100 WhhP@^?a_DmYYE6VePT1h1
-R6
+R7
 32
-Z15 !s110 1640001931
+R8
 !i10b 1
-Z16 !s108 1640001931.000000
-Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd|
-Z18 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd|
+R9
+Z22 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd|
+Z23 !s107 E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd|
 !i113 1
-R11
 R12
+R13
 Atri_state_buffer
-R1
 R2
-Z19 DEx4 work 16 tri_state_buffer 0 22 fQNQfL8j^llT4=T4Q]lNU1
+R3
+DEx4 work 16 tri_state_buffer 0 22 fQNQfL8j^llT4=T4Q]lNU1
 l14
 L13
-Z20 VDcT20TK=jdI;CT?6@::6j1
-Z21 !s100 ?H6LY[i0VmB`6YGa1bL900
-R6
+VDcT20TK=jdI;CT?6@::6j1
+!s100 ?H6LY[i0VmB`6YGa1bL900
+R7
 32
-R15
+R8
 !i10b 1
-R16
-R17
-R18
+R9
+R22
+R23
 !i113 1
-R11
 R12
+R13
