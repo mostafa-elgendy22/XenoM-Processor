@@ -6,16 +6,6 @@ Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  
 -- Compiling entity DFF_register
 -- Compiling architecture DFF_register of DFF_register
 
-} {} {}} {E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd} {2 {vcom -work work -2002 -explicit -stats=none {E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd}
-Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
--- Loading package STANDARD
--- Loading package TEXTIO
--- Loading package std_logic_1164
--- Loading package NUMERIC_STD
--- Compiling entity control_unit
--- Compiling architecture controlUnit of control_unit
-** Warning: E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/control_unit.vhd(239): (vcom-1090) Possible infinite loop: Process contains no WAIT statement.
-
 } {} {}} {E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd} {1 {vcom -work work -2002 -explicit -stats=none {E:/CMP3/Computer Archeticture/Project/Computer-Architecture-Project/RTL Code/basic_components/tri-state_buffer.vhd}
 Model Technology ModelSim - Intel FPGA Edition vcom 10.5b Compiler 2016.10 Oct  5 2016
 -- Loading package STANDARD
