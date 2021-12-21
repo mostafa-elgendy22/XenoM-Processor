@@ -2,3 +2,5 @@ RTL Code/processor.cr.mti
 RTL Code/work/*
 RTL Code/*.vhd.bak
 RTL Code/processor.mpf
+RTL Code/transcript
+RTL Code/vsim.wlf
