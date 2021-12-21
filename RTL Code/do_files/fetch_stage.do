@@ -15,12 +15,12 @@ sim:/fetch_stage/hlt_instruction \
 sim:/fetch_stage/D_PC \
 sim:/fetch_stage/PC_enable \
 sim:/fetch_stage/Q_PC \
-sim:/fetch_stage/memory_dataout \
-sim:/fetch_stage/databus_we \
-sim:/fetch_stage/data_bus
+sim:/fetch_stage/instruction_memory_dataout \
+sim:/fetch_stage/instruction_we \
+sim:/fetch_stage/instruction
 
-radix signal sim:/fetch_stage/memory_dataout Hexadecimal
-radix signal sim:/fetch_stage/data_bus Hexadecimal
+radix signal sim:/fetch_stage/instruction_memory_dataout Hexadecimal
+radix signal sim:/fetch_stage/instruction Hexadecimal
 radix signal sim:/fetch_stage/D_PC Hexadecimal
 radix signal sim:/fetch_stage/Q_PC Hexadecimal
 
