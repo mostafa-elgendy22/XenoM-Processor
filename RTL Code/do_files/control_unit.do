@@ -8,7 +8,7 @@ vsim -gui work.control_unit(controlunit)
 add wave -position insertpoint sim:/control_unit/*
 #
 # init
-force -freeze sim:/memcount/Clk 1 0, 0 {50 ps} -r 100
+force -freeze sim:/control_unit/Clk 1 0, 0 {50 ps} -r 100
 
 
 
