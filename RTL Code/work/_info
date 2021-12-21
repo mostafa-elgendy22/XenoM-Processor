@@ -9,37 +9,37 @@ z2
 !i10f 100
 cModel Technology
 dC:/Users/mostafa/Downloads/New folder
-Edff_register
-Z0 w1639479463
+Edecoder
+Z0 w1640085541
 Z1 DPx3 std 6 textio 0 22 zE1`LPoLg^DX3Oz^4Fj1K3
 Z2 DPx4 ieee 14 std_logic_1164 0 22 cVAk:aDinOX8^VGI1ekP<3
-!i122 78
+!i122 244
 Z3 dC:/Users/dell/Computer-Architecture-Project/RTL Code
-Z4 8C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd
-Z5 FC:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd
+Z4 8C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\Decoder.vhd
+Z5 FC:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\Decoder.vhd
 l0
 L4 1
-VY;3ILc6QLJXG@GiEO6<P31
-!s100 NdCzL7<C46=1bBJd?2ImN0
+VWU=EYN4VN<KBB]]FeGgPB0
+!s100 NQzdcg_0OOG7:jCCL54N:3
 Z6 OV;C;2020.1;71
 32
-Z7 !s110 1640039803
+Z7 !s110 1640085576
 !i10b 1
-Z8 !s108 1640039803.000000
-Z9 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd|
-Z10 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd|
+Z8 !s108 1640085576.000000
+Z9 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\Decoder.vhd|
+Z10 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\Decoder.vhd|
 !i113 1
 Z11 o-work work -2002 -explicit
 Z12 tExplicit 1 CvgOpt 0
-Adff_register
+Aa_decoder
 R1
 R2
-DEx4 work 12 dff_register 0 22 Y;3ILc6QLJXG@GiEO6<P31
-!i122 78
-l14
-L13 11
-V^DLNo`[=>X<P[4eK2Ai<j0
-!s100 I2nYoFLV4Dd0]0?fb`eG>0
+DEx4 work 7 decoder 0 22 WU=EYN4VN<KBB]]FeGgPB0
+!i122 244
+l18
+L17 12
+Vn0@2fGoO<Mz4^<7]N^Gcd1
+!s100 gmU8A9n[7iZ4F:F_zd>k40
 R6
 32
 R7
@@ -50,14 +50,55 @@ R10
 !i113 1
 R11
 R12
-Eio_port
-Z13 w1640035237
+Edff_register
+Z13 w1639479463
 R1
 R2
-!i122 80
+!i122 240
 R3
-Z14 8C:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd
-Z15 FC:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd
+Z14 8C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd
+Z15 FC:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd
+l0
+L4 1
+VY;3ILc6QLJXG@GiEO6<P31
+!s100 NdCzL7<C46=1bBJd?2ImN0
+R6
+32
+R7
+!i10b 1
+Z16 !s108 1640085574.000000
+Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd|
+Z18 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\register.vhd|
+!i113 1
+R11
+R12
+Adff_register
+R1
+R2
+DEx4 work 12 dff_register 0 22 Y;3ILc6QLJXG@GiEO6<P31
+!i122 240
+l14
+L13 11
+V^DLNo`[=>X<P[4eK2Ai<j0
+!s100 I2nYoFLV4Dd0]0?fb`eG>0
+R6
+32
+R7
+!i10b 1
+R16
+R17
+R18
+!i113 1
+R11
+R12
+Eio_port
+Z19 w1640040039
+R1
+R2
+!i122 242
+R3
+Z20 8C:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd
+Z21 FC:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd
 l0
 L4 1
 VXU`8DR=Fh6;TSdA<M@:Z82
@@ -67,8 +108,8 @@ R6
 R7
 !i10b 1
 R8
-Z16 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd|
-Z17 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd|
+Z22 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd|
+Z23 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\memory_stage\InputOutputPort.vhd|
 !i113 1
 R11
 R12
@@ -76,7 +117,7 @@ Aa_io_port
 R1
 R2
 DEx4 work 7 io_port 0 22 XU`8DR=Fh6;TSdA<M@:Z82
-!i122 80
+!i122 242
 l16
 L12 14
 V>Kae6mM^:?1zQNg77gn4M3
@@ -86,19 +127,19 @@ R6
 R7
 !i10b 1
 R8
-R16
-R17
+R22
+R23
 !i113 1
 R11
 R12
 Eio_port_testbench
-Z18 w1640039792
+Z24 w1640039792
 R1
 R2
-!i122 81
+!i122 243
 R3
-Z19 8C:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd
-Z20 FC:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd
+Z25 8C:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd
+Z26 FC:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd
 l0
 L4 1
 VNWg?bmk<R3gVi30=JNPaa0
@@ -108,18 +149,18 @@ R6
 R7
 !i10b 1
 R8
-Z21 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd|
-Z22 !s107 C:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd|
+Z27 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd|
+Z28 !s107 C:/Users/dell/Computer-Architecture-Project/RTL Code/testbenches/io_port_testbench.vhd|
 !i113 1
 R11
 R12
 Aa_io_port_testbench
 R1
 R2
-Z23 DEx4 work 17 io_port_testbench 0 22 NWg?bmk<R3gVi30=JNPaa0
-!i122 81
+DEx4 work 17 io_port_testbench 0 22 NWg?bmk<R3gVi30=JNPaa0
+!i122 243
 l19
-Z24 L7 46
+L7 46
 Vf>;Pe5NmGZb>AKRZ`V8;i0
 !s100 cN3646U:GYWj=Ah]N8gH_2
 R6
@@ -127,19 +168,60 @@ R6
 R7
 !i10b 1
 R8
-R21
-R22
+R27
+R28
+!i113 1
+R11
+R12
+Eregfile
+Z29 w1640085508
+R1
+R2
+!i122 245
+R3
+Z30 8C:\Users\dell\Computer-Architecture-Project\RTL Code\reg_file\RegFile.vhd
+Z31 FC:\Users\dell\Computer-Architecture-Project\RTL Code\reg_file\RegFile.vhd
+l0
+L4 1
+ViFM4mEd9E3YG[BmEP<BG42
+!s100 a=RSWNQT7d[3WJhO@2=GG1
+R6
+32
+R7
+!i10b 1
+R8
+Z32 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\reg_file\RegFile.vhd|
+Z33 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\reg_file\RegFile.vhd|
+!i113 1
+R11
+R12
+Aa_regfile
+R1
+R2
+Z34 DEx4 work 7 regfile 0 22 iFM4mEd9E3YG[BmEP<BG42
+!i122 245
+l70
+L30 66
+V[kPKGzJgjlYk^1BMP>n3_2
+!s100 ;IeEnI:WgEfEW2CbngHJ51
+R6
+32
+R7
+!i10b 1
+R8
+R32
+R33
 !i113 1
 R11
 R12
 Etri_state_buffer
-R0
+Z35 w1640043591
 R1
 R2
-!i122 79
+!i122 241
 R3
-Z25 8C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd
-Z26 FC:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd
+Z36 8C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd
+Z37 FC:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd
 l0
 L4 1
 VfQNQfL8j^llT4=T4Q]lNU1
@@ -149,8 +231,8 @@ R6
 R7
 !i10b 1
 R8
-Z27 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd|
-Z28 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd|
+Z38 !s90 -reportprogress|300|-work|work|-2002|-explicit|-stats=none|C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd|
+Z39 !s107 C:\Users\dell\Computer-Architecture-Project\RTL Code\basic_components\tri-state_buffer.vhd|
 !i113 1
 R11
 R12
@@ -158,7 +240,7 @@ Atri_state_buffer
 R1
 R2
 DEx4 work 16 tri_state_buffer 0 22 fQNQfL8j^llT4=T4Q]lNU1
-!i122 79
+!i122 241
 l14
 L13 6
 VDcT20TK=jdI;CT?6@::6j1
@@ -168,8 +250,8 @@ R6
 R7
 !i10b 1
 R8
-R27
-R28
+R38
+R39
 !i113 1
 R11
 R12
