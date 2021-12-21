@@ -16,7 +16,7 @@ BEGIN
        BEGIN
               IF reset = '1' THEN
                      Q <= (OTHERS => '0');
-              ELSIF falling_edge(clk) AND enable = '1' THEN
+              ELSIF rising_edge(clk) AND enable = '1' THEN
                      Q <= D;
               END IF;
        END PROCESS;

@@ -16,11 +16,12 @@ ARCHITECTURE fetch_stage OF fetch_stage IS
        SIGNAL memory_dataout : STD_LOGIC_VECTOR(31 DOWNTO 0);
        SIGNAL databus_we : STD_LOGIC;
        SIGNAL PC_enable : STD_LOGIC;
+       SIGNAL PC_clock : STD_LOGIC;
 BEGIN
        PC : ENTITY work.DFF_register
               GENERIC MAP(data_width => 32)
               PORT MAP(
-                     clk => clk,
+                     clk => PC_clock,
                      reset => reset,
                      enable => PC_enable,
                      D => D_PC,
@@ -58,5 +59,5 @@ BEGIN
               D_PC;
 
        PC_enable <= NOT hlt_instruction;
-
+       PC_clock <= NOT clk;
 END ARCHITECTURE;
