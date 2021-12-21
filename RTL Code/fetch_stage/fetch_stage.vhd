@@ -5,32 +5,37 @@ USE IEEE.std_logic_unsigned.ALL;
 ENTITY fetch_stage IS
        PORT (
               clk : IN STD_LOGIC;
-              reset : IN STD_LOGIC;
+              processor_reset : IN STD_LOGIC;
               hlt_instruction : IN STD_LOGIC;
               instruction : INOUT STD_LOGIC_VECTOR (31 DOWNTO 0)
        );
 END ENTITY;
 
 ARCHITECTURE fetch_stage OF fetch_stage IS
+
        SIGNAL D_PC, Q_PC : STD_LOGIC_VECTOR(31 DOWNTO 0);
+       SIGNAL next_instruction_address : STD_LOGIC_VECTOR(31 DOWNTO 0);
+       SIGNAL instruction_memory_address : STD_LOGIC_VECTOR(19 DOWNTO 0);
        SIGNAL instruction_memory_dataout : STD_LOGIC_VECTOR(31 DOWNTO 0);
        SIGNAL instruction_we : STD_LOGIC;
        SIGNAL PC_enable : STD_LOGIC;
        SIGNAL PC_clock : STD_LOGIC;
+       SIGNAL ground : STD_LOGIC := '0';
+
 BEGIN
        PC : ENTITY work.DFF_register
               GENERIC MAP(data_width => 32)
               PORT MAP(
                      clk => PC_clock,
-                     reset => reset,
                      enable => PC_enable,
+                     reset => ground,
                      D => D_PC,
                      Q => Q_PC
               );
 
        instruction_memory : ENTITY work.instruction_memory
               PORT MAP(
-                     address => Q_PC(19 DOWNTO 0),
+                     address => instruction_memory_address,
                      dataout => instruction_memory_dataout
               );
 
@@ -42,6 +47,24 @@ BEGIN
                      Y => instruction
               );
 
+       instruction_memory_address <= (OTHERS => '0') WHEN processor_reset = '1'
+              ELSE
+              Q_PC(19 DOWNTO 0);
+
+       next_instruction_address <= Q_PC + 1 WHEN instruction(31) = '0'
+              ELSE
+              Q_PC + 2 WHEN instruction(31) = '1'
+              ELSE
+              Q_PC;
+
+       D_PC <= instruction WHEN processor_reset = '1'
+              ELSE
+              next_instruction_address;
+
+       PC_enable <= NOT hlt_instruction;
+
+       PC_clock <= NOT clk;
+
        PROCESS (clk) IS
        BEGIN
               IF rising_edge(clk) THEN
@@ -52,12 +75,4 @@ BEGIN
                      instruction_we <= '0';
               END IF;
        END PROCESS;
-       D_PC <= Q_PC + 1 WHEN instruction(31) = '0'
-              ELSE
-              Q_PC + 2 WHEN instruction(31) = '1'
-              ELSE
-              D_PC;
-
-       PC_enable <= NOT hlt_instruction;
-       PC_clock <= NOT clk;
 END ARCHITECTURE;
