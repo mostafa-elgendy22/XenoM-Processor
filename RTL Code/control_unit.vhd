@@ -6,10 +6,9 @@ entity control_unit is
   port (
     --------------------------- inputs ---------------------------
     instruction                 : in std_logic_vector(31 downto 0);
+    clk                         : in std_logic;
 
     --------------------------- outputs ---------------------------
-    ---- Related to the enable
-    enable_in                   : in std_logic; -- from Processor to the control unit--
 
     ---- Related to the immediate data
     is_immediate                : out std_logic; -- if we need to us ethe immediate value 
@@ -38,7 +37,7 @@ entity control_unit is
 
     ---- Related to the branches and control signals
     enable_out                  : out std_logic; -- from the the control unit to the buffers in all stages --
-    branch_type                 : out std_logic_vector(2 downto 0);
+    branch_type                 : out std_logic_vector(3 downto 0); -- (3) branch enable, (2:0) branch operation
     is_call_or_int_instruction  : out std_logic;
     is_hlt_instruction          : out std_logic
 
@@ -47,23 +46,24 @@ end control_unit;
 
 architecture controlUnit of control_unit is
   -- ALU Operations
-  constant MOV_operation    : std_logic_vector := "000";
+  constant NO_ALU_operation : std_logic_vector := "000";
   constant ADD_operation    : std_logic_vector := "001";
   constant SUB_operation    : std_logic_vector := "010";
   constant AND_operation    : std_logic_vector := "011";
   constant SETC_operation   : std_logic_vector := "100";
   constant INC_operation    : std_logic_vector := "101";
   constant NOT_operation    : std_logic_vector := "110";
+  constant MOV_operation    : std_logic_vector := "111";
 
-  -- Branch Operations
-  constant JMP_instruction  : std_logic_vector := "000";
-  constant JN_instruction   : std_logic_vector := "001";
-  constant JZ_instruction   : std_logic_vector := "010";
-  constant JC_instruction   : std_logic_vector := "011";
-  constant CALL_instruction : std_logic_vector := "100";
-  constant INT_instruction  : std_logic_vector := "101";
-  constant RET_instruction  : std_logic_vector := "110";
-  constant RTI_instruction  : std_logic_vector := "111";
+  -- Branch Operations -- (3) branch enable, (2:0) branch operation
+  constant JMP_instruction  : std_logic_vector := "1000";
+  constant JN_instruction   : std_logic_vector := "1001";
+  constant JZ_instruction   : std_logic_vector := "1010";
+  constant JC_instruction   : std_logic_vector := "1011";
+  constant CALL_instruction : std_logic_vector := "1100";
+  constant INT_instruction  : std_logic_vector := "1101";
+  constant RET_instruction  : std_logic_vector := "1110";
+  constant RTI_instruction  : std_logic_vector := "1111";
 
   -- Stack Control -- (2) stack enable, (1:0) stack operation
   constant PUSH_1_operation : std_logic_vector := "100";
@@ -72,9 +72,42 @@ architecture controlUnit of control_unit is
   constant POP_2_operation  : std_logic_vector := "111";
 
 begin
-  process is -- A or B -> if A else B ____ A/B -> A and B logic is here
+  process(clk) is -- A or B -> if A else B ____ A/B -> A and B logic is here
   begin
-    if enable_in = '1' then -- if enable, then begin the logic
+    if rising_edge(clk) then  -- reset to zero at the start of every cycle
+     ---- Related to the immediate data
+     is_immediate                 <= '0'; -- reset to zero at the start of every cycle
+     immediate_data               <= (others => '0'); -- reset to zero at the start of every cycle
+ 
+     ---- Related to the reg file and the operands
+     write_back_enable            <= '0'; -- reset to zero at the start of every cycle 
+     is_operation_on_Rdst         <= '0'; -- reset to zero at the start of every cycle
+     Rsrc1_address                <= (others => '0'); -- reset to zero at the start of every cycle
+     Rsrc2_address                <= (others => '0'); -- reset to zero at the start of every cycle 
+     Rdst_address                 <= (others => '0'); -- reset to zero at the start of every cycle 
+ 
+     ---- Related to the flags and ALU
+     flags_write_enable           <= (others => '0'); -- reset to zero at the start of every cycle 
+     ALU_operation                <= (others => '0'); -- reset to zero at the start of every cycle
+ 
+     ---- Related to the IO
+     io_read                      <= '0'; -- reset to zero at the start of every cycle 
+     io_write                     <= '0'; -- reset to zero at the start of every cycle
+ 
+     ---- Related to the memory
+     memory_write                 <= '0'; -- reset to zero at the start of every cycle 
+     memory_read                  <= '0'; -- reset to zero at the start of every cycle 
+     is_store_instruction         <= '0'; -- reset to zero at the start of every cycle 
+     stack_control                <= (others => '0'); -- reset to zero at the start of every cycle
+ 
+     ---- Related to the branches and control signals
+     enable_out                   <= '0'; -- reset to zero at the start of every cycle 
+     is_call_or_int_instruction   <= '0'; -- reset to zero at the start of every cycle 
+     is_hlt_instruction           <= '0'; -- reset to zero at the start of every cycle 
+     branch_type                  <= (others => '0'); -- reset to zero at the start of every cycle
+
+
+    elsif falling_edge(clk) then
       --***************************************************************************
       --------------------------- Type 0 Instructions ---------------------------
       --***************************************************************************
@@ -235,6 +268,6 @@ begin
         end if; -- ALU only or STD/LDD
         --end------------------------- ALU only or STD/LDD
       end if; -- Type 3
-    end if; -- if enable
+    end if; -- if falling/rising
   end process;
 end architecture;
