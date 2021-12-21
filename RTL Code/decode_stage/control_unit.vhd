@@ -74,7 +74,7 @@ architecture controlUnit of control_unit is
 begin
   process(clk) is -- A or B -> if A else B ____ A/B -> A and B logic is here
   begin
-    if rising_edge(clk) then  -- reset to zero at the start of every cycle
+    if falling_edge(clk) then  -- reset to zero at the start of every cycle
      ---- Related to the immediate data
      is_immediate                 <= '0'; -- reset to zero at the start of every cycle
      immediate_data               <= (others => '0'); -- reset to zero at the start of every cycle
@@ -107,7 +107,7 @@ begin
      branch_type                  <= (others => '0'); -- reset to zero at the start of every cycle
 
 
-    elsif falling_edge(clk) then
+    elsif rising_edge(clk) then
       --***************************************************************************
       --------------------------- Type 0 Instructions ---------------------------
       --***************************************************************************
