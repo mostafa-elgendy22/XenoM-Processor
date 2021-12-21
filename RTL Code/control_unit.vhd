@@ -1,4 +1,3 @@
--- vsg_off
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -6,7 +5,7 @@ use ieee.numeric_std.all;
 entity control_unit is
   port (
     --------------------------- inputs ---------------------------
-    instruction             : in std_logic_vector(31 downto 0);
+    instruction                 : in std_logic_vector(31 downto 0);
 
     --------------------------- outputs ---------------------------
     ---- Related to the enable
@@ -48,13 +47,13 @@ end control_unit;
 
 architecture controlUnit of control_unit is
   -- ALU Operations
-  constant MOV_operation  : std_logic_vector := "000";
-  constant ADD_operation  : std_logic_vector := "001";
-  constant SUB_operation  : std_logic_vector := "010";
-  constant AND_operation  : std_logic_vector := "011";
-  constant SETC_operation : std_logic_vector := "100";
-  constant INC_operation  : std_logic_vector := "101";
-  constant NOT_operation  : std_logic_vector := "110";
+  constant MOV_operation    : std_logic_vector := "000";
+  constant ADD_operation    : std_logic_vector := "001";
+  constant SUB_operation    : std_logic_vector := "010";
+  constant AND_operation    : std_logic_vector := "011";
+  constant SETC_operation   : std_logic_vector := "100";
+  constant INC_operation    : std_logic_vector := "101";
+  constant NOT_operation    : std_logic_vector := "110";
 
   -- Branch Operations
   constant JMP_instruction  : std_logic_vector := "000";
@@ -79,6 +78,7 @@ begin
       --***************************************************************************
       --------------------------- Type 0 Instructions ---------------------------
       --***************************************************************************
+     
       if instruction(31 downto 30) = "00" then -- Type 0
         is_hlt_instruction <= instruction(28);
         --start------------------------- SETC/NOP or RIT/RTI 
@@ -219,7 +219,8 @@ begin
           --***************************************************************************
           --------------------------- Type 3.2 Instructions
           --***************************************************************************
-        else -- LDD or STD
+        
+          else -- LDD or STD
           is_immediate <= instruction(28);
           immediate_data <= instruction(19 downto 4);
           --start------------------------- LDD or STD
