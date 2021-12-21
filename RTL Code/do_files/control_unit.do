@@ -32,13 +32,61 @@ radix signal sim:/control_unit/is_call_or_int_instruction Binary
 radix signal sim:/control_unit/is_hlt_instruction Binary
 
 #
-# init
+# init, output appears with the rising edge
 force -freeze sim:/control_unit/clk 0 0, 1 {50 ps} -r 100
-# instruction NOP,
-force -freeze sim:/control_unit/instruction 16#0000 0
 run
 
+# Type 0
+# instruction NOP,
+force -freeze sim:/control_unit/instruction 2#00000000000000000000000000000000 0
+run
 
+# instruction SETC,
+force -freeze sim:/control_unit/instruction 2#00000100000000000000000000000000 0
+run
 
+# instruction HLT,
+force -freeze sim:/control_unit/instruction 2#00010000000000000000000000000000 0
+run
 
+# Type 1, Rdst = 101
+# instruction NOT,
+force -freeze sim:/control_unit/instruction 2#01000010100000000000000000000000 0
+run
+
+# instruction INC,
+force -freeze sim:/control_unit/instruction 2#01000110100000000000000000000000 0
+run
+
+# instruction IN,
+force -freeze sim:/control_unit/instruction 2#01010010100000000000000000000000 0
+run
+
+# instruction OUT,
+force -freeze sim:/control_unit/instruction 2#01010110100000000000000000000000 0
+run
+
+# Type 2, Rdst = 111, Rsrc = 101 
+
+# instruction MOV,
+force -freeze sim:/control_unit/instruction 2#10000011110100000000000000000000 0
+run
+
+# Type 3.1, Rdst = 111, Rsrc = 101 
+# instruction AND,
+force -freeze sim:/control_unit/instruction 2#11000011110100000000000000000000 0
+run
+
+# instruction SUB,
+force -freeze sim:/control_unit/instruction 2#11000111110100000000000000000000 0
+run
+
+# instruction ADD,
+force -freeze sim:/control_unit/instruction 2#11001011110100000000000000000000 0
+run
+
+# Type 3.2, Rdst = 111, Rsrc = 101, Imm= 0x0003
+# instruction IADD, TODO: not working
+force -freeze sim:/control_unit/instruction 2#11001111110100000000000000110000 0
+run
 
