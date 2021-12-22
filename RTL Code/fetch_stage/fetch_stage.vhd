@@ -7,7 +7,9 @@ ENTITY fetch_stage IS
               clk : IN STD_LOGIC;
               processor_reset : IN STD_LOGIC;
               hlt_instruction : IN STD_LOGIC;
-              instruction : INOUT STD_LOGIC_VECTOR (31 DOWNTO 0)
+              instruction_bus : INOUT STD_LOGIC_VECTOR (31 DOWNTO 0);
+              FD_enable : OUT STD_LOGIC;
+              FD_data : OUT STD_LOGIC_VECTOR (51 DOWNTO 0)
        );
 END ENTITY;
 
@@ -44,26 +46,30 @@ BEGIN
               PORT MAP(
                      X => instruction_memory_dataout,
                      C => instruction_we,
-                     Y => instruction
+                     Y => instruction_bus
               );
 
        instruction_memory_address <= (OTHERS => '0') WHEN processor_reset = '1'
               ELSE
               Q_PC(19 DOWNTO 0);
 
-       next_instruction_address <= Q_PC + 1 WHEN instruction(31) = '0'
+       next_instruction_address <= Q_PC + 1 WHEN instruction_bus(31) = '0'
               ELSE
-              Q_PC + 2 WHEN instruction(31) = '1'
+              Q_PC + 2 WHEN instruction_bus(31) = '1'
               ELSE
               Q_PC;
 
-       D_PC <= instruction WHEN processor_reset = '1'
+       D_PC <= instruction_bus WHEN processor_reset = '1'
               ELSE
               next_instruction_address;
 
        PC_enable <= NOT hlt_instruction;
 
        PC_clock <= NOT clk;
+
+       FD_enable <= NOT processor_reset;
+
+       FD_data <= instruction_bus & Q_PC(19 downto 0);
 
        PROCESS (clk) IS
        BEGIN

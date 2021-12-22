@@ -20,13 +20,16 @@ sim:/fetch_stage/PC_enable \
 sim:/fetch_stage/Q_PC \
 sim:/fetch_stage/instruction_memory_dataout \
 sim:/fetch_stage/instruction_we \
-sim:/fetch_stage/instruction
+sim:/fetch_stage/instruction_bus \
+sim:/fetch_stage/FD_enable \
+sim:/fetch_stage/FD_data
 
 radix signal sim:/fetch_stage/instruction_memory_dataout Hexadecimal
-radix signal sim:/fetch_stage/instruction Hexadecimal
+radix signal sim:/fetch_stage/instruction_bus Hexadecimal
 radix signal sim:/fetch_stage/D_PC Hexadecimal
 radix signal sim:/fetch_stage/Q_PC Hexadecimal
 radix signal sim:/fetch_stage/next_instruction_address Hexadecimal
+radix signal sim:/fetch_stage/FD_data Hexadecimal
 
 
 force -freeze sim:/fetch_stage/clk 0 0, 1 {100 ps} -r 200
