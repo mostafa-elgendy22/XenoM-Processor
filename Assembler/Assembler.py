@@ -4,7 +4,7 @@ Created on Sun Dec 12 21:17:50 2021
 
 @author: Mostafa Kamal
 """
-from Syntax import COMMENT_LINE,instruction_size,LABEL_SYNTAX,INSTRUCTIONS_SYNTAX,write_memory,MEMORY_FILE_HEADER
+from Syntax import COMMENT_LINE,instruction_size,LABEL_SYNTAX,INSTRUCTIONS_SYNTAX,write_memory,MEMORY_FILE_HEADER,first_valid_writing_location
 import re
 
 file = open(input("Assembly file path : "),"r")
@@ -66,7 +66,7 @@ else:
     output = open(input("Memory file path : "),"w")
     output.write(MEMORY_FILE_HEADER)
     syntax_error_encountered = False
-    curr_addr = 0
+    curr_addr = first_valid_writing_location(output)
     for match,kind,linenum in parsed_instructions:
         
         #Now that we have matched the instruction and determined it's kind, time to lookup what we matched
