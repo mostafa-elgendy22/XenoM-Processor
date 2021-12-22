@@ -6,8 +6,12 @@ Created on Sun Dec 12 21:17:50 2021
 """
 from Syntax import COMMENT_LINE,instruction_size,LABEL_SYNTAX,INSTRUCTIONS_SYNTAX,write_memory,MEMORY_FILE_HEADER
 import re
+import os
 
-file = open(input("Assembly file path : "),"r")
+
+file_dir = os.path.dirname(os.path.realpath('__file__'))
+file_path = os.path.join(file_dir, "..\\Assembly Files\\" + input("Assembly file name : "))
+file = open(file_path, "r")
 
 matchers = {
             "comment": re.compile(COMMENT_LINE),
@@ -63,7 +67,8 @@ for line in file:
 if syntax_error_encountered:
     print("Aborting due to syntax errors")
 else:
-    output = open(input("Memory file path : "),"w")
+    file_path = os.path.join(file_dir, "..\\Memory Files\\" + input("Memory file name : "))
+    output = open(file_path, "w")
     output.write(MEMORY_FILE_HEADER)
     syntax_error_encountered = False
     curr_addr = 0

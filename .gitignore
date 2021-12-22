@@ -4,3 +4,4 @@ RTL Code/*.vhd.bak
 RTL Code/processor.mpf
 RTL Code/transcript
 RTL Code/vsim.wlf
+Assembler/__pycache__
