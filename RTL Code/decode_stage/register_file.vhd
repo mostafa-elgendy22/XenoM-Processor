@@ -28,7 +28,7 @@ END RegFile;
 
 ARCHITECTURE a_RegFile OF RegFile IS
 
-COMPONENT DFF_register IS
+COMPONENT Latch IS
 GENERIC (data_width : INTEGER := 16);
 PORT (
        D : IN STD_LOGIC_VECTOR (data_width - 1 DOWNTO 0);
@@ -82,7 +82,7 @@ destination     :  Decoder  PORT MAP (write_address , write_back_enable , enb_wr
 -- 8  16-bit Registers with tri state buffer
 loop1:  FOR i in 0 to 7 GENERATE 
 
-rx              :  DFF_register     GENERIC MAP (16)  PORT MAP ( write_data ,  not_clk, enb_write_address(i), rst ,r_FF_OUT(i));
+rx              :  Latch     GENERIC MAP (16)  PORT MAP ( write_data ,  clk, enb_write_address(i), rst ,r_FF_OUT(i));
 
 tx1             :  tri_state_buffer GENERIC MAP (16) PORT MAP (r_FF_OUT(i) , enb_Rsrc1_address(i) , Rsrc1_data);
 tx2             :  tri_state_buffer GENERIC MAP (16) PORT MAP (r_FF_OUT(i) , enb_Rsrc2_address(i) , Rsrc2_data);
