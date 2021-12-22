@@ -249,6 +249,17 @@ INSTRUCTIONS_SYNTAX = [#A list because there are several syntaxes for an instruc
                          }             
 ]
 
+def first_valid_writing_location(file):
+    num = int(input("Enter the address of first instruction in the program in deciaml :"))
+    first_valid_writing_location = '{0:032b}'.format(num)
+    
+    file.write("0: "+first_valid_writing_location[0:16])
+    file.write("\n")
+    file.write("1: "+first_valid_writing_location[16:32])
+    file.write("\n")
+    
+    return num
+
 def write_memory(machine_code,file,curr_addr):
     #print("writing ",machine_code," \nat ",curr_addr)
     file.write(str(curr_addr)+": ")
@@ -256,12 +267,12 @@ def write_memory(machine_code,file,curr_addr):
     if   instr_length == 16: 
         file.write(machine_code)
     elif instr_length == 32: 
-        print("writing ",machine_code[0:16])
+        #print("writing ",machine_code[0:16])
         file.write(machine_code[0:16])
         curr_addr = curr_addr+1 
         file.write("\n")
         file.write(str(curr_addr)+": ")
-        print("writing ",machine_code[16:32])
+        #print("writing ",machine_code[16:32])
         file.write(machine_code[16:32])
     else:
         print("WARNING: INVALID MACHINE CODE ENCOUNTERED")
