@@ -1,3 +1,4 @@
+# do do_files/control_unit.do
 # compile all projects
 project compileall
 #
@@ -105,4 +106,6 @@ set Imm 0000000000000011
 # instruction IADD, TODO: not working
 force -freeze sim:/control_unit/instruction 2#${type}0111${Rdst}${Rsrc}${Imm}0000 0
 run
+
+# 11011110111100000000000000110000
 
