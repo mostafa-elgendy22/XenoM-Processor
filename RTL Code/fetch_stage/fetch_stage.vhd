@@ -81,4 +81,5 @@ BEGIN
                      instruction_we <= '0';
               END IF;
        END PROCESS;
+       
 END ARCHITECTURE;

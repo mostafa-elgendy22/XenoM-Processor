@@ -1,0 +1,10 @@
+NOP ;
+INC R0 ;
+SUB R1, R2, R3 ;
+IN R5 ;
+NOP ;
+ADD R5, R2, R3 ;
+MOV R1, R7 ;
+HLT ;
+INC R2 ;
+IN R6 ;

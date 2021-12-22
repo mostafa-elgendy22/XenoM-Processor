@@ -1,13 +1,8 @@
 project compileall
 vsim -gui work.fetch_stage
 
-mem load -filltype value -filldata 16#000A -fillradix symbolic /fetch_stage/instruction_memory/ram(0)
-mem load -filltype value -filldata 16#0000 -fillradix symbolic /fetch_stage/instruction_memory/ram(1)
-mem load -filltype value -filldata 16#3AAA -fillradix symbolic /fetch_stage/instruction_memory/ram(655360)
-mem load -filltype value -filldata 16#FCCC -fillradix symbolic /fetch_stage/instruction_memory/ram(655361)
-mem load -filltype value -filldata 16#3BBB -fillradix symbolic /fetch_stage/instruction_memory/ram(655362)
-mem load -filltype value -filldata 16#3DDD -fillradix symbolic /fetch_stage/instruction_memory/ram(655363)
-mem load -filltype value -filldata 16#5555 -fillradix symbolic /fetch_stage/instruction_memory/ram(655364)
+# change the name of memory file in the following command
+mem load -i {../Memory Files/mem1.mem} /fetch_stage/instruction_memory/ram
 
 
 add wave -position insertpoint  \

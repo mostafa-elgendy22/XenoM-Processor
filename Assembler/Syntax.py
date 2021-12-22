@@ -250,7 +250,7 @@ INSTRUCTIONS_SYNTAX = [#A list because there are several syntaxes for an instruc
 ]
 
 def first_valid_writing_location(file):
-    num = int(input("Enter the address of first instruction in the program in deciaml :"))
+    num = int(input("Enter the address of first instruction in the program in decimal : "))
     first_valid_writing_location = '{0:032b}'.format(num)
     
     file.write("0: "+first_valid_writing_location[0:16])
