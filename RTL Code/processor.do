@@ -13,12 +13,9 @@ mem load -filltype value -filldata 16#5555 -fillradix symbolic /processor/fetch/
 add wave -position insertpoint  \
 sim:/processor/clk \
 sim:/processor/processor_reset \
-sim:/processor/instruction_bus \
-sim:/processor/FD \
-sim:/processor/fetch/FD_data
+sim:/processor/FD
 
 radix signal sim:/processor/FD Hexadecimal
-radix signal sim:/processor/instruction_bus Hexadecimal
 radix signal sim:/processor/fetch/FD_data Hexadecimal
 
 force -freeze sim:/processor/clk 0 0, 1 {100 ps} -r 200
