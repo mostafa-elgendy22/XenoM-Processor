@@ -27,6 +27,12 @@ ARCHITECTURE processor OF processor IS
        -- change this later
        SIGNAL is_hlt_instruction : STD_LOGIC := '0';
 
+       -- Execute stage parameters
+       SIGNAL ALU_op1, ALU_op2, ALU_result : STD_LOGIC_VECTOR(15 DOWNTO 0);
+       SIGNAL ALU_sel, CCR : STD_LOGIC_VECTOR(2 DOWNTO 0);
+       signal EM_data :  STD_LOGIC_VECTOR (35 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (35 DOWNTO 0);
+       SIGNAL EM_enable : STD_LOGIC := '1';
 BEGIN
        neg_clk <= NOT clk;
 
@@ -50,4 +56,25 @@ BEGIN
                      Q => FD
               );
 
+       execute : ENTITY work.execute_stage
+              PORT MAP(
+                     clk => clk,
+                     ALU_op1 => ALU_op1,
+                     ALU_op2 => ALU_op2,
+                     ALU_result => ALU_result,
+                     ALU_sel => ALU_sel,
+                     CCR => CCR,
+                     --instruction_address =>,
+                     EM_data => EM_data
+              );
+
+       EM_register : ENTITY work.DFF_register
+              GENERIC MAP(data_width => 36)
+              PORT MAP(
+                     clk => neg_clk,
+                     enable => EM_enable,
+                     reset => ground,
+                     D => EM_data,
+                     Q => EM
+              );
 END ARCHITECTURE;
