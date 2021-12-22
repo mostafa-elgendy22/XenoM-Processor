@@ -10,7 +10,7 @@ import os
 
 
 file_dir = os.path.dirname(os.path.realpath('__file__'))
-file_path = os.path.join(file_dir, "..\\Assembly Files\\" + input("Assembly file name : "))
+file_path = os.path.join(file_dir, "..\\Assembly Files\\" + input("Assembly file name (.asm) : "))
 file = open(file_path, "r")
 
 matchers = {
@@ -67,7 +67,7 @@ for line in file:
 if syntax_error_encountered:
     print("Aborting due to syntax errors")
 else:
-    file_path = os.path.join(file_dir, "..\\Memory Files\\" + input("Memory file name : "))
+    file_path = os.path.join(file_dir, "..\\Memory Files\\" + input("Memory file name(.mem) : "))
     output = open(file_path, "w")
     output.write(MEMORY_FILE_HEADER)
     syntax_error_encountered = False
