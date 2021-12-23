@@ -56,7 +56,10 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (73 DOWNTO 0);
 
        -- Execute stage parameters
-       SIGNAL ALU_result : STD_LOGIC_VECTOR(15 DOWNTO 0);
+       constant ALU_result_i0 : integer := 35;
+       constant ALU_result_i1 : integer := 20;
+       CONSTANT EM_instruction_address_i0 : INTEGER := 19;
+       CONSTANT EM_instruction_address_i1 : INTEGER := 0;
        SIGNAL CCR : STD_LOGIC_VECTOR(2 DOWNTO 0);
        SIGNAL EM_data : STD_LOGIC_VECTOR (35 DOWNTO 0);
        SIGNAL EM : STD_LOGIC_VECTOR (35 DOWNTO 0);
@@ -139,11 +142,11 @@ BEGIN
                      clk => clk,
                      ALU_op1 => DE(operand1_i0 DOWNTO operand1_i1),
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
-                     ALU_result => ALU_result,
+                     ALU_result => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
                      CCR => CCR,
-                     instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
-                     EM_data => EM_data
+                     DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
+                     EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1)
               );
 
        EM_register : ENTITY work.DFF_register

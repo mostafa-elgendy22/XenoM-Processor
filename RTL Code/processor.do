@@ -15,8 +15,9 @@ sim:/processor/decode/operand1 \
 sim:/processor/decode/operand2 \
 sim:/processor/execute/ALU_op1 \
 sim:/processor/execute/ALU_op2 \
-sim:/processor/execute/ALU_result \
-sim:/processor/execute/ALU_sel 
+sim:/processor/execute/ALU_sel \
+sim:/processor/execute/ALU_result
+
 
 
 radix signal sim:/processor/FD Hexadecimal
