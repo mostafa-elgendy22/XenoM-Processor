@@ -59,7 +59,7 @@ BEGIN
 	
 	
 	stimulus : PROCESS BEGIN
-				ALUFuncSelect <= "000" ;--ALU_ADD ;
+				ALUFuncSelect <= "101" ;--ALU_ADD ;
 				
 				-------********************************************--------
 				input1 <= "0000000000000000" ;

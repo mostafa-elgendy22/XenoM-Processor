@@ -47,12 +47,12 @@ end control_unit;
 architecture controlUnit of control_unit is
   -- ALU Operations
   constant NO_ALU_operation : std_logic_vector := "000";
-  constant ADD_operation    : std_logic_vector := "001";
-  constant SUB_operation    : std_logic_vector := "010";
-  constant AND_operation    : std_logic_vector := "011";
-  constant SETC_operation   : std_logic_vector := "100";
-  constant INC_operation    : std_logic_vector := "101";
-  constant NOT_operation    : std_logic_vector := "110";
+  constant SUB_operation    : std_logic_vector := "001";
+  constant AND_operation    : std_logic_vector := "010";
+  constant INC_operation    : std_logic_vector := "011";
+  constant NOT_operation    : std_logic_vector := "100";
+  constant ADD_operation    : std_logic_vector := "101";
+  constant SETC_operation   : std_logic_vector := "110";
   constant MOV_operation    : std_logic_vector := "111";
 
   -- Branch Operations -- (3) branch enable, (2:0) branch operation
@@ -88,7 +88,7 @@ begin
  
      ---- Related to the flags and ALU
      flags_write_enable           <= (others => '0'); -- reset to zero at the start of every cycle 
-     ALU_operation                <= (others => '0'); -- reset to zero at the start of every cycle
+     ALU_operation                <= NO_ALU_operation; -- reset to zero at the start of every cycle
  
      ---- Related to the IO
      io_read                      <= '0'; -- reset to zero at the start of every cycle 
@@ -118,6 +118,7 @@ begin
         if instruction(27) = '0' then -- NOP or SETC 
           if instruction(26) = '0' then -- NOP 
             enable_out <= '0'; -- disable all the units
+            ALU_operation <= NO_ALU_operation;
           else -- SETC
             -- TODO: control flags 
             ALU_operation <= SETC_operation;

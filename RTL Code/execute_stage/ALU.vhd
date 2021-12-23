@@ -16,24 +16,25 @@ ENTITY ALU IS
 	--///////////////////////////////////////////////////////////////////////////////////////////////////////
 	--*******************************************************************************************************
 	--///////////////////////////////////////////////////////////////////////////////////////////////////////
-	CONSTANT ALU_ADD : std_logic_vector(2 DOWNTO 0) 
-			:= "000" ;
-			
+       
+       CONSTANT ALU_NOP : std_logic_vector(2 DOWNTO 0) 
+             := "000" ;
+
 	CONSTANT ALU_SUB : std_logic_vector(2 DOWNTO 0) 
-	      := "001" ;
-			
+       := "001" ;
+       
 	CONSTANT ALU_AND : std_logic_vector(2 DOWNTO 0) 
-	      := "010" ;
-			
+       := "010" ;
+       
 	CONSTANT ALU_INC : std_logic_vector(2 DOWNTO 0) 
-	      := "011" ;
-			
+       := "011" ;
+       
 	CONSTANT ALU_NOT : std_logic_vector(2 DOWNTO 0) 
-	      := "100" ;
-			
-	CONSTANT ALU_NOP : std_logic_vector(2 DOWNTO 0) 
-	      := "101" ;
-			
+       := "100" ;
+	
+       CONSTANT ALU_ADD : std_logic_vector(2 DOWNTO 0) 
+			:= "101" ;
+					
 	CONSTANT ALU_SETC: std_logic_vector(2 DOWNTO 0) 
 	      := "110" ;
 			

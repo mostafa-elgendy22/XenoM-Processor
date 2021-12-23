@@ -4,10 +4,11 @@ USE IEEE.std_logic_1164.all;
 entity decoding_stage is
     port (
       --------------------------- inputs ---------------------------
-      clk                         : in std_logic;
-      rst                         : in std_logic ;
-      write_back_enable_in        : IN STD_LOGIC ;                  
-      instruction                 : in std_logic_vector(31 downto 0);
+      clk                         : IN STD_LOGIC;
+      rst                         : IN STD_LOGIC;
+      write_back_enable_in        : IN STD_LOGIC;                  
+      instruction                 : IN STD_LOGIC_VECTOR(31 downto 0);
+      FD_instruction_address      : IN STD_LOGIC_VECTOR(19 downto 0);
       write_address               : IN STD_LOGIC_VECTOR (2  DOWNTO 0); --3bits input 
       write_data                  : IN STD_LOGIC_VECTOR (15 DOWNTO 0); 
       --------------------------- outputs ---------------------------
@@ -36,8 +37,10 @@ entity decoding_stage is
       is_hlt_instruction          : out std_logic ;
      
       --- reg file output 
-      operand1 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0) ;   
-      operand2 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0) 
+      operand1 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0);   
+      operand2 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0);
+
+      DE_instruction_address : OUT STD_LOGIC_VECTOR(19 downto 0)
   
     );
   end entity;
@@ -58,9 +61,7 @@ entity decoding_stage is
 
     BEGIN 
 
-    operand1 <= Rdst_data when is_operation_on_Rdst = '1' else Rsrc1_data;
-    operand2 <= immediate_data when is_immediate = '1' else Rsrc2_data;
-
+    DE_instruction_address <= FD_instruction_address;
 
     Control_unit :  ENTITY work.control_unit 
     port MAP  (    
@@ -111,5 +112,8 @@ entity decoding_stage is
                       Rsrc1_data=> Rsrc1_data ,  
                       Rsrc2_data => Rsrc2_data ,
                       Rdst_data =>Rdst_data );
+
+       operand1 <= Rdst_data when is_operation_on_Rdst = '1' else Rsrc1_data;
+       operand2 <= immediate_data when is_immediate = '1' else Rsrc2_data;
 
   END architecture ;

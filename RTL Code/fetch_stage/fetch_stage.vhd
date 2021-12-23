@@ -6,7 +6,7 @@ ENTITY fetch_stage IS
        PORT (
               clk : IN STD_LOGIC;
               processor_reset : IN STD_LOGIC;
-              hlt_instruction : IN STD_LOGIC;
+              is_hlt_instruction : IN STD_LOGIC;
               instruction_bus : INOUT STD_LOGIC_VECTOR (31 DOWNTO 0);
               FD_enable : OUT STD_LOGIC;
               FD_data : OUT STD_LOGIC_VECTOR (51 DOWNTO 0)
@@ -53,9 +53,12 @@ BEGIN
               ELSE
               Q_PC(19 DOWNTO 0);
 
-       next_instruction_address <= Q_PC + 1 WHEN instruction_bus(31) = '0'
+       next_instruction_address <= Q_PC + 1 WHEN (instruction_bus(31) = '0')
+              OR (instruction_bus(31 DOWNTO 30) = "10" AND instruction_bus(26) = '0')
+              OR (instruction_bus(31 DOWNTO 30) = "11" AND instruction_bus(29) = '0')
               ELSE
-              Q_PC + 2 WHEN instruction_bus(31) = '1'
+              Q_PC + 2 WHEN (instruction_bus(31 DOWNTO 30) = "10" AND instruction_bus(26) = '1')
+              OR (instruction_bus(31 DOWNTO 30) = "11" AND instruction_bus(29) = '1')
               ELSE
               Q_PC;
 
@@ -63,13 +66,15 @@ BEGIN
               ELSE
               next_instruction_address;
 
-       PC_enable <= NOT hlt_instruction;
+       PC_enable <= '0' WHEN is_hlt_instruction = '1'
+              ELSE
+              '1';
 
        PC_clock <= NOT clk;
 
        FD_enable <= NOT processor_reset;
 
-       FD_data <= instruction_bus & Q_PC(19 downto 0);
+       FD_data <= instruction_bus & Q_PC(19 DOWNTO 0);
 
        PROCESS (clk) IS
        BEGIN
@@ -81,5 +86,5 @@ BEGIN
                      instruction_we <= '0';
               END IF;
        END PROCESS;
-       
+
 END ARCHITECTURE;
