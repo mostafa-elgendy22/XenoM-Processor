@@ -1,10 +1,10 @@
-RTL Code/processor.cr.mti
-RTL Code/work/*
-RTL Code/*.vhd.bak
-RTL Code/processor.mpf
-RTL Code/transcript
-RTL Code/vsim.wlf
-RTL Code/*.ini
-RTL Code/*.lnk
+**.cr.mti
+RTL Code/modelsim/work/*
+**.vhd.bak
+**.mpf
+RTL Code/modelsim/transcript
+**.wlf
+**.ini
+**.lnk
 Assembler/__pycache__
 wlf*
