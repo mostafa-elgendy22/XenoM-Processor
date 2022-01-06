@@ -7,7 +7,7 @@ use IEEE.std_logic_unsigned.all;
 ENTITY data_memory IS
        PORT (
               address : IN STD_LOGIC_VECTOR(19 DOWNTO 0); --20bit memory address from execution unit 
-              datain  : IN STD_LOGIC_VECTOR(31 DOWNTO 0) -- 32 data input    
+              datain  : IN STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
               memory_read: IN STD_LOGIC;                -- signal read from memory with address
               memory_write:IN STD_LOGIC_Vector(1 DOWNTO 0); --signal write in memory
               dataout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0)); 
@@ -26,11 +26,11 @@ ARCHITECTURE a_data_memory OF data_memory IS
 
 BEGIN
     -- data out from memory 
-       datout <= ram(to_integer(unsigned(address))) WHEN memory_read
-       ELSE (others => x'z');
-    -- data write In memory
-       ram(to_integer(unsigned(address))) <= datain(31 DOWNTO 16) WHEN memory_write(0) ; 
-       
-       ram(to_integer(unsigned(address+1))) <= datain(15 DOWNTO 0) WHEN memory_write(1) ; 
+       dataout(15 DOWNTO 0) <= ram(to_integer(unsigned(address))) WHEN memory_read = '1' 
+       Else (others => 'Z');
+    -- data write In memory 16 bit data 
+       ram(to_integer(unsigned(address))) <= datain(31 DOWNTO 16) WHEN memory_write(0) = '1'; 
+    -- data write In memory 32 bit data 
+    ram(to_integer(unsigned(address+1))) <= datain(15 DOWNTO 0) WHEN memory_write(1) = '1' ; 
 
 END ARCHITECTURE;
