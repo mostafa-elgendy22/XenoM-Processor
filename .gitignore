@@ -1,10 +1,10 @@
 **.cr.mti
-RTL Code/modelsim/work/*
-**.vhd.bak
-**.mpf
-RTL Code/modelsim/transcript
 **.wlf
 **.ini
 **.lnk
-Assembler/__pycache__
+**.vhd.bak
+**.mpf
 wlf*
+**/work/*
+transcript
+Assembler/__pycache__
