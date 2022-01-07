@@ -87,10 +87,7 @@ ARCHITECTURE processor OF processor IS
        CONSTANT write_back_enable_i : INTEGER = 1;
        CONSTANT io_memory_read_i : INTEGER = 0;
 
-       -- write back stage 
-       SIGNAL Rdst_address_WB :STD_LOGIC_VECTOR (2 DOWNTO 0);
-       SIGNAL write_back_enable_WB : STD_LOGIC ;
-       SIGNAL write_back_data_WB :STD_LOGIC (15 DOWNTO 0); 
+     
 
 BEGIN
        neg_clk <= NOT clk;
@@ -230,10 +227,11 @@ BEGIN
 
         -- write back stage 
         
-        Rdst_address_WB <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
-        write_back_enable_WB <= MW (write_back_enable_i) ;
+        WB_write_address <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
+        WB_enable_in <= MW (write_back_enable_i) ;
         write_back_data_WB <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  io_memory_read ='0'
         ELSE MW ( data_out_i0 DOWNTO data_out_i1) ;
+
 
 
 END ARCHITECTURE;

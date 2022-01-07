@@ -42,9 +42,7 @@ ARCHITECTURE a_memory_stage OF memory_stage IS
     SIGNAL  mem_dataout : STD_LOGIC_VECTOR(15 DOWNTO 0);--16bit mem/data out
     SIGNAL mem_datain :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
     SIGNAL operand1_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input   
-    SIGNAL operand1_zeros :  STD_LOGIC_VECTOR(15 DOWNTO 0);
     SIGNAL instruction_address_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
-    SIGNAL instruction_address_zeros : STD_LOGIC_VECTOR(11 DOWNTO 0); -- 32 data input 
     SIGNAL instruction_address_1 :  STD_LOGIC_VECTOR (19 DOWNTO 0); 
 
 
@@ -53,10 +51,10 @@ BEGIN
     io_memory_read <= Io_read or memory_read;
     execution_stage_result <= mem_address (15 DOWNTO 0);
     -- expand operand 1
-    operand1_zeros <= (others=>'0'); operand1_exp <=operand1_zeros &operand1;
+    operand1_exp <=(15 DOWNTO 0 => '0') &operand1;
     -- expand instruction address +1
     instruction_address_1 <= instruction_address+1 ;
-    instruction_address_zeros <= (others =>'0');  instruction_address_exp <= instruction_address_zeros & instruction_address_1 ;
+    instruction_address_exp <= (11 DOWNTO 0 => '0') & instruction_address_1 ;
     --memory data input
     mem_datain <= operand1_exp WHEN call_int_instruction ='0'
     ELSE instruction_address_exp ;
