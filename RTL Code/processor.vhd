@@ -102,6 +102,11 @@ BEGIN
                      processor_reset => processor_reset,
                      is_hlt_instruction => DE_data(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
+                     branch_type => DE(branch_type_i0 DOWNTO branch_type_i1),
+                     int_index => ,
+                     exception_enable => ,
+                     exception_handler_index => ,
+                     exception_instruction_address => ,
                      FD_enable => FD_enable,
                      FD_data => FD_data
               );
@@ -167,6 +172,7 @@ BEGIN
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
                      ALU_result => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
+                     stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
                      CCR => CCR,
                      DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
                      EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1)
