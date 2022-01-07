@@ -16,19 +16,21 @@ entity exeception_detection_unit is
     memory_write : in std_logic;
     memory_read : in std_logic;
     execution_stage_result : in std_logic_vector(19 downto 0); -- Memory adress or a vlaue to be written back in a register
-    exeception_handler_address : out std_logic_vector(19 downto 0); -- the address of the handler called in the fetach stage
+    exeception_handler_address : out std_logic_vector(3 downto 0); -- the address of the handler called in the fetach stage
     exeception_enable : out std_logic -- whether there is an exception or not
 
   );
 end entity;
 architecture execeptionDetectionUnit of exeception_detection_unit is
 
-  constant EMPTY_STACK_VALUE : std_logic_vector := 16#00000000#;
-  constant MAX_MEMORY_RANGE : std_logic_vector := 16#FF00#;
+  constant EMPTY_STACK_VALUE : std_logic_vector := X"00000000";
+  constant MAX_MEMORY_RANGE : std_logic_vector := X"FF00"; 
+  -- stack control values
   constant POP_1_operation : std_logic_vector := "101";
   constant POP_2_operation : std_logic_vector := "111";
-  constant EMPTY_STACK_EXCEPTION_HANDLER : std_logic_vector := 16#4#;
-  constant INVALID_MEMORY_ADRESS_EXCEPTION_HANDLER : std_logic_vector := 16#2#;
+  -- exception handler address
+  constant EMPTY_STACK_EXCEPTION_HANDLER : std_logic_vector := "0010";
+  constant INVALID_MEMORY_ADRESS_EXCEPTION_HANDLER : std_logic_vector := "0100";
 
 begin
   exeception_enable <=
