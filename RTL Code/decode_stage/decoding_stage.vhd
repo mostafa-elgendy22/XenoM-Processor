@@ -12,6 +12,10 @@ entity decoding_stage is
       write_address               : IN STD_LOGIC_VECTOR (2  DOWNTO 0); --3bits input 
       write_data                  : IN STD_LOGIC_VECTOR (15 DOWNTO 0); 
       --------------------------- outputs ---------------------------
+      ---- Related to the registers for the forwarding unit
+      Rsrc1_address_out               : out std_logic_vector(2 downto 0);
+      Rsrc2_address_out               : out std_logic_vector(2 downto 0);
+      Rdst_address_out                : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
       -- TODO: add immediate_data
       ---- Related to the reg file and the operands
       write_back_enable_out       : out std_logic; -- if the instruction need to write back
@@ -40,9 +44,8 @@ entity decoding_stage is
       operand1 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0);   
       operand2 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0);
 
-      DE_instruction_address : OUT STD_LOGIC_VECTOR(19 downto 0);
+      DE_instruction_address : OUT STD_LOGIC_VECTOR(19 downto 0)
 
-      Rdst_address_out : OUT STD_LOGIC_VECTOR (2 DOWNTO 0)
   
     );
   end entity;
@@ -54,9 +57,9 @@ entity decoding_stage is
     SIGNAL  Rdst_data                   : STD_LOGIC_VECTOR (15 DOWNTO 0);
     SIGNAL  immediate_data              : STD_LOGIC_VECTOR (15 DOWNTO 0);
 
-    SIGNAL Rsrc1_address : STD_LOGIC_VECTOR (2 DOWNTO 0);
-    SIGNAL Rsrc2_address : STD_LOGIC_VECTOR (2 DOWNTO 0);
-    SIGNAL Rdst_address : STD_LOGIC_VECTOR (2 DOWNTO 0);
+    SIGNAL Rsrc1_address_signal : STD_LOGIC_VECTOR (2 DOWNTO 0);
+    SIGNAL Rsrc2_address_signal : STD_LOGIC_VECTOR (2 DOWNTO 0);
+    SIGNAL Rdst_address_signal : STD_LOGIC_VECTOR (2 DOWNTO 0);
     
     SIGNAL is_immediate :STD_LOGIC ;
     SIGNAL is_operation_on_Rdst :STD_LOGIC ;
@@ -75,9 +78,9 @@ entity decoding_stage is
   
                     ---- Related to the reg file and the operands
                     write_back_enable=> write_back_enable_out, 
-                    Rsrc1_address   =>Rsrc1_address, 
-                    Rsrc2_address   =>Rsrc2_address,
-                    Rdst_address    =>Rdst_address, 
+                    Rsrc1_address   =>Rsrc1_address_signal, 
+                    Rsrc2_address   =>Rsrc2_address_signal,
+                    Rdst_address    =>Rdst_address_signal, 
                     is_operation_on_Rdst =>is_operation_on_Rdst , 
                 
                     ---- Related to the flags and ALU
@@ -105,9 +108,9 @@ entity decoding_stage is
     Register_file :  ENTITY work.RegFile 
     PORT MAP      (  clk =>clk,
                       rst=>rst ,
-                      Rsrc1_address=>Rsrc1_address  ,
-                      Rsrc2_address=>Rsrc2_address,
-                      Rdst_address=>Rdst_address,
+                      Rsrc1_address=>Rsrc1_address_signal  ,
+                      Rsrc2_address=>Rsrc2_address_signal,
+                      Rdst_address=>Rdst_address_signal,
                       write_back_enable=>write_back_enable_in,
                       write_address=> write_address ,
                       write_data => write_data ,
@@ -117,6 +120,9 @@ entity decoding_stage is
 
        operand1 <= Rdst_data when is_operation_on_Rdst = '1' else Rsrc1_data;
        operand2 <= immediate_data when is_immediate = '1' else Rsrc2_data;
-       Rdst_address_out<=Rdst_address;
+       Rsrc1_address_out <=Rsrc1_address_signal;
+       Rsrc2_address_out <=Rsrc2_address_signal;
+       Rdst_address_out<=Rdst_address_signal;
+       
 
   END architecture ;

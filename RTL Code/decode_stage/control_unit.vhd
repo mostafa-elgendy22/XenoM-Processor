@@ -160,6 +160,7 @@ begin
             --start------------------------- NOT or INC
             if instruction(27) = '0' then -- NOT/INC
               is_operation_on_Rdst <= '1';
+              write_back_enable <= '1'; --  will write back in the Rdst
               if instruction(26) = '0' then -- NOT
                 ALU_operation <= NOT_operation;
               else -- INC 
