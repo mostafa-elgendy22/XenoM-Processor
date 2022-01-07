@@ -191,12 +191,12 @@ BEGIN
                      IO_reset=>'0',
                      -- for memory 
                      mem_clk=>clk,
-                     mem_address,
+                     mem_address=>EM (ALU_result_i0 DOWNTO ALU_result_i1),
                      memory_read,
                      memory_write,
                      --data in
                      operand1,
-                     instruction_address ,
+                     instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
                      --selection 
                      call_int_instruction,
                      -- signals 
