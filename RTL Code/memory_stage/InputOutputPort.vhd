@@ -16,9 +16,9 @@ Signal Data : STD_LOGIC_VECTOR (15 DOWNTO 0) ;
 BEGIN
        --port data 
        Data <= (OTHERS => '0') WHEN reset ='1' 
-              ELSE Input WHEN Io_read ='1' ;
+              ELSE Input WHEN Io_write ='1' ;
        --port output data 
-       Output <= Data WHEN Io_write ='1'
+       Output <= Data WHEN Io_read ='1'
        ELSE (OTHERS => 'Z');
            
        
