@@ -7,15 +7,17 @@ USE IEEE.std_logic_unsigned.ALL;
 ENTITY memory_stage IS
     PORT (
         --- for IN/OUT Port
-        IO_Input : IN STD_LOGIC_VECTOR (15 DOWNTO 0); --16 bit data input for 
         Io_read, Io_write, IO_reset : IN STD_LOGIC; --signal for enable read/write  and reset
 
         -- for memory 
         mem_clk : IN STD_LOGIC;
         mem_address : IN STD_LOGIC_VECTOR(19 DOWNTO 0); --20bit memory address from execution unit 
-        mem_datain : IN STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
         memory_read : IN STD_LOGIC; -- signal read from memory with address
         memory_write : IN STD_LOGIC; --signal write in memory
+
+        -- data 
+        operand1 : IN STD_LOGIC_VECTOR (15 DOWNTO 0); --16 bit data input for 
+        instruction_address : IN STD_LOGIC_VECTOR (19 DOWNTO 0);
         --selection 
         call_int_instruction : IN STD_LOGIC;
 
@@ -38,15 +40,30 @@ ARCHITECTURE a_memory_stage OF memory_stage IS
     SIGNAL mem_write : STD_LOGIC_VECTOR (1 DOWNTO 0);
     SIGNAL IO_Output : STD_LOGIC_VECTOR (15 DOWNTO 0); --16bit IO/data ouput 
     SIGNAL  mem_dataout : STD_LOGIC_VECTOR(15 DOWNTO 0);--16bit mem/data out
+    SIGNAL mem_datain :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
+    SIGNAL operand1_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input   
+    SIGNAL operand1_zeros :  STD_LOGIC_VECTOR(15 DOWNTO 0);
+    SIGNAL instruction_address_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
+    SIGNAL instruction_address_zeros : STD_LOGIC_VECTOR(11 DOWNTO 0); -- 32 data input 
+    SIGNAL instruction_address_1 :  STD_LOGIC_VECTOR (19 DOWNTO 0); 
+
 
 BEGIN
     mem_write <= call_int_instruction & memory_write;
     io_memory_read <= Io_read or memory_read;
     execution_stage_result <= mem_address (15 DOWNTO 0);
+    -- expand operand 1
+    operand1_zeros <= (others=>'0'); operand1_exp <=operand1_zeros &operand1;
+    -- expand instruction address +1
+    instruction_address_1 <= instruction_address+1 ;
+    instruction_address_zeros <= (others =>'0');  instruction_address_exp <= instruction_address_zeros & instruction_address_1 ;
+    --memory data input
+    mem_datain <= operand1_exp WHEN call_int_instruction ='0'
+    ELSE instruction_address_exp ;
 
     IOPort : ENTITY work.IO_Port
         PORT MAP(
-            Input  =>IO_Input,
+            Input  =>operand1,
             Io_read =>Io_read,
             Io_write =>Io_write,
             reset => IO_reset,
