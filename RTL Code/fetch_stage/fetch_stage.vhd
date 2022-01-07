@@ -7,11 +7,11 @@ ENTITY fetch_stage IS
               clk : IN STD_LOGIC;
               processor_reset : IN STD_LOGIC;
               is_hlt_instruction : IN STD_LOGIC;
-              is_int_instruction : IN STD_LOGIC;
+              branch_type : IN STD_LOGIC_VECTOR(3 downto 0);
               int_index : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
               instruction_bus : INOUT STD_LOGIC_VECTOR (31 DOWNTO 0);
               exception_enable : IN STD_LOGIC;
-              exception_handler_address : IN STD_LOGIC_VECTOR (19 DOWNTO 0);
+              exception_handler_index : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
               exception_instruction_address : IN STD_LOGIC_VECTOR (19 DOWNTO 0);
               FD_enable : OUT STD_LOGIC;
               FD_data : OUT STD_LOGIC_VECTOR (51 DOWNTO 0)
@@ -28,11 +28,13 @@ ARCHITECTURE fetch_stage OF fetch_stage IS
        SIGNAL PC_enable : STD_LOGIC;
        SIGNAL PC_clock : STD_LOGIC;
        SIGNAL int_handler_address, padded_int_index : STD_LOGIC_VECTOR(19 DOWNTO 0);
+       SIGNAL exception_handler_address : STD_LOGIC_VECTOR(19 DOWNTO 0);
        SIGNAL ground : STD_LOGIC := '0';
 
 BEGIN
        padded_int_index <= (19 DOWNTO 3 => '0') & int_index;
        int_handler_address <= padded_int_index + 6;
+       exception_handler_address <= (19 DOWNTO 4 => '0') & exception_handler_index;
 
        PC : ENTITY work.DFF_register
               GENERIC MAP(data_width => 32)
@@ -43,7 +45,7 @@ BEGIN
                      D => D_PC,
                      Q => Q_PC
               );
-       D_EPC <= X"000" & exception_instruction_address;
+       D_EPC <= (31 DOWNTO 20 => '0') & exception_instruction_address;
        EPC : ENTITY work.DFF_register
               GENERIC MAP(data_width => 32)
               PORT MAP(
@@ -72,7 +74,7 @@ BEGIN
               ELSE
               exception_handler_address WHEN exception_enable = '1'
               ELSE
-              int_handler_address WHEN is_int_instruction = '1'
+              int_handler_address WHEN branch_type = "1101"
               ELSE
               Q_PC(19 DOWNTO 0);
 
@@ -85,7 +87,7 @@ BEGIN
               ELSE
               Q_PC;
 
-       D_PC <= instruction_bus WHEN processor_reset = '1' OR is_int_instruction = '1' OR exception_enable = '1'
+       D_PC <= instruction_bus WHEN processor_reset = '1' OR branch_type = "1101" OR exception_enable = '1'
               ELSE
               next_instruction_address;
 
@@ -97,7 +99,7 @@ BEGIN
 
        FD_enable <= NOT processor_reset;
 
-       FD_data(51 DOWNTO 20) <= (OTHERS => '0') WHEN processor_reset = '1' OR is_int_instruction = '1' OR exception_enable = '1'
+       FD_data(51 DOWNTO 20) <= (OTHERS => '0') WHEN processor_reset = '1' OR branch_type = "1101" OR exception_enable = '1'
               ELSE
               instruction_bus;
 
