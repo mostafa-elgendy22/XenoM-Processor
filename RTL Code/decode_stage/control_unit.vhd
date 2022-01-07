@@ -187,7 +187,19 @@ begin
           --start------------------------- Jump Only or CALL/INT
           if instruction(28) = '0' then -- Jump Only or CALL/INT
             --start------------------------- Jump Only
-            -- TODO
+            if instruction(27) = '0' then -- JMP or JN
+                if instruction(26) = '0' then -- JMP
+                branch_type <= JMP_instruction;
+                else -- JN
+                branch_type <= JN_instruction;
+                end if; 
+            else -- JZ or JC
+              if instruction(26) = '0' then -- JZ
+              branch_type <= JZ_instruction;
+              else -- JC
+              branch_type <= JC_instruction;
+              end if;
+            end if;
             --end------------------------- Jump Only
             --***************************************************************************
             --start------------------------- CALL or INT
