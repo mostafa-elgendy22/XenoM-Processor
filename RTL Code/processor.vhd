@@ -56,8 +56,8 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (73 DOWNTO 0);
 
        -- Execute stage parameters
-       constant ALU_result_i0 : integer := 35;
-       constant ALU_result_i1 : integer := 20;
+       CONSTANT ALU_result_i0 : INTEGER := 35;
+       CONSTANT ALU_result_i1 : INTEGER := 20;
        CONSTANT EM_instruction_address_i0 : INTEGER := 19;
        CONSTANT EM_instruction_address_i1 : INTEGER := 0;
        SIGNAL CCR : STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -69,6 +69,29 @@ ARCHITECTURE processor OF processor IS
        SIGNAL WB_enable_in : STD_LOGIC;
        SIGNAL WB_write_address : STD_LOGIC_VECTOR (2 DOWNTO 0);
        SIGNAL WB_write_data : STD_LOGIC_VECTOR (15 DOWNTO 0);
+
+       -- Memory data 
+       SIGNAL MW : STD_LOGIC_VECTOR (36 DOWNTO 0);
+       SIGNAL MW_data : STD_LOGIC_VECTOR (36 DOWNTO 0);
+
+       -- Memory stage parameters
+       CONSTANT data_out_i0 : INTEGER = 36;
+       CONSTANT data_out_i1 : INTEGER = 21;
+
+       CONSTANT execution_result_i0 : INTEGER = 20;
+       CONSTANT execution_result_i1 : INTEGER = 5;
+
+       CONSTANT int_index_Rdst_address_i0 : INTEGER = 4;
+       CONSTANT int_index_Rdst_address_i1 : INTEGER = 2;
+
+       CONSTANT write_back_enable_i : INTEGER = 1;
+       CONSTANT io_memory_read_i : INTEGER = 0;
+
+       -- write back stage 
+       SIGNAL Rdst_address_WB :STD_LOGIC_VECTOR (2 DOWNTO 0);
+       SIGNAL write_back_enable_WB : STD_LOGIC ;
+       SIGNAL write_back_data_WB :STD_LOGIC (15 DOWNTO 0); 
+
 BEGIN
        neg_clk <= NOT clk;
 
@@ -158,4 +181,52 @@ BEGIN
                      D => EM_data,
                      Q => EM
               );
+
+       --------memory stage ---------------
+       memory : ENTITY work.memory_stage
+              PORT MAP(
+                     --- for IN/OUT Port
+                     IO_Input,
+                     Io_read,
+                     Io_write,
+                     IO_reset=>'0',
+                     -- for memory 
+                     mem_clk=>clk,
+                     mem_address,
+                     mem_datain,
+                     memory_read,
+                     memory_write,
+                     --selection 
+                     call_int_instruction,
+                     -- signals 
+                     write_back_enable,
+                     write_back_enable_out=> MW_data(write_back_enable_i),
+
+                     io_memory_read=>MW_data(io_memory_read_i),
+                     execution_stage_result=>MW_data( data_out_i0 DOWNTO data_out_i1),
+
+                     int_index_Rdst_address,
+                     int_index_Rdst_address_out=>MW_data(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
+
+                     data_out=>MW_data( execution_result_i0 DOWNTO execution_result_i1),
+              );
+
+       MW_register : ENTITY work.DFF_register
+              GENERIC MAP(data_width => 36)
+              PORT MAP(
+                     clk => neg_clk,
+                     enable => EM_enable, --TODO
+                     reset => ground,
+                     D => MW_data,
+                     Q => MW
+              );
+
+        -- write back stage 
+        
+        Rdst_address_WB <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
+        write_back_enable_WB <= MW (write_back_enable_i) ;
+        write_back_data_WB <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  io_memory_read ='1'
+        ELSE MW ( data_out_i0 DOWNTO data_out_i1) ;
+
+
 END ARCHITECTURE;
