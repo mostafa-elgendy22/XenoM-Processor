@@ -8,7 +8,7 @@ ENTITY SP IS
               reset : IN STD_LOGIC;
               stackCtl : IN STD_LOGIC_VECTOR(2 DOWNTO 0); -- (2) stack enable, (1:0) stack operation
               data : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-              newdata: OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
+              newdata: OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
        );
 END ENTITY;
 ARCHITECTURE SP OF SP IS
@@ -40,5 +40,5 @@ BEGIN
        END PROCESS;
 
        data <= mydata;
-       newdata <= mynewdata
+       newdata <= mynewdata;
 END SP;

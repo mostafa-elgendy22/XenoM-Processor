@@ -15,7 +15,7 @@ sim:/processor/decode/operand2 \
 sim:/processor/execute/ALU_op1 \
 sim:/processor/execute/ALU_op2 \
 sim:/processor/execute/ALU_sel \
-sim:/processor/execute/ALU_result
+sim:/processor/execute/ExecResult
 
 
 
@@ -28,7 +28,7 @@ radix signal sim:/processor/decode/operand2 Hexadecimal
 
 radix signal sim:/processor/execute/ALU_op1 Hexadecimal
 radix signal sim:/processor/execute/ALU_op2 Hexadecimal
-radix signal sim:/processor/execute/ALU_result Hexadecimal
+radix signal sim:/processor/execute/ExecResult Hexadecimal
 
 
 force -freeze sim:/processor/clk 0 0, 1 {100 ps} -r 200

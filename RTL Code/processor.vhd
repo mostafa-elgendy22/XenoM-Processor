@@ -54,10 +54,14 @@ ARCHITECTURE processor OF processor IS
        CONSTANT branch_type_i0 : INTEGER := 3;
        CONSTANT branch_type_i1 : INTEGER := 0;
 
-       SIGNAL DE : STD_LOGIC_VECTOR (76 DOWNTO 0);
-       SIGNAL DE_data : STD_LOGIC_VECTOR (76 DOWNTO 0);
+       SIGNAL DE : STD_LOGIC_VECTOR (76 DOWNTO 0); -- output of the DE reg
+       SIGNAL DE_data : STD_LOGIC_VECTOR (76 DOWNTO 0); -- input to the DE reg
 
        -- Execute stage parameters
+       CONSTANT exeception_enable_i :INTEGER := 74;
+       CONSTANT exeception_handler_address_i0 :INTEGER := 73;
+       CONSTANT exeception_handler_address_i1 :INTEGER := 70;
+
        CONSTANT EM_Rdst_address_i0 :INTEGER := 69;
        CONSTANT EM_Rdst_address_i1 :INTEGER := 67;
 
@@ -88,8 +92,8 @@ ARCHITECTURE processor OF processor IS
       
 
 
-       SIGNAL EM_data : STD_LOGIC_VECTOR (69 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (69 DOWNTO 0);
+       SIGNAL EM_data : STD_LOGIC_VECTOR (74 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (74 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -102,17 +106,17 @@ ARCHITECTURE processor OF processor IS
        SIGNAL MW_data : STD_LOGIC_VECTOR (36 DOWNTO 0);
 
        -- Memory stage parameters
-       CONSTANT data_out_i0 : INTEGER = 36;
-       CONSTANT data_out_i1 : INTEGER = 21;
+       CONSTANT data_out_i0 : INTEGER := 36;
+       CONSTANT data_out_i1 : INTEGER := 21;
 
-       CONSTANT execution_result_i0 : INTEGER = 20;
-       CONSTANT execution_result_i1 : INTEGER = 5;
+       CONSTANT execution_result_i0 : INTEGER := 20;
+       CONSTANT execution_result_i1 : INTEGER := 5;
 
-       CONSTANT int_index_Rdst_address_i0 : INTEGER = 4;
-       CONSTANT int_index_Rdst_address_i1 : INTEGER = 2;
+       CONSTANT int_index_Rdst_address_i0 : INTEGER := 4;
+       CONSTANT int_index_Rdst_address_i1 : INTEGER := 2;
 
-       CONSTANT write_back_enable_i : INTEGER = 1;
-       CONSTANT io_memory_read_i : INTEGER = 0;
+       CONSTANT write_back_enable_i : INTEGER := 1;
+       CONSTANT io_memory_read_i : INTEGER := 0;
 
      
 
@@ -124,13 +128,13 @@ BEGIN
               PORT MAP(
                      clk => clk,
                      processor_reset => processor_reset,
-                     is_hlt_instruction => DE_data(is_hlt_instruction_i),
+                     is_hlt_instruction => DE(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
-                     branch_type => DE(branch_type_i0 DOWNTO branch_type_i1),
-                     int_index => ,
-                     exception_enable => ,
-                     exception_handler_index => ,
-                     exception_instruction_address => ,
+                     branch_type => EM(branch_type_i0 DOWNTO branch_type_i1),
+                     int_index => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
+                     exception_enable => EM(exeception_enable_i),
+                     exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
+                     exception_instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
                      FD_enable => FD_enable,
                      FD_data => FD_data
               );
@@ -177,7 +181,7 @@ BEGIN
 
                      DE_instruction_address => DE_data(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
 
-                     Rdst_address_out => DE_data ()-- TODO 
+                     Rdst_address_out => DE_data (DE_Rdst_adress_i0 DOWNTO DE_Rdst_adress_i1) 
 
               );
 
@@ -195,20 +199,31 @@ BEGIN
        execute : ENTITY work.execute_stage
               PORT MAP(
                      clk => clk,
+                     rst => processor_reset,
+                     
                      ALU_op1 => DE(operand1_i0 DOWNTO operand1_i1),
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
-                     stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
-                     CCR => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1),
-                     DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
 
+                     CCR => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1),
+                     stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
+                     -- MWdata, EMdata
+                     DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
+                     write_back_enable_in=>DE(write_back_enable_out_i), 
                      io_read_in =>  DE(io_read_i),
                      io_write_in => DE(io_write_i),
                      is_call_or_int_instruction_in=>DE(is_call_or_int_instruction_i),
                      memory_write_in=> DE(memory_write_i),
                      memory_read_in =>DE(memory_read_i),
-                     write_back_enable_in=>DE(write_back_enable_out_i), 
-                     Rdst_address_in => --TODO
+                     -- Rsrc1_address : in std_logic_vector(2 downto 0);
+                     -- Rsrc2_address : in std_logic_vector(2 downto 0);
+                     -- Rdst_em_address : in std_logic_vector(2 downto 0);
+                     -- Rdst_mw_address : in std_logic_vector(2 downto 0);
+                     -- mw_write_enable : in std_logic;
+                     -- em_write_enable : in std_logic;
+                     -- mw_io_read : in std_logic;
+                     -- mw_mem_read : in std_logic;
+                     Rdst_address_in => DE(DE_Rdst_adress_i0 DOWNTO DE_Rdst_adress_i1),
                      
                      io_read_out=> EM_data (EM_io_read_out_i),-- 1
                      io_write_out=> EM_data (EM_io_write_out_i) ,--1
@@ -217,14 +232,16 @@ BEGIN
                      memory_read_out=>EM_data(EM_memory_read_i),--1
                      stack_control_out=>EM_data( EM_stack_control_i0 DOWNTO EM_stack_control_i1) ,--2
                      write_back_enable_out=>EM_data(EM_write_back_enable_i),-- 1
-                     ALU_op2_out =>EM_data(EM_ALU_op2_i0 DOWNTO EM_ALU_op2_i1)--DONE 16
-                     ALU_result => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),-- 20 
-                     EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),--DONE 20
+                     ALU_op2_out =>EM_data(EM_ALU_op2_i0 DOWNTO EM_ALU_op2_i1),--DONE 16
                      Rdst_address_out =>EM_data(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1), --3 bit
-              );
+                     EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),--DONE 20
+                     ExecResult => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),-- 20
+                     exeception_handler_address => EM_data(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
+                     exeception_enable => EM_data(exeception_enable_i)
+                     );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 70)
+              GENERIC MAP(data_width => 75)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,
@@ -260,11 +277,11 @@ BEGIN
                      int_index_Rdst_address =>EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      int_index_Rdst_address_out=>MW_data(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
 
-                     data_out=>MW_data( execution_result_i0 DOWNTO execution_result_i1),
+                     data_out=>MW_data( execution_result_i0 DOWNTO execution_result_i1)
               );
 
        MW_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 36)
+              GENERIC MAP(data_width => 37)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable, --TODO
@@ -273,12 +290,11 @@ BEGIN
                      Q => MW
               );
 
-        -- write back stage 
-        
+        -- write back stage  
         WB_write_address <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
-        WB_enable_in <= MW (write_back_enable_i) ;
-        write_back_data_WB <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  io_memory_read ='0'
-        ELSE MW ( data_out_i0 DOWNTO data_out_i1) ;
+        WB_enable_in <= MW (write_back_enable_i);
+        WB_write_data <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  MW(io_memory_read_i) ='0' ELSE
+                              MW ( data_out_i0 DOWNTO data_out_i1) ;
 
 
 
