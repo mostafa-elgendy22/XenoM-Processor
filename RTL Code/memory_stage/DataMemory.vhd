@@ -31,11 +31,11 @@ BEGIN
       IF rising_edge(clk) THEN
          -- data write In memory 16 bit data 
          IF memory_write(0) = '1' THEN
-            ram(to_integer(unsigned(address))) <= datain(31 DOWNTO 16);
+            ram(to_integer(unsigned(address))) <=datain(15 DOWNTO 0);
          END IF;
          -- data write In memory 32 bit data 
          IF memory_write(1) = '1' THEN
-            ram(to_integer(unsigned(address + 1))) <= datain(15 DOWNTO 0);
+            ram(to_integer(unsigned(address + 1))) <=  datain(31 DOWNTO 16);
          END IF;
 
       END IF;
