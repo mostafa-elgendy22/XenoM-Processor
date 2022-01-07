@@ -73,8 +73,8 @@ ARCHITECTURE processor OF processor IS
 
        CONSTANT EM_write_back_enable_i:INTEGER :=59 ; 
 
-       CONSTANT EM_ALU_op1_i0:INTEGER :=58 ;
-       CONSTANT EM_ALU_op1_i1:INTEGER :=41 ;
+       CONSTANT EM_ALU_op2_i0:INTEGER :=58 ;
+       CONSTANT EM_ALU_op2_i1:INTEGER :=43 ;
        
        CONSTANT EM_CCR_i0 :INTEGER := 40 ;
        CONSTANT EM_CCR_i1 :INTEGER := 38 ;
@@ -87,9 +87,6 @@ ARCHITECTURE processor OF processor IS
 
       
 
-
-
-       SIGNAL CCR : STD_LOGIC_VECTOR(2 DOWNTO 0);
 
        SIGNAL EM_data : STD_LOGIC_VECTOR (69 DOWNTO 0);
        SIGNAL EM : STD_LOGIC_VECTOR (69 DOWNTO 0);
@@ -202,21 +199,17 @@ BEGIN
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
                      stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
-                     CCR => CCR,
+                     CCR => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1),
                      DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
 
-                     ----data from decoder 
-                     write_back_enable_in=> DE(write_back_enable_out_i) ,
                      io_read_in =>  DE(io_read_i),
                      io_write_in => DE(io_write_i),
                      is_call_or_int_instruction_in=>DE(is_call_or_int_instruction_i),
                      memory_write_in=> DE(memory_write_i),
                      memory_read_in =>DE(memory_read_i),
-                     stack_control_in=>DE(stack_control_i0 DOWNTO stack_control_i1) ,
-                     write_back_enable_in=>DE(write_back_enable_out_i),
+                     write_back_enable_in=>DE(write_back_enable_out_i), 
                      Rdst_address_in => --TODO
                      
-                     --- data to memory 
                      io_read_out=> EM_data (EM_io_read_out_i),-- 1
                      io_write_out=> EM_data (EM_io_write_out_i) ,--1
                      is_call_or_int_instruction_out=>EM_data (EM_is_call_or_int_instruction_i),--DONE 1 
@@ -224,13 +217,10 @@ BEGIN
                      memory_read_out=>EM_data(EM_memory_read_i),--1
                      stack_control_out=>EM_data( EM_stack_control_i0 DOWNTO EM_stack_control_i1) ,--2
                      write_back_enable_out=>EM_data(EM_write_back_enable_i),-- 1
-                     ALU_op1_out =>EM_data(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1)--DONE 16
+                     ALU_op2_out =>EM_data(EM_ALU_op2_i0 DOWNTO EM_ALU_op2_i1)--DONE 16
                      ALU_result => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),-- 20 
                      EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),--DONE 20
                      Rdst_address_out =>EM_data(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1), --3 bit
-                     CCR_out => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1) --3 bit 
-
-
               );
 
        EM_register : ENTITY work.DFF_register
@@ -256,7 +246,7 @@ BEGIN
                      memory_read =>EM(EM_memory_read_i),
                      memory_write =>EM(EM_memory_write_i),
                      --data in
-                     operand1=>EM(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1),
+                     operand1=>EM(EM_ALU_op2_i0 DOWNTO EM_ALU_op2_i1),
                      instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
                      --selection 
                      call_int_instruction=>EM(EM_is_call_or_int_instruction_i),
