@@ -225,7 +225,7 @@ BEGIN
         
         Rdst_address_WB <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
         write_back_enable_WB <= MW (write_back_enable_i) ;
-        write_back_data_WB <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  io_memory_read ='1'
+        write_back_data_WB <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  io_memory_read ='0'
         ELSE MW ( data_out_i0 DOWNTO data_out_i1) ;
 
 
