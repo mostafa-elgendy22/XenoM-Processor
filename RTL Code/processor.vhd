@@ -26,6 +26,8 @@ ARCHITECTURE processor OF processor IS
        SIGNAL FD : STD_LOGIC_VECTOR(51 DOWNTO 0);
 
        -- Decode stage parameters
+       CONSTANT DE_Rdst_adress_i0 : INTEGER := 76;
+       CONSTANT DE_Rdst_adress_i1 : INTEGER := 74;
        CONSTANT DE_instruction_address_i0 : INTEGER := 73;
        CONSTANT DE_instruction_address_i1 : INTEGER := 54;
        CONSTANT ALU_operation_i0 : INTEGER := 53;
@@ -52,17 +54,45 @@ ARCHITECTURE processor OF processor IS
        CONSTANT branch_type_i0 : INTEGER := 3;
        CONSTANT branch_type_i1 : INTEGER := 0;
 
-       SIGNAL DE : STD_LOGIC_VECTOR (73 DOWNTO 0);
-       SIGNAL DE_data : STD_LOGIC_VECTOR (73 DOWNTO 0);
+       SIGNAL DE : STD_LOGIC_VECTOR (76 DOWNTO 0);
+       SIGNAL DE_data : STD_LOGIC_VECTOR (76 DOWNTO 0);
 
        -- Execute stage parameters
-       CONSTANT ALU_result_i0 : INTEGER := 35;
+       CONSTANT EM_Rdst_address_i0 :INTEGER := 69;
+       CONSTANT EM_Rdst_address_i1 :INTEGER := 67;
+
+       CONSTANT EM_io_read_out_i :INTEGER := 66 ;
+       CONSTANT EM_io_write_out_i :INTEGER := 65 ;
+
+       CONSTANT EM_is_call_or_int_instruction_i :INTEGER := 64;
+       CONSTANT EM_memory_write_i :INTEGER :=63 ;
+       CONSTANT EM_memory_read_i :INTEGER :=62 ;
+
+       CONSTANT EM_stack_control_i0:INTEGER :=61;
+       CONSTANT EM_stack_control_i1:INTEGER :=60;
+
+       CONSTANT EM_write_back_enable_i:INTEGER :=59 ; 
+
+       CONSTANT EM_ALU_op1_i0:INTEGER :=58 ;
+       CONSTANT EM_ALU_op1_i1:INTEGER :=41 ;
+       
+       CONSTANT EM_CCR_i0 :INTEGER := 40 ;
+       CONSTANT EM_CCR_i1 :INTEGER := 38 ;
+
+       CONSTANT ALU_result_i0 : INTEGER := 39;
        CONSTANT ALU_result_i1 : INTEGER := 20;
+
        CONSTANT EM_instruction_address_i0 : INTEGER := 19;
        CONSTANT EM_instruction_address_i1 : INTEGER := 0;
+
+      
+
+
+
        SIGNAL CCR : STD_LOGIC_VECTOR(2 DOWNTO 0);
-       SIGNAL EM_data : STD_LOGIC_VECTOR (35 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (35 DOWNTO 0);
+
+       SIGNAL EM_data : STD_LOGIC_VECTOR (69 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (69 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -148,11 +178,14 @@ BEGIN
                      operand1 => DE_data(operand1_i0 DOWNTO operand1_i1),
                      operand2 => DE_data(operand2_i0 DOWNTO operand2_i1),
 
-                     DE_instruction_address => DE_data(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1)
+                     DE_instruction_address => DE_data(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
+
+                     Rdst_address_out => DE_data ()-- TODO 
+
               );
 
        DE_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 74)
+              GENERIC MAP(data_width => 77)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable, --------TODO
@@ -167,16 +200,41 @@ BEGIN
                      clk => clk,
                      ALU_op1 => DE(operand1_i0 DOWNTO operand1_i1),
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
-                     ALU_result => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
                      stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
                      CCR => CCR,
                      DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
-                     EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1)
+
+                     ----data from decoder 
+                     write_back_enable_in=> DE(write_back_enable_out_i) ,
+                     io_read_in =>  DE(io_read_i),
+                     io_write_in => DE(io_write_i),
+                     is_call_or_int_instruction_in=>DE(is_call_or_int_instruction_i),
+                     memory_write_in=> DE(memory_write_i),
+                     memory_read_in =>DE(memory_read_i),
+                     stack_control_in=>DE(stack_control_i0 DOWNTO stack_control_i1) ,
+                     write_back_enable_in=>DE(write_back_enable_out_i),
+                     Rdst_address_in => --TODO
+                     
+                     --- data to memory 
+                     io_read_out=> EM_data (EM_io_read_out_i),-- 1
+                     io_write_out=> EM_data (EM_io_write_out_i) ,--1
+                     is_call_or_int_instruction_out=>EM_data (EM_is_call_or_int_instruction_i),--DONE 1 
+                     memory_write_out=>EM_data(EM_memory_write_i),--1
+                     memory_read_out=>EM_data(EM_memory_read_i),--1
+                     stack_control_out=>EM_data( EM_stack_control_i0 DOWNTO EM_stack_control_i1) ,--2
+                     write_back_enable_out=>EM_data(EM_write_back_enable_i),-- 1
+                     ALU_op1_out =>EM_data(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1)--DONE 16
+                     ALU_result => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),-- 20 
+                     EM_instruction_address => EM_data(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),--DONE 20
+                     Rdst_address_out =>EM_data(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1), --3 bit
+                     CCR_out => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1) --3 bit 
+
+
               );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 36)
+              GENERIC MAP(data_width => 70)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,
@@ -189,27 +247,27 @@ BEGIN
        memory : ENTITY work.memory_stage
               PORT MAP(
                      --- for IN/OUT Port
-                     Io_read,
-                     Io_write,
+                     Io_read=> EM (EM_io_read_out_i),
+                     Io_write=>EM (EM_io_write_out_i),
                      IO_reset=>'0',
                      -- for memory 
                      mem_clk=>clk,
                      mem_address=>EM (ALU_result_i0 DOWNTO ALU_result_i1),
-                     memory_read,
-                     memory_write,
+                     memory_read =>EM(EM_memory_read_i),
+                     memory_write =>EM(EM_memory_write_i),
                      --data in
-                     operand1,
+                     operand1=>EM(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1),
                      instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
                      --selection 
-                     call_int_instruction,
+                     call_int_instruction=>EM(EM_is_call_or_int_instruction_i),
                      -- signals 
-                     write_back_enable,
+                     write_back_enable =>EM(EM_write_back_enable_i),
                      write_back_enable_out=> MW_data(write_back_enable_i),
 
                      io_memory_read=>MW_data(io_memory_read_i),
                      execution_stage_result=>MW_data( data_out_i0 DOWNTO data_out_i1),
 
-                     int_index_Rdst_address,
+                     int_index_Rdst_address =>EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      int_index_Rdst_address_out=>MW_data(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
 
                      data_out=>MW_data( execution_result_i0 DOWNTO execution_result_i1),

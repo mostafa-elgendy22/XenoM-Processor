@@ -40,7 +40,9 @@ entity decoding_stage is
       operand1 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0);   
       operand2 : OUT    STD_LOGIC_VECTOR (15 DOWNTO 0);
 
-      DE_instruction_address : OUT STD_LOGIC_VECTOR(19 downto 0)
+      DE_instruction_address : OUT STD_LOGIC_VECTOR(19 downto 0);
+
+      Rdst_address_out : OUT STD_LOGIC_VECTOR (2 DOWNTO 0)
   
     );
   end entity;
@@ -115,5 +117,6 @@ entity decoding_stage is
 
        operand1 <= Rdst_data when is_operation_on_Rdst = '1' else Rsrc1_data;
        operand2 <= immediate_data when is_immediate = '1' else Rsrc2_data;
+       Rdst_address_out<=Rdst_address;
 
   END architecture ;
