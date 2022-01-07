@@ -32,7 +32,7 @@ BEGIN
 
        PROCESS (clk) BEGIN
               IF (reset = '1') THEN
-                     mydata <= (OTHERS => '0');
+                     mydata <= "00000000000011111111111111111111";
               ELSIF (rising_edge(clk)) THEN
                      mydata <= newdata;
               END IF;
