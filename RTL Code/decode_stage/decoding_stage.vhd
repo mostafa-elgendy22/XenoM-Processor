@@ -16,7 +16,9 @@ entity decoding_stage is
       Rsrc1_address_out               : out std_logic_vector(2 downto 0);
       Rsrc2_address_out               : out std_logic_vector(2 downto 0);
       Rdst_address_out                : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
-      -- TODO: add immediate_data
+      --  Related to the immediate_data
+      immediate_data_out    : out STD_LOGIC_VECTOR (15 DOWNTO 0);
+      is_immediate_out      : out std_logic;
       ---- Related to the reg file and the operands
       write_back_enable_out       : out std_logic; -- if the instruction need to write back
       
@@ -55,13 +57,13 @@ entity decoding_stage is
     SIGNAL  Rsrc1_data                  : STD_LOGIC_VECTOR (15 DOWNTO 0);   
     SIGNAL  Rsrc2_data                  : STD_LOGIC_VECTOR (15 DOWNTO 0);  
     SIGNAL  Rdst_data                   : STD_LOGIC_VECTOR (15 DOWNTO 0);
-    SIGNAL  immediate_data              : STD_LOGIC_VECTOR (15 DOWNTO 0);
+    SIGNAL  immediate_data_signal              : STD_LOGIC_VECTOR (15 DOWNTO 0);
 
     SIGNAL Rsrc1_address_signal : STD_LOGIC_VECTOR (2 DOWNTO 0);
     SIGNAL Rsrc2_address_signal : STD_LOGIC_VECTOR (2 DOWNTO 0);
     SIGNAL Rdst_address_signal : STD_LOGIC_VECTOR (2 DOWNTO 0);
     
-    SIGNAL is_immediate :STD_LOGIC ;
+    SIGNAL is_immediate_signal :STD_LOGIC ;
     SIGNAL is_operation_on_Rdst :STD_LOGIC ;
 
     BEGIN 
@@ -73,8 +75,8 @@ entity decoding_stage is
                     instruction   => instruction ,
                     clk           =>      clk,
                      --------------------------- outputs ---------------------------
-                    is_immediate  =>  is_immediate, 
-                    immediate_data => immediate_data,
+                    is_immediate  =>  is_immediate_signal, 
+                    immediate_data => immediate_data_signal,
   
                     ---- Related to the reg file and the operands
                     write_back_enable=> write_back_enable_out, 
@@ -119,10 +121,12 @@ entity decoding_stage is
                       Rdst_data =>Rdst_data );
 
        operand1 <= Rdst_data when is_operation_on_Rdst = '1' else Rsrc1_data;
-       operand2 <= immediate_data when is_immediate = '1' else Rsrc2_data;
+       operand2 <= immediate_data_signal when is_immediate_signal = '1' else Rsrc2_data;
        Rsrc1_address_out <=Rsrc1_address_signal;
        Rsrc2_address_out <=Rsrc2_address_signal;
        Rdst_address_out<=Rdst_address_signal;
+       immediate_data_out <= immediate_data_signal;
+       is_immediate_out <= is_immediate_signal;
        
 
   END architecture ;
