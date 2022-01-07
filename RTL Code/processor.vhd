@@ -186,16 +186,17 @@ BEGIN
        memory : ENTITY work.memory_stage
               PORT MAP(
                      --- for IN/OUT Port
-                     IO_Input,
                      Io_read,
                      Io_write,
                      IO_reset=>'0',
                      -- for memory 
                      mem_clk=>clk,
                      mem_address,
-                     mem_datain,
                      memory_read,
                      memory_write,
+                     --data in
+                     operand1,
+                     instruction_address ,
                      --selection 
                      call_int_instruction,
                      -- signals 
