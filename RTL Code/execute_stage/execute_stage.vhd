@@ -46,7 +46,7 @@ entity execute_stage is
     memory_read_out : out std_logic;
     stack_control_out : out std_logic_vector(1 downto 0);
     write_back_enable_out : out std_logic;
-    ALU_op2_out : out std_logic_vector(15 downto 0);
+    ALU_op1_out : out std_logic_vector(15 downto 0);
     Rdst_address_out : out std_logic_vector(2 downto 0);
     EM_instruction_address : out std_logic_vector (19 downto 0);
 
@@ -84,7 +84,7 @@ begin
   memory_read_out <= memory_read_in;
   stack_control_out <= stack_control(1 downto 0);
   write_back_enable_out <= write_back_enable_in;
-  ALU_op2_out <= ALU_Actual_Operand2 ;
+  ALU_op1_out <= ALU_Actual_Operand1 ;
 
   CCR <= myCCR  ;
 

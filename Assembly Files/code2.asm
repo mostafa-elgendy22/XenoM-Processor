@@ -1,3 +1,15 @@
+INC R5 ;
+NOP ;
+NOP ;
+OUT R5 ;
+NOP ;
+NOP ;
+IN R6 ;
+NOP ;
+NOP ;
+INC R6 ;
+NOP ;
+NOP ;
 LDM R6, 10 ;
 NOP ;
 NOP ;

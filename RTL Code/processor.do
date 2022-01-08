@@ -47,6 +47,8 @@ sim:/processor/memory/operand1 \
 sim:/processor/memory/execution_stage_result \
 sim:/processor/memory/data_out \
 sim:/processor/memory/int_index_Rdst_address \
+sim:/processor/memory/Io_read \
+sim:/processor/memory/Io_write \
 sim:/processor/WB_enable_in \
 sim:/processor/WB_write_address \
 sim:/processor/WB_write_data \

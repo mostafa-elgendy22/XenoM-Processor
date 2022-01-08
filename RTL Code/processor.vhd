@@ -91,8 +91,8 @@ ARCHITECTURE processor OF processor IS
 
        CONSTANT EM_write_back_enable_i:INTEGER :=59 ; 
 
-       CONSTANT EM_ALU_op2_i0:INTEGER :=58 ;
-       CONSTANT EM_ALU_op2_i1:INTEGER :=43 ;
+       CONSTANT EM_ALU_op1_i0:INTEGER :=58 ;
+       CONSTANT EM_ALU_op1_i1:INTEGER :=43 ;
        
        CONSTANT EM_CCR_i0 :INTEGER := 42 ;
        CONSTANT EM_CCR_i1 :INTEGER := 40 ;
@@ -264,7 +264,7 @@ BEGIN
 
                      stack_control_out=>EM_data( EM_stack_control_i0 DOWNTO EM_stack_control_i1) ,--2
                      write_back_enable_out=>EM_data(EM_write_back_enable_i),-- 1
-                     ALU_op2_out =>EM_data(EM_ALU_op2_i0 DOWNTO EM_ALU_op2_i1),--DONE 16
+                     ALU_op1_out =>EM_data(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1),--DONE 16
 
                      Rdst_address_out =>EM_data(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1), --3 bit
 
@@ -301,7 +301,7 @@ BEGIN
                      memory_read =>EM(EM_memory_read_i),
                      memory_write =>EM(EM_memory_write_i),
                      --data in
-                     operand1=>EM(EM_ALU_op2_i0 DOWNTO EM_ALU_op2_i1),
+                     operand1=>EM(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1),
                      instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
                      --selection 
                      call_int_instruction=>EM(EM_is_call_or_int_instruction_i),
