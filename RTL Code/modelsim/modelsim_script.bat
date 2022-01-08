@@ -9,6 +9,7 @@ vcom ../decode_stage/decoding_stage.vhd
 vcom ../execute_stage/ALU.vhd
 vcom ../execute_stage/SP.vhd
 vcom ../execute_stage/FU.vhd
+vcom ../execute_stage/BC.vhd
 vcom ../execute_stage/exeception_detection_unit.vhd
 vcom ../execute_stage/flagsRegister.vhd
 vcom ../execute_stage/execute_stage.vhd

@@ -65,6 +65,9 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (99 DOWNTO 0); -- input to the DE reg
 
        -- Execute stage parameters
+       CONSTANT Branch_Control_i0 : INTEGER := 82;
+       CONSTANT Branch_Control_i1 : INTEGER := 79;
+
        constant EM_branch_type_i0 : Integer := 78;
        constant EM_branch_type_i1 : Integer := 75;
 
@@ -103,8 +106,8 @@ ARCHITECTURE processor OF processor IS
       
 
 
-       SIGNAL EM_data : STD_LOGIC_VECTOR (78 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (78 DOWNTO 0);
+       SIGNAL EM_data : STD_LOGIC_VECTOR (82 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (82 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -253,6 +256,8 @@ BEGIN
                      io_read_out=> EM_data (EM_io_read_out_i),-- 1
                      io_write_out=> EM_data (EM_io_write_out_i) ,--1
 
+                     branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1) ,
+
                      is_call_or_int_instruction_out=>EM_data (EM_is_call_or_int_instruction_i),--DONE 1 
                      memory_write_out=>EM_data(EM_memory_write_i),--1
                      memory_read_out=>EM_data(EM_memory_read_i),--1
@@ -269,11 +274,12 @@ BEGIN
                      exeception_handler_address => EM_data(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
                      exeception_enable => EM_data(exeception_enable_i),
                      branch_type_in => DE(branch_type_i0 DOWNTO branch_type_i1),
-                     branch_type_out => EM_data(EM_branch_type_i0 downto EM_branch_type_i1)
+                     branch_type_out => EM_data(EM_branch_type_i0 downto EM_branch_type_i1),
+                     is_immediate => DE(DE_is_immediate_i)
                      );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 79)
+              GENERIC MAP(data_width => 83)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,
@@ -326,7 +332,7 @@ BEGIN
               );
 
         -- write back stage  
-        WB_write_address <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
+        WB_write_address <= MW(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
         WB_enable_in <= MW (write_back_enable_i);
         WB_write_data <= MW(execution_result_i0 DOWNTO execution_result_i1) WHEN  MW(io_memory_read_i) ='0' ELSE
                               MW ( data_out_i0 DOWNTO data_out_i1) ;
