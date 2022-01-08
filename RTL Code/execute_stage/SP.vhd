@@ -23,10 +23,10 @@ BEGIN
        uMyData <= unsigned(mydata);
 
        WITH stackCtl SELECT uMyNewData <=
-              uMyData + 1 WHEN "100",
-              uMyData - 1 WHEN "101",
-              uMyData + 2 WHEN "110",
-              uMyData - 2 WHEN "111",
+              uMyData - 1 WHEN "100",
+              uMyData + 1 WHEN "101",
+              uMyData - 2 WHEN "110",
+              uMyData + 2 WHEN "111",
               uMyData WHEN OTHERS;
 
        mynewdata <= STD_LOGIC_VECTOR(uMyNewData);
