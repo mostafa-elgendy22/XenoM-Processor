@@ -53,4 +53,4 @@ force -freeze sim:/processor/processor_reset 1 0
 run {200 ps}
 
 force -freeze sim:/processor/processor_reset 0 0
-run {4000 ps}
+run {8000 ps}

@@ -87,8 +87,8 @@ ARCHITECTURE processor OF processor IS
        CONSTANT EM_ALU_op2_i0:INTEGER :=58 ;
        CONSTANT EM_ALU_op2_i1:INTEGER :=43 ;
        
-       CONSTANT EM_CCR_i0 :INTEGER := 40 ;
-       CONSTANT EM_CCR_i1 :INTEGER := 38 ;
+       CONSTANT EM_CCR_i0 :INTEGER := 42 ;
+       CONSTANT EM_CCR_i1 :INTEGER := 40 ;
 
        CONSTANT ALU_result_i0 : INTEGER := 39;
        CONSTANT ALU_result_i1 : INTEGER := 20;
