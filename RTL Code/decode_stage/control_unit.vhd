@@ -271,7 +271,7 @@ begin
           if instruction(27) = '1' then -- ADD/IADD
             ALU_operation <= ADD_operation;
             if instruction(28) = '1' then -- IADD
-              is_immediate <= instruction(28);
+              is_immediate <= '1';
               immediate_data <= instruction(19 downto 4);
             end if; -- IADD
           end if; -- ADD or IADD
