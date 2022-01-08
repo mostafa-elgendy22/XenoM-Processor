@@ -8,33 +8,33 @@ entity execute_stage is
     rst : in std_logic;
 
     ALU_op1, ALU_op2 : in std_logic_vector(15 downto 0);
-    -- 
-    --  : in std_logic_vector(15 downto 0);
+    
+    ALU_immediate  : in std_logic_vector(15 downto 0);
     ALU_sel : in std_logic_vector(2 downto 0);
 
     CCR : out std_logic_vector(2 downto 0);
     stack_control : in std_logic_vector(2 downto 0);
 
-    -- MWdata, EMdata : in std_logic_vector(15 downto 0);
+     MWdata, EMdata : in std_logic_vector(15 downto 0);
 
     DE_instruction_address : in std_logic_vector (19 downto 0);
 
     write_back_enable_in : in std_logic;
     io_read_in : in std_logic;
     io_write_in : in std_logic;
-    -- is_store_instruction : in std_logic;
+    is_store_instruction : in std_logic;
     is_call_or_int_instruction_in : in std_logic;
     memory_write_in : in std_logic;
     memory_read_in : in std_logic;
 
---     Rsrc1_address : in std_logic_vector(2 downto 0);
---     Rsrc2_address : in std_logic_vector(2 downto 0);
---     Rdst_em_address : in std_logic_vector(2 downto 0);
---     Rdst_mw_address : in std_logic_vector(2 downto 0);
---     mw_write_enable : in std_logic;
---     em_write_enable : in std_logic;
---     mw_io_read : in std_logic;
---     mw_mem_read : in std_logic;
+    Rsrc1_address : in std_logic_vector(2 downto 0);
+     Rsrc2_address : in std_logic_vector(2 downto 0);
+     Rdst_em_address : in std_logic_vector(2 downto 0);
+     Rdst_mw_address : in std_logic_vector(2 downto 0);
+     mw_write_enable : in std_logic;
+     em_write_enable : in std_logic;
+     mw_io_read : in std_logic;
+     mw_mem_read : in std_logic;
     Rdst_address_in : in std_logic_vector(2 downto 0);
 
     io_read_out : out std_logic;
@@ -76,19 +76,19 @@ begin
   memory_read_out <= memory_read_in;
   stack_control_out <= stack_control(1 downto 0);
   write_back_enable_out <= write_back_enable_in;
+  ALU_op2_out <= ALU_Actual_Operand2 ;
 
-  -- with Operand1_Override_Command -- select ALU_Actual_Operand1 <=
-    -- MWdata when "10",
-    -- EMdata when "00",
-    -- ALU_op1 when others;
-    ALU_Actual_Operand1 <= ALU_op1;
-    ALU_Actual_Operand2 <= ALU_op2;
+   with Operand1_Override_Command  select ALU_Actual_Operand1 <=
+     MWdata when "10",
+     EMdata when "00",
+     ALU_op1 when others;
 
-    -- ALU_Actual_Operand2 <= 
-    -- ALU_immediate when is_store_instruction = '1'
-    -- else MWdata when Operand2_Override_Command = "10"
-    -- else EMdata when Operand1_Override_Command = "00"
-    -- else ALU_op2;
+     with Operand1_Override_Command  select ALU_Actual_Operand2 <=
+     MWdata when "10",
+     EMdata when "00",
+     ALU_op2 when others;
+
+    
 
     A : entity work.ALU port map(
       op1 => ALU_Actual_Operand1,
@@ -115,22 +115,22 @@ begin
       data => SP_old,
       newdata => SP_new
     );
---   FU : entity work.FU
---     port map(
---       src1Addr => Rsrc1_address,
---       src2Addr => Rsrc2_address,
---       mwDstAddr => Rdst_mw_address,
---       emDstAddr => Rdst_em_address,
+  FU : entity work.ForwardingUnit
+     port map(
+       src1Addr => Rsrc1_address,
+       src2Addr => Rsrc2_address,
+       mwDstAddr => Rdst_mw_address,
+       emDstAddr => Rdst_em_address,
 
---       mwWriteEn => mw_write_enable,
---       emWriteEn => em_write_enable,
---       mwMemRead => mw_mem_read,
---       mwIORead => mw_io_read,
+       mwWriteEn => mw_write_enable,
+       emWriteEn => em_write_enable,
+       mwMemRead => mw_mem_read,
+       mwIORead => mw_io_read,
 
---       op1Override => Operand1_Override_Command,
---       op2Override => Operand2_Override_Command
+       op1Override => Operand1_Override_Command,
+       op2Override => Operand2_Override_Command
 
---     );
+     );
   EXP : entity work.exeception_detection_unit
     port map(
       SP => SP_new,

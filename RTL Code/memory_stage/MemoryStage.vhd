@@ -31,6 +31,9 @@ ENTITY memory_stage IS
         int_index_Rdst_address :IN STD_LOGIC_VECTOR (2 DOWNTO 0);
         int_index_Rdst_address_out :OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
 
+        IO_read_out : OUT STD_LOGIC;
+        MEM_read_out : OUT STD_LOGIC;
+
         data_out : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
 
     );
@@ -84,6 +87,9 @@ BEGIN
     data_out <=  IO_Output WHEN Io_read ='1'
     ELSE   mem_dataout WHEN  memory_read ='1'
     ELSE (others=>'Z');
+
+    IO_read_out  <= Io_read;
+    MEM_read_out <= memory_read;
 
 
 END ARCHITECTURE;
