@@ -284,6 +284,7 @@ begin
           else -- LDD or STD
           is_immediate <= instruction(28);
           immediate_data <= instruction(16 downto 1);
+          ALU_operation <= ADD_operation;
           --start------------------------- LDD or STD
           if instruction(26) = '0' then -- LDD
             write_back_enable <= '1';
