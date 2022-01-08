@@ -65,11 +65,16 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (99 DOWNTO 0); -- input to the DE reg
 
        -- Execute stage parameters
-       CONSTANT Branch_Control_i0 : INTEGER := 78 ;
-       CONSTANT Branch_Control_i1 : INTEGER := 75 ;
+       CONSTANT Branch_Control_i0 : INTEGER := 81;
+       CONSTANT Branch_Control_i1 : INTEGER := 79;
+
+       constant EM_branch_type_i0 : Integer := 78;
+       constant EM_branch_type_i1 : Integer := 75;
+
        CONSTANT exeception_enable_i :INTEGER := 74;
        CONSTANT exeception_handler_address_i0 :INTEGER := 73;
        CONSTANT exeception_handler_address_i1 :INTEGER := 70;
+
 
        CONSTANT EM_Rdst_address_i0 :INTEGER := 69;
        CONSTANT EM_Rdst_address_i1 :INTEGER := 67;
@@ -101,8 +106,8 @@ ARCHITECTURE processor OF processor IS
       
 
 
-       SIGNAL EM_data : STD_LOGIC_VECTOR (78 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (78 DOWNTO 0);
+       SIGNAL EM_data : STD_LOGIC_VECTOR (81 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (81 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -141,7 +146,7 @@ BEGIN
                      processor_reset => processor_reset,
                      is_hlt_instruction => DE(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
-                     branch_type => EM(branch_type_i0 DOWNTO branch_type_i1),
+                     branch_type => EM(EM_branch_type_i0 DOWNTO EM_branch_type_i1),
                      int_index => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      exception_enable => EM(exeception_enable_i),
                      exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
@@ -251,7 +256,6 @@ BEGIN
                      io_read_out=> EM_data (EM_io_read_out_i),-- 1
                      io_write_out=> EM_data (EM_io_write_out_i) ,--1
 
-                     branchType => DE(branch_type_i0 DOWNTO branch_type_i1),
                      branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1) ,
 
                      is_call_or_int_instruction_out=>EM_data (EM_is_call_or_int_instruction_i),--DONE 1 
@@ -268,11 +272,14 @@ BEGIN
                      ExecResult => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),-- 20
 
                      exeception_handler_address => EM_data(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
-                     exeception_enable => EM_data(exeception_enable_i)
+                     exeception_enable => EM_data(exeception_enable_i),
+                     branch_type_in => DE(branch_type_i0 DOWNTO branch_type_i1),
+                     branch_type_out => EM_data(EM_branch_type_i0 downto EM_branch_type_i1),
+                     is_immediate => DE(DE_is_immediate_i)
                      );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 79)
+              GENERIC MAP(data_width => 82)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,
@@ -325,7 +332,7 @@ BEGIN
               );
 
         -- write back stage  
-        WB_write_address <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
+        WB_write_address <= MW(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
         WB_enable_in <= MW (write_back_enable_i);
         WB_write_data <= MW(execution_result_i0 DOWNTO execution_result_i1) WHEN  MW(io_memory_read_i) ='0' ELSE
                               MW ( data_out_i0 DOWNTO data_out_i1) ;

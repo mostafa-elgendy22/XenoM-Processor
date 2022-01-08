@@ -1,3 +1,7 @@
+LDM R6, 5
+NOP ;
+NOP ;
+MOV R6, R5 ;
 INC R0 ; # R0 = 1
 NOP ;
 NOP ;

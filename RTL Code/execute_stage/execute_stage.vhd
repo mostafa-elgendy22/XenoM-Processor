@@ -53,7 +53,10 @@ entity execute_stage is
 
     ExecResult : out std_logic_vector(19 downto 0);
     exeception_handler_address :out std_logic_vector(3 downto 0);
-    exeception_enable: out std_logic 
+    exeception_enable: out std_logic ;
+    is_immediate : in std_logic;
+    branch_type_in: in std_logic_vector(3 downto 0);
+    branch_type_out: out std_logic_vector(3 downto 0)
   );
 end entity;
 
@@ -70,8 +73,9 @@ architecture execute_stage of execute_stage is
   signal ALU_result : std_logic_vector(15 downto 0);
   signal ALU_res : std_logic_vector(19 downto 0);
   signal ALU_Actual_Operand1, ALU_Actual_Operand2 : std_logic_vector(15 downto 0);
+  signal padded_execution_stage_result : std_logic_vector(31 downto 0);
 begin
-
+  branch_type_out <= branch_type_in;
   EM_instruction_address <= DE_instruction_address;
   Rdst_address_out <= Rdst_address_in;
   io_read_out <= io_read_in;
@@ -103,7 +107,8 @@ begin
       funcSel => ALU_sel,
       result => ALU_result,
       flags => ALU_flags,
-      flagsEn => ALU_flags_en
+      flagsEn => ALU_flags_en,
+      is_immediate => is_immediate
       );
 
   F : entity work.flagsRegister
@@ -138,9 +143,10 @@ begin
        op2Override => Operand2_Override_Command
 
      );
+     padded_execution_stage_result <= (31 downto 20 => '0') & execution_stage_result;
   EXP : entity work.exeception_detection_unit
     port map(
-      SP => SP_new,
+      SP => padded_execution_stage_result,
       stack_control => stack_control,
       memory_write => memory_write_in,
       memory_read => memory_read_in,
@@ -158,8 +164,8 @@ begin
     
     ALU_res <= "0000" & ALU_result;
   execution_stage_result <= 
-  SP_old(19 downto 0) when stack_control(2) = '1' and is_call_or_int_instruction_in = '0' ELSE
-  SP_new(19 downto 0) WHEN stack_control(2) = '1' and is_call_or_int_instruction_in = '1'else 
+  SP_old(19 downto 0) WHEN (stack_control = "100" or stack_control = "110") ELSE -- General push
+  SP_new(19 downto 0) WHEN (stack_control = "101" or stack_control = "111") ELSE -- General pull
   ALU_res;
   ExecResult <= execution_stage_result;
 end architecture;
