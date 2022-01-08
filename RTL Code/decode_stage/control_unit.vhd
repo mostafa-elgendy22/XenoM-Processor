@@ -127,10 +127,12 @@ begin
           --start------------------------- RIT or RTI 
         else -- RIT or RTI 
           if instruction(26) = '0' then -- RTI 
+            memory_read<= '1';
             stack_control <= POP_2_operation;
             branch_type <= RTI_instruction;
             -- TODO: flags are restored
           else -- RET
+            memory_read<= '1';
             branch_type <= RET_instruction;
             stack_control <= POP_2_operation;
           end if; -- RIT or RTI 
@@ -177,8 +179,10 @@ begin
               is_operation_on_Rdst <= '1'; -- push the Rds data, pop to the Rds
               if instruction(26) = '0' then -- PUSH
                 stack_control <= PUSH_1_operation;
+                memory_write<= '1';
               else -- POP
                 write_back_enable <= '1';
+                memory_read <= '1';
                 stack_control <= POP_1_operation;
               end if; -- PUSH/ POP
               --end------------------------- PUSH or POP
@@ -215,10 +219,12 @@ begin
             is_call_or_int_instruction <= '1';
             if instruction(26) = '0' then -- CALL
               is_operation_on_Rdst <= '1';
+              memory_write<= '1';
               stack_control <= PUSH_2_operation;
               branch_type <= CALL_instruction;
             else -- INT
               stack_control <= PUSH_2_operation;
+              memory_write<= '1';
               branch_type <= INT_instruction;
               -- TODO: flags are reserved
             end if; -- CALL/INT
