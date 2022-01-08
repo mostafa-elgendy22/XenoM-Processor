@@ -37,7 +37,6 @@ entity execute_stage is
      mw_mem_read : in std_logic;
     Rdst_address_in : in std_logic_vector(2 downto 0);
 
-    branchType : in std_logic_vector(3 DOWNTO 0);
     branchControl: out std_logic_vector(3 DOWNTO 0);
 
     io_read_out : out std_logic;
@@ -157,7 +156,7 @@ begin
 
     BC: entity work.BC 
           port map(
-            branchType => branchType ,
+            branchType => branch_type_in ,
             CCR  => myCCR ,
             branchControl => branchControl
           );
