@@ -107,7 +107,7 @@ begin
      branch_type                  <= (others => '0'); -- reset to zero at the start of every cycle
 
 
-    elsif falling_edge(clk) then
+    -- elsif falling_edge(clk) then
       --***************************************************************************
       --------------------------- Type 0 Instructions ---------------------------
       --***************************************************************************
