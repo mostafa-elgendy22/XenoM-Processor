@@ -152,12 +152,12 @@ begin
         if instruction(29) = '0' then -- Non-Jump Instructions
           --start------------------------- IO
           if instruction(28) = '1' then --  IO
-            if instruction(26) = '1' then -- IN (read from port)
-              is_operation_on_Rdst <= '1';
-              write_back_enable <= '1'; --  will write back in the Rdst
-              io_read <= '1';
-            else -- OUT (write inot port)
-              io_write <= '1';
+            if instruction(26) = '1' then -- OUT (write into port) 
+            is_operation_on_Rdst <= '1';
+            io_write <= '1';
+            else -- IN (read from port)
+            write_back_enable <= '1'; --  will write back in the Rdst
+            io_read <= '1';
             end if;
             --end-------------------------  IO
             --***************************************************************************
