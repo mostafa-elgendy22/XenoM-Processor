@@ -272,12 +272,12 @@ BEGIN
                      write_back_enable_out=> MW_data(write_back_enable_i),
 
                      io_memory_read=>MW_data(io_memory_read_i),
-                     execution_stage_result=>MW_data( data_out_i0 DOWNTO data_out_i1),
+                     execution_stage_result=>MW_data( execution_result_i0 DOWNTO execution_result_i1),
 
                      int_index_Rdst_address =>EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      int_index_Rdst_address_out=>MW_data(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
 
-                     data_out=>MW_data( execution_result_i0 DOWNTO execution_result_i1)
+                     data_out=>MW_data( data_out_i0 DOWNTO data_out_i1)
               );
 
        MW_register : ENTITY work.DFF_register
@@ -293,7 +293,7 @@ BEGIN
         -- write back stage  
         WB_write_address <= MW (int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
         WB_enable_in <= MW (write_back_enable_i);
-        WB_write_data <= MW( execution_result_i0 DOWNTO execution_result_i1) WHEN  MW(io_memory_read_i) ='0' ELSE
+        WB_write_data <= MW(execution_result_i0 DOWNTO execution_result_i1) WHEN  MW(io_memory_read_i) ='0' ELSE
                               MW ( data_out_i0 DOWNTO data_out_i1) ;
 
 

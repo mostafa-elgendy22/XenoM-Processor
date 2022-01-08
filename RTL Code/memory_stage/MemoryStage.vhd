@@ -59,6 +59,10 @@ BEGIN
     mem_datain <= operand1_exp WHEN call_int_instruction ='0'
     ELSE instruction_address_exp ;
 
+    -- out all signals 
+    int_index_Rdst_address_out <=int_index_Rdst_address ;
+    write_back_enable_out <=write_back_enable;
+
     IOPort : ENTITY work.IO_Port
         PORT MAP(
             Input  =>operand1,

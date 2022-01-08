@@ -10,25 +10,28 @@ sim:/processor/FD \
 sim:/processor/decode/instruction \
 sim:/processor/decode/FD_instruction_address \
 sim:/processor/decode/Control_unit/ALU_operation \
+sim:/processor/decode/Control_unit/write_back_enable \
 sim:/processor/decode/operand1 \
 sim:/processor/decode/operand2 \
 sim:/processor/execute/ALU_op1 \
 sim:/processor/execute/ALU_op2 \
 sim:/processor/execute/ALU_sel \
-sim:/processor/execute/ExecResult
+sim:/processor/execute/ExecResult \
+sim:/processor/memory/data_out \
+sim:/processor/memory/memory_read \
+sim:/processor/memory/memory_write \
+sim:/processor/memory/mem_address \
+sim:/processor/memory/write_back_enable_out \
+sim:/processor/memory/write_back_enable \
+sim:/processor/memory/operand1 \
+sim:/processor/memory/execution_stage_result \
+sim:/processor/WB_enable_in \
+sim:/processor/WB_write_address \
+sim:/processor/WB_write_data \
+sim:/processor/decode/Register_file/write_data \
+sim:/processor/decode/Register_file/write_address \
+sim:/processor/decode/Register_file/write_back_enable 
 
-
-
-radix signal sim:/processor/FD Hexadecimal
-
-radix signal sim:/processor/decode/instruction Hexadecimal
-radix signal sim:/processor/decode/FD_instruction_address Hexadecimal
-radix signal sim:/processor/decode/operand1 Hexadecimal
-radix signal sim:/processor/decode/operand2 Hexadecimal
-
-radix signal sim:/processor/execute/ALU_op1 Hexadecimal
-radix signal sim:/processor/execute/ALU_op2 Hexadecimal
-radix signal sim:/processor/execute/ExecResult Hexadecimal
 
 
 force -freeze sim:/processor/clk 0 0, 1 {100 ps} -r 200
