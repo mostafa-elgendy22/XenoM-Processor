@@ -65,9 +65,13 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (99 DOWNTO 0); -- input to the DE reg
 
        -- Execute stage parameters
+       constant EM_branch_type_i0 : Integer := 78;
+       constant EM_branch_type_i1 : Integer := 75;
+
        CONSTANT exeception_enable_i :INTEGER := 74;
        CONSTANT exeception_handler_address_i0 :INTEGER := 73;
        CONSTANT exeception_handler_address_i1 :INTEGER := 70;
+
 
        CONSTANT EM_Rdst_address_i0 :INTEGER := 69;
        CONSTANT EM_Rdst_address_i1 :INTEGER := 67;
@@ -99,8 +103,8 @@ ARCHITECTURE processor OF processor IS
       
 
 
-       SIGNAL EM_data : STD_LOGIC_VECTOR (74 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (74 DOWNTO 0);
+       SIGNAL EM_data : STD_LOGIC_VECTOR (78 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (78 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -139,7 +143,7 @@ BEGIN
                      processor_reset => processor_reset,
                      is_hlt_instruction => DE(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
-                     branch_type => EM(branch_type_i0 DOWNTO branch_type_i1),
+                     branch_type => EM(EM_branch_type_i0 DOWNTO EM_branch_type_i1),
                      int_index => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      exception_enable => EM(exeception_enable_i),
                      exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
@@ -263,11 +267,13 @@ BEGIN
                      ExecResult => EM_data(ALU_result_i0 DOWNTO ALU_result_i1),-- 20
 
                      exeception_handler_address => EM_data(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
-                     exeception_enable => EM_data(exeception_enable_i)
+                     exeception_enable => EM_data(exeception_enable_i),
+                     branch_type_in => DE(branch_type_i0 DOWNTO branch_type_i1),
+                     branch_type_out => EM_data(EM_branch_type_i0 downto EM_branch_type_i1)
                      );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 75)
+              GENERIC MAP(data_width => 79)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,
