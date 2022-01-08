@@ -245,7 +245,7 @@ begin
           ALU_operation <= MOV_operation;
         else -- LDM
           is_immediate <= '1';
-          immediate_data <= instruction(22 downto 7);
+          immediate_data <= instruction(16 downto 1);
         end if; -- Type 2
         --***************************************************************************
         --------------------------- Type 3.1 Instructions ---------------------------
