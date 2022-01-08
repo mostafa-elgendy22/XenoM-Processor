@@ -1,0 +1,14 @@
+// memory data file (do not edit the following line - required for mem load use)
+// instance=/ram_registers_counter/RAAM/Cells
+// format=mti addressradix=d dataradix=b version=1.0 wordsperline=1
+0: 0000000000000000
+1: 0000000000110010
+50: 0000010000000000
+51: 0000000000000000
+52: 0000000000000000
+53: 0100011100000000
+54: 0000000000000000
+55: 0000000000000000
+56: 1101111111100000
+57: 0000000000101000
+58: 0001000000000000

@@ -69,7 +69,7 @@ ARCHITECTURE ALU OF ALU IS
        SIGNAL uop2 : unsigned(16 DOWNTO 0);
        SIGNAL result_or_immediate : STD_LOGIC_VECTOR(15 DOWNTO 0);
 BEGIN
-       result_or_immediate <= res WHEN is_immediate = '0'
+       result_or_immediate <= res WHEN NOT (is_immediate = '1' and (funcSel = ALU_IDEN)) -- not LDM
               ELSE
               op2;
        

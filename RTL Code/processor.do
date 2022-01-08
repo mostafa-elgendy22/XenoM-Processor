@@ -1,7 +1,7 @@
 vsim -gui work.processor
 
 # change the name of memory file in the following command
-mem load -i {../../Memory Files/mem2.mem} /processor/fetch/instruction_memory/ram
+mem load -i {../../Memory Files/mem3.mem} /processor/fetch/instruction_memory/ram
 
 add wave -position insertpoint  \
 sim:/processor/clk \
@@ -27,6 +27,7 @@ sim:/processor/execute/Rdst_address_in \
 sim:/processor/DE_data \
 sim:/processor/DE \
 sim:/processor/execute/DE_instruction_address \
+sim:/processor/execute/CCR \
 sim:/processor/execute/branch_type_in \
 sim:/processor/execute/branch_type_out \
 sim:/processor/execute/ALU_op1 \
