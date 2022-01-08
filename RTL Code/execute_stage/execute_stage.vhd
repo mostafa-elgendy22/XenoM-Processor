@@ -54,8 +54,7 @@ entity execute_stage is
     exeception_handler_address :out std_logic_vector(3 downto 0);
     exeception_enable: out std_logic ;
     is_immediate : in std_logic;
-    branch_type_in: in std_logic_vector(3 downto 0);
-    branch_type_out: out std_logic_vector(3 downto 0)
+    branch_type_in: in std_logic_vector(3 downto 0)
   );
 end entity;
 
@@ -74,7 +73,6 @@ architecture execute_stage of execute_stage is
   signal ALU_Actual_Operand1, ALU_Actual_Operand2 : std_logic_vector(15 downto 0);
   signal padded_execution_stage_result : std_logic_vector(31 downto 0);
 begin
-  branch_type_out <= branch_type_in;
   EM_instruction_address <= DE_instruction_address;
   Rdst_address_out <= Rdst_address_in;
   io_read_out <= io_read_in;
