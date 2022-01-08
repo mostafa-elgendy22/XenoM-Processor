@@ -1,6 +1,6 @@
-LDM R1, 1;
-LDM R2, 4;
-LDM R3, 6;
-LDM R4, 8;
+LDM R1, 50;
+LDM R2, 54;
+LDM R3, 56;
+LDM R4, 58;
 NOP ;
 JMP R1;

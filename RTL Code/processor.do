@@ -20,7 +20,6 @@ sim:/processor/decode/operand2 \
 sim:/processor/execute/Rdst_address_in \
 sim:/processor/execute/CCR \
 sim:/processor/execute/branch_type_in \
-sim:/processor/execute/branch_type_out \
 sim:/processor/execute/ALU_op1 \
 sim:/processor/execute/ALU_op2 \
 sim:/processor/execute/ALU_sel \
