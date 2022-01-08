@@ -173,6 +173,7 @@ begin
               if instruction(26) = '0' then -- PUSH
                 stack_control <= PUSH_1_operation;
               else -- POP
+                write_back_enable <= '1';
                 stack_control <= POP_1_operation;
               end if; -- PUSH/ POP
               --end------------------------- PUSH or POP
