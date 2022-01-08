@@ -269,7 +269,8 @@ BEGIN
                      exeception_handler_address => EM_data(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
                      exeception_enable => EM_data(exeception_enable_i),
                      branch_type_in => DE(branch_type_i0 DOWNTO branch_type_i1),
-                     branch_type_out => EM_data(EM_branch_type_i0 downto EM_branch_type_i1)
+                     branch_type_out => EM_data(EM_branch_type_i0 downto EM_branch_type_i1),
+                     is_immediate => DE(DE_is_immediate_i)
                      );
 
        EM_register : ENTITY work.DFF_register

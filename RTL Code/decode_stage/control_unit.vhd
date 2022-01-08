@@ -240,9 +240,9 @@ begin
       elsif instruction(31 downto 30) = "10" then -- Type 2
         write_back_enable <= '1'; -- all MOV and LDM instructions will write back in the Rdst
         Rdst_address <= instruction(25 downto 23);
+        ALU_operation <= MOV_operation;
         if instruction(26) = '0' then -- MOV
           Rsrc1_address <= instruction(22 downto 20);
-          ALU_operation <= MOV_operation;
         else -- LDM
           is_immediate <= '1';
           immediate_data <= instruction(16 downto 1);

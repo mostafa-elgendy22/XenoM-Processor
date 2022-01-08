@@ -51,6 +51,7 @@ entity execute_stage is
     ExecResult : out std_logic_vector(19 downto 0);
     exeception_handler_address :out std_logic_vector(3 downto 0);
     exeception_enable: out std_logic ;
+    is_immediate : in std_logic;
     branch_type_in: in std_logic_vector(3 downto 0);
     branch_type_out: out std_logic_vector(3 downto 0)
   );
@@ -99,7 +100,8 @@ begin
       funcSel => ALU_sel,
       result => ALU_result,
       flags => ALU_flags,
-      flagsEn => ALU_flags_en
+      flagsEn => ALU_flags_en,
+      is_immediate => is_immediate
       );
 
   F : entity work.flagsRegister
