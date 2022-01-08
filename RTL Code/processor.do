@@ -1,7 +1,7 @@
 vsim -gui work.processor
 
 # change the name of memory file in the following command
-mem load -i {../../Memory Files/mem2.mem} /processor/fetch/instruction_memory/ram
+mem load -i {../../Memory Files/mem4.mem} /processor/fetch/instruction_memory/ram
 
 add wave -position insertpoint  \
 sim:/processor/clk \
@@ -13,20 +13,13 @@ sim:/processor/fetch/next_instruction_address \
 sim:/processor/fetch/branch_type \
 sim:/processor/fetch/exception_enable \
 sim:/processor/fetch/exception_handler_index \
-sim:/processor/decode/instruction \
-sim:/processor/decode/FD_instruction_address \
-sim:/processor/decode/Control_unit/ALU_operation \
-sim:/processor/decode/is_immediate_out \
-sim:/processor/decode/Control_unit/write_back_enable \
-sim:/processor/decode/Control_unit/branch_type \
+sim:/processor/decode/ALU_operation \
+sim:/processor/decode/branch_type \
 sim:/processor/decode/operand1 \
 sim:/processor/decode/operand2 \
-sim:/processor/decode/branch_type \
-sim:/processor/decode/Rdst_address_out \
 sim:/processor/execute/Rdst_address_in \
 sim:/processor/DE_data \
 sim:/processor/DE \
-sim:/processor/execute/DE_instruction_address \
 sim:/processor/execute/CCR \
 sim:/processor/execute/branch_type_in \
 sim:/processor/execute/branch_type_out \
@@ -34,8 +27,6 @@ sim:/processor/execute/ALU_op1 \
 sim:/processor/execute/ALU_op2 \
 sim:/processor/execute/ALU_sel \
 sim:/processor/execute/ExecResult \
-sim:/processor/execute/SP_old \
-sim:/processor/execute/SP_new \
 sim:/processor/execute/stack_control \
 sim:/processor/memory/instruction_address \
 sim:/processor/memory/data_out \

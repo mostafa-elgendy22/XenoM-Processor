@@ -3,6 +3,7 @@ NOP ;
 NOP ;
 MOV R6, R5 ;
 NOP ;
+NOP ;
 STD R6, 20 ,R7 ;
 NOP
 NOP
