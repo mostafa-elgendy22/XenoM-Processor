@@ -197,6 +197,7 @@ begin
         else -- Jump Instructions
           --start------------------------- Jump Only or CALL/INT
           if instruction(28) = '0' then -- Jump Only or CALL/INT
+          ALU_operation <= MOV_operation;
             --start------------------------- Jump Only
             is_operation_on_Rdst <= '1';
             if instruction(27) = '0' then -- JMP or JN
