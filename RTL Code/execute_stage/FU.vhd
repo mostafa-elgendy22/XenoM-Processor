@@ -47,7 +47,7 @@ END ForwardingUnit ;
 
 ARCHITECTURE ForwardingUnit OF ForwardingUnit IS
 BEGIN
-			Forwarding: PROCESS IS BEGIN
+			Forwarding: PROCESS(src1Addr, src2Addr, mwDstAddr, emDstAddr, mwWriteEn,emWriteEn, mwMemRead, mwIORead) IS BEGIN
 								IF((src1Addr = emDstAddr) AND emWriteEn='1') THEN
 										op1Override <= ALU_OVERRIDE_OPERAND_WITH_EM_RESULT ;
 										
