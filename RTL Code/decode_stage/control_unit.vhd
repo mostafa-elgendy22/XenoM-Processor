@@ -282,7 +282,7 @@ begin
           --***************************************************************************
         
           else -- LDD or STD
-          is_immediate <= instruction(28);
+          is_immediate <= '1';
           immediate_data <= instruction(16 downto 1);
           ALU_operation <= ADD_operation;
           --start------------------------- LDD or STD
