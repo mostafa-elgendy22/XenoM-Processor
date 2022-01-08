@@ -91,13 +91,15 @@ def twoarg_instructions_second_argument_lookup(opcode,arg):
 
 #TODO: Invert MOV argument order if necessary
 def twoarg_instructions_translator(opcode,arg1,arg2):
-    translation = ['10',opcode,arg1]
+    translation = ['10',opcode]
     if opcode == "0001": #LDM
+        translation.append(arg1)
         translation.append("0"*6) #zero padding
         translation.append(arg2)
         translation.append("0") #zero padding
     else:
         translation.append(arg2)
+        translation.append(arg1)
         translation.append("0"*4) #zero padding
     
     return ''.join(translation)
