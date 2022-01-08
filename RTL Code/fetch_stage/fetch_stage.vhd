@@ -90,7 +90,7 @@ BEGIN
 
        D_PC <= instruction_bus WHEN processor_reset = '1' OR branch_type = "1101" OR exception_enable = '1'
               ELSE
-              "0000" & jmp_address WHEN branch_type(3) = '1'
+              (31 downto 16 => '0') & jmp_address WHEN branch_type(3) = '1'
               ELSE
               next_instruction_address;
 
