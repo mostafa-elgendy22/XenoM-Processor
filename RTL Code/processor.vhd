@@ -21,7 +21,7 @@ ARCHITECTURE processor OF processor IS
        CONSTANT instruction_i1 : INTEGER := 20;
        CONSTANT FD_instruction_address_i0 : INTEGER := 19;
        CONSTANT FD_instruction_address_i1 : INTEGER := 0;
-       SIGNAL FD_enable : STD_LOGIC;
+       --SIGNAL FD_enable : STD_LOGIC;
        SIGNAL FD_data : STD_LOGIC_VECTOR(51 DOWNTO 0);
        SIGNAL FD : STD_LOGIC_VECTOR(51 DOWNTO 0);
 
@@ -135,7 +135,6 @@ BEGIN
                      exception_enable => EM(exeception_enable_i),
                      exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
                      exception_instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
-                     FD_enable => FD_enable,
                      FD_data => FD_data
               );
 
@@ -143,7 +142,7 @@ BEGIN
               GENERIC MAP(data_width => 52)
               PORT MAP(
                      clk => neg_clk,
-                     enable => FD_enable,
+                     enable => '1',
                      reset => ground,
                      D => FD_data,
                      Q => FD

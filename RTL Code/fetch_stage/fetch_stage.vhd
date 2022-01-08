@@ -13,7 +13,6 @@ ENTITY fetch_stage IS
               exception_enable : IN STD_LOGIC;
               exception_handler_index : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
               exception_instruction_address : IN STD_LOGIC_VECTOR (19 DOWNTO 0);
-              FD_enable : OUT STD_LOGIC;
               FD_data : OUT STD_LOGIC_VECTOR (51 DOWNTO 0)
        );
 END ENTITY;
@@ -97,7 +96,6 @@ BEGIN
 
        PC_clock <= NOT clk;
 
-       FD_enable <= NOT processor_reset;
 
        FD_data(51 DOWNTO 20) <= (OTHERS => '0') WHEN processor_reset = '1' OR branch_type = "1101" OR exception_enable = '1'
               ELSE
