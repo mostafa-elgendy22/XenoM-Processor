@@ -16,6 +16,7 @@ sim:/processor/fetch/exception_handler_index \
 sim:/processor/decode/instruction \
 sim:/processor/decode/FD_instruction_address \
 sim:/processor/decode/Control_unit/ALU_operation \
+sim:/processor/decode/is_immediate_out \
 sim:/processor/decode/Control_unit/write_back_enable \
 sim:/processor/decode/Control_unit/branch_type \
 sim:/processor/decode/operand1 \
