@@ -18,8 +18,6 @@ sim:/processor/decode/branch_type \
 sim:/processor/decode/operand1 \
 sim:/processor/decode/operand2 \
 sim:/processor/execute/Rdst_address_in \
-sim:/processor/DE_data \
-sim:/processor/DE \
 sim:/processor/execute/CCR \
 sim:/processor/execute/branch_type_in \
 sim:/processor/execute/branch_type_out \
@@ -29,18 +27,11 @@ sim:/processor/execute/ALU_sel \
 sim:/processor/execute/ExecResult \
 sim:/processor/execute/stack_control \
 sim:/processor/memory/instruction_address \
-sim:/processor/memory/data_out \
-sim:/processor/memory/memory_read \
-sim:/processor/memory/memory_write \
 sim:/processor/memory/mem_address \
 sim:/processor/memory/write_back_enable_out \
 sim:/processor/memory/write_back_enable \
-sim:/processor/memory/operand1 \
 sim:/processor/memory/execution_stage_result \
-sim:/processor/memory/data_out \
 sim:/processor/memory/int_index_Rdst_address \
-sim:/processor/memory/Io_read \
-sim:/processor/memory/Io_write \
 sim:/processor/WB_enable_in \
 sim:/processor/WB_write_address \
 sim:/processor/WB_write_data \
