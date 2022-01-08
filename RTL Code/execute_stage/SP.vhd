@@ -26,13 +26,14 @@ BEGIN
        PROCESS (clk) BEGIN
               IF (reset = '1') THEN
                      mydata <= "00000000000011111111111111111111";
+                     uMyNewData <= unsigned(mydata) ;
               ELSIF (rising_edge(clk)) THEN
                      CASE stackCtl IS 
                             WHEN "100" => uMyNewData <= uMyData - 1 ;
                             WHEN "101" => uMyNewData <= uMyData + 1 ;
                             WHEN "110" => uMyNewData <= uMyData - 2 ;
                             WHEN "111" => uMyNewData <= uMyData + 2 ;
-                            WHEN OTHERS => uMyNewData <= uMyData ;
+                            WHEN OTHERS=> uMyNewData <= uMyData ;
                      END CASE ;
                      mydata <= mynewdata;
               END IF;
