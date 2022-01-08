@@ -1,3 +1,4 @@
+LDM R6, 5
 INC R0 ; # R0 = 1
 NOP ;
 NOP ;

@@ -12,6 +12,7 @@ sim:/processor/fetch/Q_PC \
 sim:/processor/fetch/next_instruction_address \
 sim:/processor/fetch/branch_type \
 sim:/processor/fetch/exception_enable \
+sim:/processor/fetch/exception_handler_index \
 sim:/processor/decode/instruction \
 sim:/processor/decode/FD_instruction_address \
 sim:/processor/decode/Control_unit/ALU_operation \
@@ -44,6 +45,7 @@ sim:/processor/memory/write_back_enable \
 sim:/processor/memory/operand1 \
 sim:/processor/memory/execution_stage_result \
 sim:/processor/memory/data_out \
+sim:/processor/memory/int_index_Rdst_address \
 sim:/processor/WB_enable_in \
 sim:/processor/WB_write_address \
 sim:/processor/WB_write_data \
