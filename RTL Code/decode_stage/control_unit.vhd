@@ -189,6 +189,7 @@ begin
           --start------------------------- Jump Only or CALL/INT
           if instruction(28) = '0' then -- Jump Only or CALL/INT
             --start------------------------- Jump Only
+            is_operation_on_Rdst <= '1';
             if instruction(27) = '0' then -- JMP or JN
                 if instruction(26) = '0' then -- JMP
                 branch_type <= JMP_instruction;
@@ -208,6 +209,7 @@ begin
           else -- CALL/INT
             is_call_or_int_instruction <= '1';
             if instruction(26) = '0' then -- CALL
+              is_operation_on_Rdst <= '1';
               stack_control <= PUSH_1_operation;
               branch_type <= CALL_instruction;
             else -- INT
