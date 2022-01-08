@@ -12,33 +12,28 @@ ENTITY SP IS
        );
 END ENTITY;
 ARCHITECTURE SP OF SP IS
-
-       SIGNAL mydata : STD_LOGIC_VECTOR(31 DOWNTO 0);
-
-       SIGNAL mynewdata : STD_LOGIC_VECTOR(31 DOWNTO 0);
-
-       SIGNAL uMyData : unsigned(31 DOWNTO 0);
-       SIGNAL uMyNewData : unsigned(31 DOWNTO 0);
+      
 BEGIN
-       uMyData <= unsigned(mydata);
-       mynewdata <= STD_LOGIC_VECTOR(uMyNewData);
-
-       PROCESS (clk) BEGIN
+       PROCESS (clk) 
+	VARIABLE mydata : STD_LOGIC_VECTOR(31 DOWNTO 0);
+      	VARIABLE mynewdata : STD_LOGIC_VECTOR(31 DOWNTO 0);
+	BEGIN		
               IF (reset = '1') THEN
-                     mydata <= "00000000000011111111111111111111";
-                     uMyNewData <= unsigned(mydata) ;
+                     mydata := "00000000000011111111111111111111";
+                     mynewdata := mydata ;
               ELSIF (rising_edge(clk)) THEN
+                     mydata := mynewdata ;
                      CASE stackCtl IS 
-                            WHEN "100" => uMyNewData <= uMyData - 1 ;
-                            WHEN "101" => uMyNewData <= uMyData + 1 ;
-                            WHEN "110" => uMyNewData <= uMyData - 2 ;
-                            WHEN "111" => uMyNewData <= uMyData + 2 ;
-                            WHEN OTHERS=> uMyNewData <= uMyData ;
+                            WHEN "100" => mynewdata := STD_LOGIC_VECTOR(UNSIGNED(mydata) - 1) ;
+                            WHEN "101" => mynewdata := STD_LOGIC_VECTOR(UNSIGNED(mydata) + 1) ;
+                            WHEN "110" => mynewdata := STD_LOGIC_VECTOR(UNSIGNED(mydata) - 2) ;
+                            WHEN "111" => mynewdata := STD_LOGIC_VECTOR(UNSIGNED(mydata) + 2) ;
+                            WHEN OTHERS=> mynewdata := mydata ;
                      END CASE ;
-                     mydata <= mynewdata;
               END IF;
-       END PROCESS;
 
-       data <= mydata;
-       newdata <= mynewdata;
+		data <= mydata;
+       		newdata <= mynewdata;
+       END PROCESS;
+       
 END SP;
