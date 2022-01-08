@@ -19,7 +19,7 @@ entity control_unit is
     Rsrc1_address               : out std_logic_vector(2 downto 0);
     Rsrc2_address               : out std_logic_vector(2 downto 0);
     Rdst_address                : out std_logic_vector(2 downto 0);
-    is_operation_on_Rdst        : out std_logic; -- if the operation will be made on the Rdst like the NOT and INC
+    is_operation_on_Rdst        : out std_logic; -- if Rds is an operand 
 
     ---- Related to the flags and ALU
     flags_write_enable          : out std_logic_vector(2 downto 0);
@@ -117,10 +117,9 @@ begin
         --start------------------------- SETC/NOP or RIT/RTI 
         if instruction(27) = '0' then -- NOP or SETC 
           if instruction(26) = '0' then -- NOP 
-            enable_out <= '0'; -- disable all the units
             ALU_operation <= NO_ALU_operation;
           else -- SETC
-            -- TODO: control flags 
+            -- The ALU handles writing on the flags 
             ALU_operation <= SETC_operation;
           end if; -- NOP or SETC 
           --end------------------------- NOP or SETC 
@@ -150,9 +149,14 @@ begin
         --start-------------------------  Non-Jump Instructions
         if instruction(29) = '0' then -- Non-Jump Instructions
           --start------------------------- IO
-          if instruction(28) = '1' then --  IO 
-            io_read <= "not" (instruction(26));
-            io_write <= instruction(26);
+          if instruction(28) = '1' then --  IO
+            if instruction(26) = '1' then -- IN (read from port)
+              is_operation_on_Rdst <= '1';
+              write_back_enable <= '1'; --  will write back in the Rdst
+              io_read <= '1';
+            else -- OUT (write inot port)
+              io_write <= '1';
+            end if;
             --end-------------------------  IO
             --***************************************************************************
             --start------------------------- NOT/INC + PUSH/ POP
@@ -170,6 +174,7 @@ begin
               --***************************************************************************
               --start------------------------- PUSH or POP
             else -- PUSH/ POP
+              is_operation_on_Rdst <= '1'; -- push the Rds data, pop to the Rds
               if instruction(26) = '0' then -- PUSH
                 stack_control <= PUSH_1_operation;
               else -- POP
@@ -210,10 +215,10 @@ begin
             is_call_or_int_instruction <= '1';
             if instruction(26) = '0' then -- CALL
               is_operation_on_Rdst <= '1';
-              stack_control <= PUSH_1_operation;
+              stack_control <= PUSH_2_operation;
               branch_type <= CALL_instruction;
             else -- INT
-              stack_control <= PUSH_1_operation;
+              stack_control <= PUSH_2_operation;
               branch_type <= INT_instruction;
               -- TODO: flags are reserved
             end if; -- CALL/INT
