@@ -7,7 +7,15 @@ NOP ;
 INC R1 ; # R1 = 2
 NOP ;
 NOP ;
+NOT R1 ;
+NOP ;
+NOP ;
 MOV R1, R7 ;
+NOP ;
+NOP ;
+NOT R7 ;
+NOP ;
+NOP ;
 IN R5 ;
 ADD R5, R2, R3 ;
 HLT ;
