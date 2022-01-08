@@ -65,6 +65,8 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (99 DOWNTO 0); -- input to the DE reg
 
        -- Execute stage parameters
+       CONSTANT Branch_Control_i0 : INTEGER := 78 ;
+       CONSTANT Branch_Control_i1 : INTEGER := 75 ;
        CONSTANT exeception_enable_i :INTEGER := 74;
        CONSTANT exeception_handler_address_i0 :INTEGER := 73;
        CONSTANT exeception_handler_address_i1 :INTEGER := 70;
@@ -99,8 +101,8 @@ ARCHITECTURE processor OF processor IS
       
 
 
-       SIGNAL EM_data : STD_LOGIC_VECTOR (74 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (74 DOWNTO 0);
+       SIGNAL EM_data : STD_LOGIC_VECTOR (78 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (78 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -249,6 +251,9 @@ BEGIN
                      io_read_out=> EM_data (EM_io_read_out_i),-- 1
                      io_write_out=> EM_data (EM_io_write_out_i) ,--1
 
+                     branchType => DE(branch_type_i0 DOWNTO branch_type_i1),
+                     branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1) ,
+
                      is_call_or_int_instruction_out=>EM_data (EM_is_call_or_int_instruction_i),--DONE 1 
                      memory_write_out=>EM_data(EM_memory_write_i),--1
                      memory_read_out=>EM_data(EM_memory_read_i),--1
@@ -267,7 +272,7 @@ BEGIN
                      );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 75)
+              GENERIC MAP(data_width => 79)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,

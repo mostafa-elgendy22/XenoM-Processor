@@ -37,6 +37,9 @@ entity execute_stage is
      mw_mem_read : in std_logic;
     Rdst_address_in : in std_logic_vector(2 downto 0);
 
+    branchType : in std_logic_vector(3 DOWNTO 0);
+    branchControl: out std_logic_vector(3 DOWNTO 0);
+
     io_read_out : out std_logic;
     io_write_out : out std_logic;
     is_call_or_int_instruction_out : out std_logic;
@@ -59,6 +62,8 @@ architecture execute_stage of execute_stage is
   signal SP_old : std_logic_vector(31 downto 0);
   signal SP_new : std_logic_vector(31 downto 0);
 
+  signal myCCR : STD_LOGIC_VECTOR(2 DOWNTO 0);
+
   signal Operand1_Override_Command, Operand2_Override_Command : std_logic_vector(1 downto 0);
 
   signal execution_stage_result : std_logic_vector(19 downto 0);
@@ -77,6 +82,8 @@ begin
   stack_control_out <= stack_control(1 downto 0);
   write_back_enable_out <= write_back_enable_in;
   ALU_op2_out <= ALU_Actual_Operand2 ;
+
+  CCR <= myCCR  ;
 
    with Operand1_Override_Command  select ALU_Actual_Operand1 <=
      MWdata when "10",
@@ -103,7 +110,7 @@ begin
     port map(
       newFlags => ALU_flags,
       writeEnables => ALU_flags_en,
-      flags => CCR,
+      flags => myCCR,
       clk => clk
     );
 
@@ -141,6 +148,14 @@ begin
       exeception_handler_address =>exeception_handler_address,
       exeception_enable =>exeception_enable
     );
+
+    BC: entity work.BC 
+          port map(
+            branchType => branchType ,
+            CCR  => myCCR ,
+            branchControl => branchControl
+          );
+    
     ALU_res <= "0000" & ALU_result;
   execution_stage_result <= 
   SP_old(19 downto 0) when stack_control(2) = '1' and is_call_or_int_instruction_in = '0' ELSE
