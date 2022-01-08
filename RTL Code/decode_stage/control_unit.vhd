@@ -107,7 +107,7 @@ begin
      branch_type                  <= (others => '0'); -- reset to zero at the start of every cycle
 
 
-    elsif falling_edge(clk) then
+    -- elsif falling_edge(clk) then
       --***************************************************************************
       --------------------------- Type 0 Instructions ---------------------------
       --***************************************************************************
@@ -224,6 +224,7 @@ begin
         --***************************************************************************
 
       elsif instruction(31 downto 30) = "10" then -- Type 2
+        write_back_enable <= '1'; -- all MOV and LDM instructions will write back in the Rdst
         Rdst_address <= instruction(25 downto 23);
         if instruction(26) = '0' then -- MOV
           Rsrc1_address <= instruction(22 downto 20);
@@ -231,7 +232,6 @@ begin
         else -- LDM
           is_immediate <= '1';
           immediate_data <= instruction(22 downto 7);
-          memory_read <= '1';
         end if; -- Type 2
         --***************************************************************************
         --------------------------- Type 3.1 Instructions ---------------------------
