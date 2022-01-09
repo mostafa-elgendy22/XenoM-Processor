@@ -234,7 +234,7 @@ INSTRUCTIONS_SYNTAX = [#A list because there are several syntaxes for an instruc
                          #Three-Arg third variant: <opcode> <reg> <offset> <reg>  
                          {
                             "preprocessor": PP,
-                            "textformat": r"^("+ r"|".join(THREE_ARG_OPCODES3) +")"+ WHITESPACE +r"("+ REG_NAME +r")"+ ARG_SEPERATOR +r"("+ NUMBER +r")"+ r"\(" +r"("+ REG_NAME +r")" +r"\)"+LINE_END,
+                            "textformat": r"^("+ r"|".join(THREE_ARG_OPCODES3) +")"+ WHITESPACE +r"("+ REG_NAME +r")"+ ARG_SEPERATOR +r"("+ NUMBER +r")"+ ARG_SEPERATOR +r"("+ REG_NAME +r")" +LINE_END,
                             "lookup":[ 
                                       {"STD": "1001", "LDD": "1000"},
                                       REGISTER_NAMES_TO_REGISTER_ADDRESSES,

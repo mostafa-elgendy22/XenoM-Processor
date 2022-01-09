@@ -1,6 +1,8 @@
 .ORG 0
 32
 .ORG 2
-20
+BB
+.ORG 4
+AA
 .ORG 32
-POP R1 ;
+LDD R4, FFFF , R7 ;

@@ -24,7 +24,7 @@ end entity;
 architecture execeptionDetectionUnit of exeception_detection_unit is
 
   constant EMPTY_STACK_VALUE : std_logic_vector := X"000FFFFF";
-  constant MAX_MEMORY_RANGE : std_logic_vector := X"FF00"; 
+  constant MAX_MEMORY_RANGE : std_logic_vector := X"0FF00"; 
   -- stack control values
   constant POP_1_operation : std_logic_vector := "101";
   constant POP_2_operation : std_logic_vector := "111";
