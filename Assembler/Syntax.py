@@ -6,7 +6,7 @@ Created on Sun Dec 12 21:17:48 2021
 """
 MEMORY_FILE_HEADER = '''// memory data file (do not edit the following line - required for mem load use)
 // instance=/ram_registers_counter/RAAM/Cells
-// format=mti addressradix=d dataradix=b version=1.0 wordsperline=1
+// format=mti addressradix=h dataradix=b version=1.0 wordsperline=1
 '''
 #1- This indicates to the assembler which lines to discard right away
 #-------------------------------------------------------------------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ OPTIONAL_WHITESPACE = r"\s*"
 WHITESPACE = r"\s+"
 
 ALPHA  = r"[a-zA-Z_]+"
-NUMBER = r"[0-9]+"
+NUMBER = r"[0-9A-F]+"
 ALPHANUMERICAL = ALPHA+ "|" +NUMBER
 
 COMMENT = r"(?:"+ r"|".join(COMMENT_STARTING_MARKERS) +").*"
@@ -77,7 +77,7 @@ THREE_ARG_OPCODES3 = {"STD","LDD"}
 REGISTER_NAMES_TO_REGISTER_ADDRESSES = {f"{r}{i}":'{0:03b}'.format(i) for r in ("R") for i in range(0,8)}
 
 def tonum(numstr):
-    result = int(numstr)
+    result = int(numstr,16)
     if result >= 0 and result < 2**16: 
         return '{0:016b}'.format(result)
 
@@ -234,7 +234,7 @@ INSTRUCTIONS_SYNTAX = [#A list because there are several syntaxes for an instruc
                          #Three-Arg third variant: <opcode> <reg> <offset> <reg>  
                          {
                             "preprocessor": PP,
-                            "textformat": r"^("+ r"|".join(THREE_ARG_OPCODES3) +")"+ WHITESPACE +r"("+ REG_NAME +r")"+ ARG_SEPERATOR +r"("+ NUMBER +r")"+ ARG_SEPERATOR +r"("+ REG_NAME +r")" +LINE_END,
+                            "textformat": r"^("+ r"|".join(THREE_ARG_OPCODES3) +")"+ WHITESPACE +r"("+ REG_NAME +r")"+ ARG_SEPERATOR +r"("+ NUMBER +r")"+ r"\(" +r"("+ REG_NAME +r")" +r"\)"+LINE_END,
                             "lookup":[ 
                                       {"STD": "1001", "LDD": "1000"},
                                       REGISTER_NAMES_TO_REGISTER_ADDRESSES,
@@ -248,23 +248,25 @@ INSTRUCTIONS_SYNTAX = [#A list because there are several syntaxes for an instruc
                                 lambda opcode,arg1,arg2,arg3: INVALID_REG(arg3)
                             ],
                             "translator": lambda opcode,arg1,arg2,arg3: LDD_STD_translator(opcode,arg1,arg2,arg3)
-                         }             
+                         },
+                         #Bare numbers
+                         {
+                            "preprocessor": PP,
+                            "textformat": r"("+NUMBER+")",
+                            "lookup":[
+                                lambda num : '{0:032b}'.format(int(num,16))
+                                ],
+                            "onlookupFailure":[
+                                lambda arg : print(arg,"is not a valid hexdecimal number")
+                                ],
+                            "translator": lambda _ : _
+                            
+                         }
 ]
-
-def first_valid_writing_location(file):
-    num = int(input("Enter the address of first instruction in the program in decimal : "))
-    first_valid_writing_location = '{0:032b}'.format(num)
-    
-    file.write("0: "+first_valid_writing_location[0:16])
-    file.write("\n")
-    file.write("1: "+first_valid_writing_location[16:32])
-    file.write("\n")
-    
-    return num
 
 def write_memory(machine_code,file,curr_addr):
     #print("writing ",machine_code," \nat ",curr_addr)
-    file.write(str(curr_addr)+": ")
+    file.write('{0:05x}'.format(curr_addr)+": ")
     instr_length = len(machine_code)
     if   instr_length == 16: 
         file.write(machine_code)
@@ -273,7 +275,7 @@ def write_memory(machine_code,file,curr_addr):
         file.write(machine_code[0:16])
         curr_addr = curr_addr+1 
         file.write("\n")
-        file.write(str(curr_addr)+": ")
+        file.write('{0:05x}'.format(curr_addr)+": ")
         #print("writing ",machine_code[16:32])
         file.write(machine_code[16:32])
     else:
