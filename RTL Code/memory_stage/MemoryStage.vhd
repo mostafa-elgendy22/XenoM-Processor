@@ -34,7 +34,9 @@ ENTITY memory_stage IS
         IO_read_out : OUT STD_LOGIC;
         MEM_read_out : OUT STD_LOGIC;
 
-        data_out : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+        data_out : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
+        branch_type_in : IN STD_LOGIC_VECTOR(3 downto 0);
+        branch_type_out : OUT STD_LOGIC_VECTOR(3 downto 0)
 
     );
 END ENTITY;
@@ -50,6 +52,7 @@ ARCHITECTURE a_memory_stage OF memory_stage IS
 
 
 BEGIN
+    branch_type_out <= branch_type_in;
     mem_write <= call_int_instruction & memory_write;
     io_memory_read <= Io_read or memory_read;
     execution_stage_result <= mem_address (15 DOWNTO 0);

@@ -107,10 +107,12 @@ ARCHITECTURE processor OF processor IS
        SIGNAL WB_write_data : STD_LOGIC_VECTOR (15 DOWNTO 0);
 
        -- Memory data 
-       SIGNAL MW : STD_LOGIC_VECTOR (38 DOWNTO 0);
-       SIGNAL MW_data : STD_LOGIC_VECTOR (38 DOWNTO 0);
+       SIGNAL MW : STD_LOGIC_VECTOR (42 DOWNTO 0);
+       SIGNAL MW_data : STD_LOGIC_VECTOR (42 DOWNTO 0);
 
        -- Memory stage parameters
+       CONSTANT MW_branch_type_i0 : INTEGER := 42;
+       CONSTANT MW_branch_type_i1 : INTEGER := 39;
        CONSTANT IO_read_out_i : INTEGER := 38;
        CONSTANT MEM_read_out_i : INTEGER := 37;
        CONSTANT data_out_i0 : INTEGER := 36;
@@ -135,16 +137,16 @@ BEGIN
                      processor_reset => processor_reset,
                      is_hlt_instruction => DE(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
-                     branch_type => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
+                     execute_branch_type => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
                      jmp_address => EM(ALU_result_i0 - 4 DOWNTO ALU_result_i1),
                      int_index => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
+                     memory_branch_type => MW(MW_branch_type_i0 DOWNTO MW_branch_type_i1),
+                     ret_rti_address => MW(),
                      exception_enable => EM(exeception_enable_i),
                      exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
                      exception_instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
                      FD_data => FD_data
               );
-
-
        FD_register : ENTITY work.DFF_register
               GENERIC MAP(data_width => 52)
               PORT MAP(
@@ -246,9 +248,6 @@ BEGIN
 
                      io_read_out => EM_data (EM_io_read_out_i), -- 1
                      io_write_out => EM_data (EM_io_write_out_i), --1
-
-                     branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1),
-
                      is_call_or_int_instruction_out => EM_data (EM_is_call_or_int_instruction_i), --DONE 1 
                      memory_write_out => EM_data(EM_memory_write_i), --1
                      memory_read_out => EM_data(EM_memory_read_i), --1
@@ -265,6 +264,7 @@ BEGIN
                      exeception_handler_address => EM_data(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
                      exeception_enable => EM_data(exeception_enable_i),
                      branch_type_in => DE(branch_type_i0 DOWNTO branch_type_i1),
+                     branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1),
                      is_immediate => DE(DE_is_immediate_i)
               );
 
@@ -308,11 +308,13 @@ BEGIN
                      IO_read_out => MW_data(IO_read_out_i),
                      MEM_read_out => MW_data(MEM_read_out_i),
 
-                     data_out => MW_data(data_out_i0 DOWNTO data_out_i1)
+                     data_out => MW_data(data_out_i0 DOWNTO data_out_i1),
+                     branch_type_in => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
+                     branch_type_out => MW_data(MW_branch_type_i0 DOWNTO MW_branch_type_i1)
               );
 
        MW_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 39)
+              GENERIC MAP(data_width => 43)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable, --TODO

@@ -7,9 +7,11 @@ ENTITY fetch_stage IS
               clk : IN STD_LOGIC;
               processor_reset : IN STD_LOGIC;
               is_hlt_instruction : IN STD_LOGIC;
-              branch_type : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+              execute_branch_type : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+              memory_branch_type : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
               jmp_address : IN STD_LOGIC_VECTOR (15 DOWNTO 0);
               int_index : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+              ret_rti_address : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
               instruction_bus : INOUT STD_LOGIC_VECTOR (31 DOWNTO 0);
               exception_enable : IN STD_LOGIC;
               exception_handler_index : IN STD_LOGIC_VECTOR (3 DOWNTO 0);
@@ -75,7 +77,7 @@ BEGIN
               ELSE
               exception_handler_address WHEN exception_enable = '1'
               ELSE
-              int_handler_address WHEN branch_type = "1101"
+              int_handler_address WHEN execute_branch_type = "1101"
               ELSE
               Q_PC(19 DOWNTO 0);
 
@@ -88,9 +90,11 @@ BEGIN
               ELSE
               Q_PC;
 
-       D_PC <= instruction_bus WHEN processor_reset = '1' OR branch_type = "1101" OR exception_enable = '1'
+       D_PC <= instruction_bus WHEN processor_reset = '1' OR execute_branch_type = "1101" OR exception_enable = '1'
               ELSE
-              (31 downto 16 => '0') & jmp_address WHEN branch_type(3) = '1'
+              ret_rti_address WHEN memory_branch_type = "1110" OR memory_branch_type = "1111"
+              ELSE
+              (31 DOWNTO 16 => '0') & jmp_address WHEN execute_branch_type(3) = '1'
               ELSE
               next_instruction_address;
 
@@ -100,7 +104,7 @@ BEGIN
 
        PC_clock <= NOT clk;
 
-       FD_data(51 DOWNTO 20) <= (OTHERS => '0') WHEN processor_reset = '1' OR branch_type = "1101" OR exception_enable = '1'
+       FD_data(51 DOWNTO 20) <= (OTHERS => '0') WHEN processor_reset = '1' OR execute_branch_type = "1101" OR exception_enable = '1'
        ELSE
        instruction_bus;
 
