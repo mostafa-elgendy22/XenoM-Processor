@@ -11,6 +11,7 @@ sim:/processor/fetch/D_PC \
 sim:/processor/fetch/Q_PC \
 sim:/processor/fetch/next_instruction_address \
 sim:/processor/fetch/branch_type \
+sim:/processor/fetch/jmp_address \
 sim:/processor/fetch/exception_enable \
 sim:/processor/fetch/exception_handler_index \
 sim:/processor/decode/ALU_operation \
@@ -19,6 +20,16 @@ sim:/processor/decode/operand1 \
 sim:/processor/decode/operand2 \
 sim:/processor/execute/Rdst_address_in \
 sim:/processor/execute/CCR \
+sim:/processor/execute/ALU_Actual_Operand1 \
+sim:/processor/execute/Rsrc1_address \
+sim:/processor/execute/Rsrc2_address \
+sim:/processor/execute/Rdst_em_address \
+sim:/processor/execute/Rdst_mw_address \
+sim:/processor/execute/MWdata \
+sim:/processor/execute/EMdata \
+sim:/processor/execute/ALU_result \
+sim:/processor/execute/A/res \
+sim:/processor/execute/A/funcSel \
 sim:/processor/execute/branch_type_in \
 sim:/processor/execute/ALU_op1 \
 sim:/processor/execute/ALU_op2 \

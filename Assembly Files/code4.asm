@@ -3,4 +3,5 @@ LDM R2, 54;
 LDM R3, 56;
 LDM R4, 58;
 NOP ;
-JMP R1;
+IADD R0, R0, 0;
+JZ R1;
