@@ -31,12 +31,12 @@ architecture execeptionDetectionUnit of exeception_detection_unit is
   -- exception handler address
   constant EMPTY_STACK_EXCEPTION_HANDLER : std_logic_vector := "0010";
   constant INVALID_MEMORY_ADRESS_EXCEPTION_HANDLER : std_logic_vector := "0100";
-
+-- 000FFFFD  000FFFFF
 begin
   exeception_enable <=
     -- Empty stack exception
-    '1' when  stack_control = POP_1_operation and SP <= EMPTY_STACK_VALUE else
-    '1' when  stack_control = POP_2_operation and SP <= EMPTY_STACK_VALUE else
+    '1' when  stack_control = POP_1_operation and SP >= EMPTY_STACK_VALUE else
+    '1' when  stack_control = POP_2_operation and SP >= EMPTY_STACK_VALUE else
     -- Invalid memory address exception
     '1' when memory_write = '1' and stack_control(2) = '0' and execution_stage_result > MAX_MEMORY_RANGE else
     '1' when memory_read = '1' and stack_control(2) = '0' and execution_stage_result > MAX_MEMORY_RANGE else
@@ -45,8 +45,8 @@ begin
 
   exeception_handler_address <=
     -- Empty stack exception
-    EMPTY_STACK_EXCEPTION_HANDLER when  stack_control = POP_1_operation and SP <= EMPTY_STACK_VALUE else
-    EMPTY_STACK_EXCEPTION_HANDLER when  stack_control = POP_2_operation and SP <= EMPTY_STACK_VALUE else
+    EMPTY_STACK_EXCEPTION_HANDLER when  stack_control = POP_1_operation and SP = EMPTY_STACK_VALUE else
+    EMPTY_STACK_EXCEPTION_HANDLER when  stack_control = POP_2_operation and SP = EMPTY_STACK_VALUE else
     -- Invalid memory address exception
     INVALID_MEMORY_ADRESS_EXCEPTION_HANDLER when memory_write = '1' and stack_control(2) = '0' and execution_stage_result > MAX_MEMORY_RANGE else
     INVALID_MEMORY_ADRESS_EXCEPTION_HANDLER when memory_read = '1' and stack_control(2) = '0' and execution_stage_result > MAX_MEMORY_RANGE else

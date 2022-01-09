@@ -83,19 +83,13 @@ begin
   memory_read_out <= memory_read_in;
   stack_control_out <= stack_control(1 downto 0);
   write_back_enable_out <= write_back_enable_in;
-  ALU_op1_out <= ALU_Actual_Operand1 ;
+  ALU_op1_out <= ALU_op1 ;
 
   CCR <= myCCR  ;
 
-   with Operand1_Override_Command  select ALU_Actual_Operand1 <=
-     MWdata when "10",
-     EMdata when "00",
-     ALU_op1 when others;
+    ALU_Actual_Operand1 <= ALU_op1 when is_store_instruction='0' else ALU_immediate ;
 
-     with Operand1_Override_Command  select ALU_Actual_Operand2 <=
-     MWdata when "10",
-     EMdata when "00",
-     ALU_op2 when others;
+    ALU_Actual_Operand2 <= ALU_op2 ;
 
     
 
@@ -142,7 +136,7 @@ begin
        op2Override => Operand2_Override_Command
 
      );
-     padded_execution_stage_result <= (31 downto 20 => '0') & execution_stage_result;
+     padded_execution_stage_result <= SP_old;
   EXP : entity work.exeception_detection_unit
     port map(
       SP => padded_execution_stage_result,
