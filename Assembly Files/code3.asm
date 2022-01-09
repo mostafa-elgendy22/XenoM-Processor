@@ -4,7 +4,7 @@ NOP ;
 INC R6 ;
 NOP ;
 NOP ;
-IADD R7, R6, 20 ;
+ADD R7, R6, R6 ;
 NOP ;
 NOP ;
 INC R5 ;

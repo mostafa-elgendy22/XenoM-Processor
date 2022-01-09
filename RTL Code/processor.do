@@ -23,12 +23,6 @@ sim:/processor/decode/Control_unit/Rsrc2_address \
 sim:/processor/execute/Rdst_address_in \
 sim:/processor/execute/CCR \
 sim:/processor/execute/ALU_Actual_Operand1 \
-sim:/processor/execute/Rsrc1_address \
-sim:/processor/execute/Rsrc2_address \
-sim:/processor/execute/Rdst_em_address \
-sim:/processor/execute/Rdst_mw_address \
-sim:/processor/execute/MWdata \
-sim:/processor/execute/EMdata \
 sim:/processor/execute/ALU_result \
 sim:/processor/execute/A/res \
 sim:/processor/execute/A/funcSel \

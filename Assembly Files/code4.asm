@@ -3,8 +3,10 @@ LDM R2, 54;
 LDM R3, 56;
 LDM R4, 58;
 NOP ;
-ADD R0, R3, R4;
-JZ R1;
+SUB R0, R1, R2
+NOP ;
+NOP ;
+JN R1;
 NOP ;
 NOP ;
 NOP ;
