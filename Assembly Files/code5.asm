@@ -1,8 +1,6 @@
 .ORG 0
 32
+.ORG 2
+20
 .ORG 32
-ADD R6, R5, R4 ;
-ADD R6, R5, R4 ;
-ADD R6, R5, R4 ;
-ADD R6, R5, R4 ;
 POP R1 ;
