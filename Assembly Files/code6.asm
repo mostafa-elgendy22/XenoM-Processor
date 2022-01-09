@@ -7,5 +7,8 @@ AA
 .ORG 8
 FF
 .ORG 32
-INT 2;
+LDM R0, 20;
+NOP ;
+NOP ;
+CALL R0;
 

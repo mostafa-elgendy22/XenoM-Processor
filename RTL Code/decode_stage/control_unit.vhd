@@ -198,8 +198,8 @@ begin
         else -- Jump Instructions
         Rsrc1_address <= instruction(22 downto 20);
           --start------------------------- Jump Only or CALL/INT
-          if instruction(28) = '0' then -- Jump Only or CALL/INT
           ALU_operation <= MOV_operation;
+          if instruction(28) = '0' then -- Jump Only or CALL/INT
           is_operation_on_Rdst <= '1';
             --start------------------------- Jump Only
             if instruction(27) = '0' then -- JMP or JN

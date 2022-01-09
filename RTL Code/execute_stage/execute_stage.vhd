@@ -47,6 +47,7 @@ entity execute_stage is
     stack_control_out : out std_logic_vector(1 downto 0);
     write_back_enable_out : out std_logic;
     ALU_op1_out : out std_logic_vector(15 downto 0);
+    jmp_address : out std_logic_vector(15 downto 0);
     Rdst_address_out : out std_logic_vector(2 downto 0);
     EM_instruction_address : out std_logic_vector (19 downto 0);
 
@@ -105,6 +106,7 @@ begin
       result => ALU_result,
       flags => ALU_flags,
       flagsEn => ALU_flags_en,
+      branch_type =>branch_type_in,
       is_immediate => is_immediate
       );
 
@@ -164,5 +166,6 @@ begin
   SP_old(19 downto 0) WHEN (stack_control = "100" or stack_control = "110") ELSE -- General push
   SP_new(19 downto 0) WHEN (stack_control = "101" or stack_control = "111") ELSE -- General pull
   ALU_res;
+  jmp_address <= ALU_result;
   ExecResult <= execution_stage_result;
 end architecture;

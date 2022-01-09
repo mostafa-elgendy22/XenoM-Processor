@@ -65,6 +65,9 @@ ARCHITECTURE processor OF processor IS
        SIGNAL DE_data : STD_LOGIC_VECTOR (99 DOWNTO 0); -- input to the DE reg
 
        -- Execute stage parameters
+       CONSTANT alu_op1_jmp_address_i0 : INTEGER := 94;
+       CONSTANT alu_op1_jmp_address_i1 : INTEGER := 79;
+
        CONSTANT Branch_Control_i0 : INTEGER := 78;
        CONSTANT Branch_Control_i1 : INTEGER := 75;
 
@@ -97,8 +100,8 @@ ARCHITECTURE processor OF processor IS
 
        CONSTANT EM_instruction_address_i0 : INTEGER := 19;
        CONSTANT EM_instruction_address_i1 : INTEGER := 0;
-       SIGNAL EM_data : STD_LOGIC_VECTOR (78 DOWNTO 0);
-       SIGNAL EM : STD_LOGIC_VECTOR (78 DOWNTO 0);
+       SIGNAL EM_data : STD_LOGIC_VECTOR (94 DOWNTO 0);
+       SIGNAL EM : STD_LOGIC_VECTOR (94 DOWNTO 0);
        SIGNAL EM_enable : STD_LOGIC := '1';
 
        --Write back signals
@@ -136,7 +139,7 @@ BEGIN
                      is_hlt_instruction => DE(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
                      branch_type => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
-                     jmp_address => EM(ALU_result_i0 - 4 DOWNTO ALU_result_i1),
+                     jmp_address => EM(alu_op1_jmp_address_i0  DOWNTO alu_op1_jmp_address_i1),
                      int_index => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      exception_enable => EM(exeception_enable_i),
                      exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
@@ -216,17 +219,16 @@ BEGIN
                      ALU_op1 => DE(operand1_i0 DOWNTO operand1_i1),
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
-
                      ALU_immediate => DE(DE_immediate_i0 DOWNTO DE_immediate_i1),
-
+                     
                      CCR => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1),
                      stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
-
+                     
                      MWdata => MW(data_out_i0 DOWNTO data_out_i1),
                      EMdata => EM(ALU_result_i0 - 4 DOWNTO ALU_result_i1),
-
+                     
                      is_store_instruction => DE(is_store_instruction_i),
-
+                     
                      DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
                      write_back_enable_in => DE(write_back_enable_out_i),
                      io_read_in => DE(io_read_i),
@@ -243,12 +245,13 @@ BEGIN
                      mw_io_read => MW(IO_read_out_i),
                      mw_mem_read => MW(MEM_read_out_i),
                      Rdst_address_in => DE(DE_Rdst_adress_i0 DOWNTO DE_Rdst_adress_i1),
-
+                     
                      io_read_out => EM_data (EM_io_read_out_i), -- 1
                      io_write_out => EM_data (EM_io_write_out_i), --1
+                     jmp_address => EM_data(alu_op1_jmp_address_i0 DOWNTO alu_op1_jmp_address_i1 ),
 
                      branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1),
-
+                     
                      is_call_or_int_instruction_out => EM_data (EM_is_call_or_int_instruction_i), --DONE 1 
                      memory_write_out => EM_data(EM_memory_write_i), --1
                      memory_read_out => EM_data(EM_memory_read_i), --1
@@ -269,7 +272,7 @@ BEGIN
               );
 
        EM_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 79)
+              GENERIC MAP(data_width => 95)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,

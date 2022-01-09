@@ -34,6 +34,7 @@ BEGIN
     branchControl(3) <= branchType(3) WHEN NOT(conditionalJump) 
                     ELSE '1' WHEN (  (zeroJump  AND (CCR(0)='1'))
                                   OR (carryJump AND (CCR(2)='1'))
-                                  OR (negJump   AND (CCR(1)='1')) )
+                                  OR (negJump   AND (CCR(1)='1'))
+                                  OR (branchType(2) = '1'))
                     ELSE '0'   ;
 END BC ;

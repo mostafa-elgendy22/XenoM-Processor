@@ -7,6 +7,7 @@ ENTITY ALU IS
        PORT (
               op1, op2 : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
               funcSel : IN STD_LOGIC_VECTOR(2 DOWNTO 0);
+              branch_type  : IN std_logic_vector(3 downto 0); -- (3) branch enable, (2:0) branch operation
 
               result : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
               flags : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -69,9 +70,6 @@ ARCHITECTURE ALU OF ALU IS
        SIGNAL uop2 : unsigned(16 DOWNTO 0);
        SIGNAL result_or_immediate : STD_LOGIC_VECTOR(15 DOWNTO 0);
 BEGIN
-       result_or_immediate <= res WHEN NOT (is_immediate = '1' and (funcSel = ALU_IDEN)) -- not LDM
-              ELSE
-              op2;
        
        uop1 <= resize(unsigned(op1), 17);
        uop2 <= resize(unsigned(op2), 17);
@@ -110,6 +108,11 @@ BEGIN
               UPDATE_ALL_FLAGS WHEN ALU_INC,
               UPDATE_ALL_FLAGS WHEN ALU_SUB,
               UPDATE_NO_FLAGS WHEN OTHERS;
+       
+       result_or_immediate <= op2 WHEN (is_immediate = '1' and (funcSel = ALU_IDEN)) --  LDM
+       ELSE
+       res;
+
        result <= result_or_immediate;
 
 END ALU;
