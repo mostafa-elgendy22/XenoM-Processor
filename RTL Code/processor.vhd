@@ -107,10 +107,13 @@ ARCHITECTURE processor OF processor IS
        SIGNAL WB_write_data : STD_LOGIC_VECTOR (15 DOWNTO 0);
 
        -- Memory data 
-       SIGNAL MW : STD_LOGIC_VECTOR (42 DOWNTO 0);
-       SIGNAL MW_data : STD_LOGIC_VECTOR (42 DOWNTO 0);
+       SIGNAL MW : STD_LOGIC_VECTOR (45 DOWNTO 0);
+       SIGNAL MW_data : STD_LOGIC_VECTOR (45 DOWNTO 0);
 
        -- Memory stage parameters
+
+       CONSTANT CCR_out_i0 :INTEGER :=45 
+       CONSTANT CCR_out_i1 :INTEGER :=43
        CONSTANT MW_branch_type_i0 : INTEGER := 42;
        CONSTANT MW_branch_type_i1 : INTEGER := 39;
        CONSTANT IO_read_out_i : INTEGER := 38;
@@ -307,14 +310,18 @@ BEGIN
 
                      IO_read_out => MW_data(IO_read_out_i),
                      MEM_read_out => MW_data(MEM_read_out_i),
+                      
+                     CCR =>  EM (EM_CCR_i0 DOWNTO EM_CCR_i1),
+                     CCR_out =>MW_data( CCR_out_i0 DOWNTO CCR_out_i1 ),
+                     stack_control =>  EM(EM_stack_control_i0 DOWNTO EM_stack_control_i1),
 
                      data_out => MW_data(data_out_i0 DOWNTO data_out_i1),
                      branch_type_in => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
-                     branch_type_out => MW_data(MW_branch_type_i0 DOWNTO MW_branch_type_i1)
+                     branch_type_out => MW_data(MW_branch_type_i0 DOWNTO MW_branch_type_i1),
               );
 
        MW_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 43)
+              GENERIC MAP(data_width => 46)
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable, --TODO
