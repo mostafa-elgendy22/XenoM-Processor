@@ -18,6 +18,8 @@ sim:/processor/decode/ALU_operation \
 sim:/processor/decode/branch_type \
 sim:/processor/decode/operand1 \
 sim:/processor/decode/operand2 \
+sim:/processor/decode/Control_unit/Rsrc1_address \
+sim:/processor/decode/Control_unit/Rsrc2_address \
 sim:/processor/execute/Rdst_address_in \
 sim:/processor/execute/CCR \
 sim:/processor/execute/ALU_Actual_Operand1 \
@@ -47,7 +49,10 @@ sim:/processor/WB_write_address \
 sim:/processor/WB_write_data \
 sim:/processor/decode/Register_file/write_data \
 sim:/processor/decode/Register_file/write_address \
-sim:/processor/decode/Register_file/write_back_enable 
+sim:/processor/decode/Register_file/write_back_enable \
+sim:/processor/DE \
+sim:/processor/DE_data
+
 
 # radix signal sim:/processor/* Hexadecimal
 

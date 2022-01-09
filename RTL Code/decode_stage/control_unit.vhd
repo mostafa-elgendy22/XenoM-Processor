@@ -163,6 +163,7 @@ begin
             --***************************************************************************
             --start------------------------- NOT/INC + PUSH/ POP
           else -- NOT/INC + PUSH/ POP
+            Rsrc1_address <= instruction(22 downto 20);
             --start------------------------- NOT or INC
             if instruction(27) = '0' then -- NOT/INC
               is_operation_on_Rdst <= '1';
@@ -195,11 +196,12 @@ begin
           --***************************************************************************
           --start------------------------- Jump Instructions
         else -- Jump Instructions
+        Rsrc1_address <= instruction(22 downto 20);
           --start------------------------- Jump Only or CALL/INT
           if instruction(28) = '0' then -- Jump Only or CALL/INT
           ALU_operation <= MOV_operation;
+          is_operation_on_Rdst <= '1';
             --start------------------------- Jump Only
-            is_operation_on_Rdst <= '1';
             if instruction(27) = '0' then -- JMP or JN
                 if instruction(26) = '0' then -- JMP
                 branch_type <= JMP_instruction;

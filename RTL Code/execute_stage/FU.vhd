@@ -49,25 +49,25 @@ ARCHITECTURE ForwardingUnit OF ForwardingUnit IS
 BEGIN
 			Forwarding: PROCESS(src1Addr, src2Addr, mwDstAddr, emDstAddr, mwWriteEn,emWriteEn, mwMemRead, mwIORead) IS BEGIN
 								IF((src1Addr = emDstAddr) AND emWriteEn='1') THEN
-										op1Override <= ALU_OVERRIDE_OPERAND_WITH_EM_RESULT ;
+										op1Override <= ALU_NO_OVERRIDE_OPERAND ;
 										
 								ELSIF((src1Addr = mwDstAddr) AND 
 										 (	  mwWriteEn='1'
 										  OR mwMemRead='1'
 										  OR mwIORead ='1'        )) THEN
-										op1Override <= ALU_OVERRIDE_OPERAND_WITH_MW_RESULT ;
+										op1Override <= ALU_NO_OVERRIDE_OPERAND ;
 								ELSE
 										op1Override <= ALU_NO_OVERRIDE_OPERAND ;
 								END IF;
 								-----------------------------------------------------------		
 								IF((src2Addr = emDstAddr) AND emWriteEn='1') THEN
-										op2Override <= ALU_OVERRIDE_OPERAND_WITH_EM_RESULT ;
+										op2Override <= ALU_NO_OVERRIDE_OPERAND ;
 										
 								ELSIF((src2Addr = mwDstAddr) AND 
 										 (	  mwWriteEn='1'
 										  OR mwMemRead='1'
 										  OR mwIORead ='1'    ))THEN
-										op2Override <= ALU_OVERRIDE_OPERAND_WITH_MW_RESULT ;
+										op2Override <= ALU_NO_OVERRIDE_OPERAND ;
 								ELSE
 										op2Override <= ALU_NO_OVERRIDE_OPERAND ;
 								END IF;

@@ -235,7 +235,7 @@ BEGIN
                      memory_write_in => DE(memory_write_i),
                      memory_read_in => DE(memory_read_i),
                      Rsrc1_address => DE(DE_Rsrc1_address_i0 DOWNTO DE_Rsrc1_address_i1),
-                     Rsrc2_address => DE_data(DE_Rsrc2_address_i0 DOWNTO DE_Rsrc2_address_i1),
+                     Rsrc2_address => DE(DE_Rsrc2_address_i0 DOWNTO DE_Rsrc2_address_i1),
                      Rdst_em_address => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
                      Rdst_mw_address => MW(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
                      mw_write_enable => MW(write_back_enable_i),
