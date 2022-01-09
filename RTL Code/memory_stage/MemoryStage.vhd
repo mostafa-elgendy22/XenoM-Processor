@@ -22,19 +22,26 @@ ENTITY memory_stage IS
         call_int_instruction : IN STD_LOGIC;
 
         -- signals 
-        write_back_enable :IN STD_LOGIC ;
-        write_back_enable_out :OUT STD_LOGIC ;
+        write_back_enable : IN STD_LOGIC;
+        write_back_enable_out : OUT STD_LOGIC;
 
-        io_memory_read: OUT STD_LOGIC ;
+        io_memory_read : OUT STD_LOGIC;
         execution_stage_result : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
 
-        int_index_Rdst_address :IN STD_LOGIC_VECTOR (2 DOWNTO 0);
-        int_index_Rdst_address_out :OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
+        int_index_Rdst_address : IN STD_LOGIC_VECTOR (2 DOWNTO 0);
+        int_index_Rdst_address_out : OUT STD_LOGIC_VECTOR (2 DOWNTO 0);
 
         IO_read_out : OUT STD_LOGIC;
         MEM_read_out : OUT STD_LOGIC;
 
-        data_out : OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
+        CCR : in std_logic_vector(2 downto 0);
+        stack_control: in std_logic_vector(1 downto 0);
+        CCR_out : out  std_logic_vector(2 downto 0);
+
+
+        data_out : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
+        branch_type_in : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+        branch_type_out : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
 
     );
 END ENTITY;
@@ -42,35 +49,35 @@ END ENTITY;
 ARCHITECTURE a_memory_stage OF memory_stage IS
     SIGNAL mem_write : STD_LOGIC_VECTOR (1 DOWNTO 0);
     SIGNAL IO_Output : STD_LOGIC_VECTOR (15 DOWNTO 0); --16bit IO/data ouput 
-    SIGNAL  mem_dataout : STD_LOGIC_VECTOR(15 DOWNTO 0);--16bit mem/data out
-    SIGNAL mem_datain :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
-    SIGNAL operand1_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input   
-    SIGNAL instruction_address_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
-    SIGNAL instruction_address_1 :  STD_LOGIC_VECTOR (19 DOWNTO 0); 
-
-
+    SIGNAL mem_dataout : STD_LOGIC_VECTOR(15 DOWNTO 0);--16bit mem/data out
+    SIGNAL mem_datain : STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
+    SIGNAL operand1_exp : STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input   
+    SIGNAL instruction_address_exp : STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
+    SIGNAL instruction_address_1 : STD_LOGIC_VECTOR (19 DOWNTO 0);
 BEGIN
+    branch_type_out <= branch_type_in;
     mem_write <= call_int_instruction & memory_write;
-    io_memory_read <= Io_read or memory_read;
+    io_memory_read <= Io_read OR memory_read;
     execution_stage_result <= mem_address (15 DOWNTO 0);
     -- expand operand 1
-    operand1_exp <=(15 DOWNTO 0 => '0') &operand1;
+    operand1_exp <= (15 DOWNTO 0 => '0') & operand1;
     -- expand instruction address +1
-    instruction_address_1 <= instruction_address+1 ;
-    instruction_address_exp <= (11 DOWNTO 0 => '0') & instruction_address_1 ;
+    instruction_address_1 <= instruction_address + 1;
+    instruction_address_exp <= (11 DOWNTO 0 => '0') & instruction_address_1;
     --memory data input
-    mem_datain <= operand1_exp WHEN call_int_instruction ='0'
-    ELSE instruction_address_exp ;
+    mem_datain <= operand1_exp WHEN call_int_instruction = '0'
+        ELSE
+        instruction_address_exp;
 
     -- out all signals 
-    int_index_Rdst_address_out <=int_index_Rdst_address ;
-    write_back_enable_out <=write_back_enable;
+    int_index_Rdst_address_out <= int_index_Rdst_address;
+    write_back_enable_out <= write_back_enable;
 
     IOPort : ENTITY work.IO_Port
         PORT MAP(
-            Input  =>operand1,
-            Io_read =>Io_read,
-            Io_write =>Io_write,
+            Input => operand1,
+            Io_read => Io_read,
+            Io_write => Io_write,
             reset => IO_reset,
             Output => IO_Output
         );
@@ -83,13 +90,20 @@ BEGIN
             memory_write => mem_write,
             dataout => mem_dataout
         );
+    reserved_flags:ENTITY work.flagsRegister
+        PORT MAP(
+            newFlags => CCR,
+            writeEnables => stack_control,
+            flags => CCR_out,--out 
+            clk => mem_clk
+        );
 
-    data_out <=  IO_Output WHEN Io_read ='1'
-    ELSE   mem_dataout WHEN  memory_read ='1'
-    ELSE (others=>'Z');
+        data_out <= IO_Output WHEN Io_read = '1'
+            ELSE
+            mem_dataout WHEN memory_read = '1'
+            ELSE
+            (OTHERS => 'Z');
 
-    IO_read_out  <= Io_read;
-    MEM_read_out <= memory_read;
-
-
-END ARCHITECTURE;
+        IO_read_out <= Io_read;
+        MEM_read_out <= memory_read;
+    END ARCHITECTURE;
