@@ -11,7 +11,7 @@ ENTITY data_memory IS
       datain : IN STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
       memory_read : IN STD_LOGIC; -- signal read from memory with address
       memory_write : IN STD_LOGIC_VECTOR(1 DOWNTO 0); --signal write in memory
-      dataout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0));
+      dataout : OUT STD_LOGIC_VECTOR(31 DOWNTO 0));
 END ENTITY;
 
 --memory write 2 bits
@@ -41,6 +41,9 @@ BEGIN
       END IF;
    END PROCESS;
    -- data out from memory 
+   dataout(31 DOWNTO 16) <= ram(to_integer(unsigned(address + 1))) WHEN memory_read = '1'
+   ELSE
+      (OTHERS => 'Z');
    dataout(15 DOWNTO 0) <= ram(to_integer(unsigned(address))) WHEN memory_read = '1'
 ELSE
    (OTHERS => 'Z');

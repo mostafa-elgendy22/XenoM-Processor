@@ -92,7 +92,7 @@ BEGIN
 
        D_PC <= instruction_bus WHEN processor_reset = '1' OR execute_branch_type = "1101" OR exception_enable = '1'
               ELSE
-              ret_rti_address WHEN memory_branch_type = "1110" OR memory_branch_type = "1111"
+              ret_rti_address + 1 WHEN memory_branch_type = "1110" OR memory_branch_type = "1111"
               ELSE
               (31 DOWNTO 16 => '0') & jmp_address WHEN execute_branch_type(3) = '1'
               ELSE

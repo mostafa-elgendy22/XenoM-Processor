@@ -1,0 +1,13 @@
+.ORG 0  
+10
+
+.ORG 50
+INC R4 ;
+RET ;
+
+.ORG 10
+LDM R6, 50 ;
+NOP;
+NOP;
+CALL R6;
+LDM R7, AA ;
