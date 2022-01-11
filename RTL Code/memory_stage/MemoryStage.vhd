@@ -34,7 +34,7 @@ ENTITY memory_stage IS
         IO_read_out : OUT STD_LOGIC;
         MEM_read_out : OUT STD_LOGIC;
 
-        data_out : OUT STD_LOGIC_VECTOR (15 DOWNTO 0);
+        data_out : OUT STD_LOGIC_VECTOR (31 DOWNTO 0);
         branch_type_in : IN STD_LOGIC_VECTOR(3 downto 0);
         branch_type_out : OUT STD_LOGIC_VECTOR(3 downto 0)
 
@@ -44,7 +44,7 @@ END ENTITY;
 ARCHITECTURE a_memory_stage OF memory_stage IS
     SIGNAL mem_write : STD_LOGIC_VECTOR (1 DOWNTO 0);
     SIGNAL IO_Output : STD_LOGIC_VECTOR (15 DOWNTO 0); --16bit IO/data ouput 
-    SIGNAL  mem_dataout : STD_LOGIC_VECTOR(15 DOWNTO 0);--16bit mem/data out
+    SIGNAL  mem_dataout : STD_LOGIC_VECTOR(31 DOWNTO 0);--16bit mem/data out
     SIGNAL mem_datain :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
     SIGNAL operand1_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input   
     SIGNAL instruction_address_exp :  STD_LOGIC_VECTOR(31 DOWNTO 0); -- 32 data input    
@@ -87,7 +87,7 @@ BEGIN
             dataout => mem_dataout
         );
 
-    data_out <=  IO_Output WHEN Io_read ='1'
+    data_out <=  (31 downto 16 => '0') & IO_Output WHEN Io_read ='1'
     ELSE   mem_dataout WHEN  memory_read ='1'
     ELSE (others=>'Z');
 

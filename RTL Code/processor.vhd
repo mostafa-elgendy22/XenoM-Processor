@@ -110,18 +110,18 @@ ARCHITECTURE processor OF processor IS
        SIGNAL WB_write_data : STD_LOGIC_VECTOR (15 DOWNTO 0);
 
        -- Memory data 
-       SIGNAL MW : STD_LOGIC_VECTOR (45 DOWNTO 0);
-       SIGNAL MW_data : STD_LOGIC_VECTOR (45 DOWNTO 0);
+       SIGNAL MW : STD_LOGIC_VECTOR (61 DOWNTO 0);
+       SIGNAL MW_data : STD_LOGIC_VECTOR (61 DOWNTO 0);
 
        -- Memory stage parameters
 
-       CONSTANT CCR_out_i0 :INTEGER :=45;
-       CONSTANT CCR_out_i1 :INTEGER :=43;
-       CONSTANT MW_branch_type_i0 : INTEGER := 42;
-       CONSTANT MW_branch_type_i1 : INTEGER := 39;
-       CONSTANT IO_read_out_i : INTEGER := 38;
-       CONSTANT MEM_read_out_i : INTEGER := 37;
-       CONSTANT data_out_i0 : INTEGER := 36;
+       CONSTANT CCR_out_i0 : INTEGER := 61;
+       CONSTANT CCR_out_i1 : INTEGER := 59;
+       CONSTANT MW_branch_type_i0 : INTEGER := 58;
+       CONSTANT MW_branch_type_i1 : INTEGER := 55;
+       CONSTANT IO_read_out_i : INTEGER := 54;
+       CONSTANT MEM_read_out_i : INTEGER := 53;
+       CONSTANT data_out_i0 : INTEGER := 52;
        CONSTANT data_out_i1 : INTEGER := 21;
 
        CONSTANT execution_result_i0 : INTEGER := 20;
@@ -132,6 +132,8 @@ ARCHITECTURE processor OF processor IS
 
        CONSTANT write_back_enable_i : INTEGER := 1;
        CONSTANT io_memory_read_i : INTEGER := 0;
+
+       SIGNAL control_reset : STD_LOGIC;
 
 BEGIN
        neg_clk <= NOT clk;
@@ -144,10 +146,11 @@ BEGIN
                      is_hlt_instruction => DE(is_hlt_instruction_i),
                      instruction_bus => instruction_bus,
                      execute_branch_type => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
-                     jmp_address => EM(alu_op1_jmp_address_i0  DOWNTO alu_op1_jmp_address_i1),
+                     jmp_address => EM(alu_op1_jmp_address_i0 DOWNTO alu_op1_jmp_address_i1),
                      int_index => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
-                     memory_branch_type => MW(MW_branch_type_i0 DOWNTO MW_branch_type_i1),
-                     ret_rti_address => x"FFFFFFFF",--MW(),
+                     memory_branch_type => MW_data(MW_branch_type_i0 DOWNTO MW_branch_type_i1),
+                     
+                     ret_rti_address => MW_data(data_out_i0 DOWNTO data_out_i1), --MW(),
                      exception_enable => EM(exeception_enable_i),
                      exception_handler_index => EM(exeception_handler_address_i0 DOWNTO exeception_handler_address_i1),
                      exception_instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
@@ -210,7 +213,7 @@ BEGIN
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable, --------TODO
-                     reset => ground,
+                     reset => control_reset,
                      D => DE_data,
                      Q => DE
               );
@@ -225,15 +228,15 @@ BEGIN
                      ALU_op2 => DE(operand2_i0 DOWNTO operand2_i1),
                      ALU_sel => DE(ALU_operation_i0 DOWNTO ALU_operation_i1),
                      ALU_immediate => DE(DE_immediate_i0 DOWNTO DE_immediate_i1),
-                     
+
                      CCR => EM_data (EM_CCR_i0 DOWNTO EM_CCR_i1),
                      stack_control => DE(stack_control_i0 DOWNTO stack_control_i1),
-                     
-                     MWdata => MW(data_out_i0 DOWNTO data_out_i1),
+
+                     MWdata => MW(data_out_i0 - 16 DOWNTO data_out_i1),
                      EMdata => EM(ALU_result_i0 - 4 DOWNTO ALU_result_i1),
-                     
+
                      is_store_instruction => DE(is_store_instruction_i),
-                     
+
                      DE_instruction_address => DE(DE_instruction_address_i0 DOWNTO DE_instruction_address_i1),
                      write_back_enable_in => DE(write_back_enable_out_i),
                      io_read_in => DE(io_read_i),
@@ -250,13 +253,13 @@ BEGIN
                      mw_io_read => MW(IO_read_out_i),
                      mw_mem_read => MW(MEM_read_out_i),
                      Rdst_address_in => DE(DE_Rdst_adress_i0 DOWNTO DE_Rdst_adress_i1),
-                     
+
                      io_read_out => EM_data (EM_io_read_out_i), -- 1
                      io_write_out => EM_data (EM_io_write_out_i), --1
-                     jmp_address => EM_data(alu_op1_jmp_address_i0 DOWNTO alu_op1_jmp_address_i1 ),
+                     jmp_address => EM_data(alu_op1_jmp_address_i0 DOWNTO alu_op1_jmp_address_i1),
 
                      branchControl => EM_data(Branch_Control_i0 DOWNTO Branch_Control_i1),
-                     
+
                      is_call_or_int_instruction_out => EM_data (EM_is_call_or_int_instruction_i), --DONE 1 
                      memory_write_out => EM_data(EM_memory_write_i), --1
                      memory_read_out => EM_data(EM_memory_read_i), --1
@@ -281,61 +284,73 @@ BEGIN
               PORT MAP(
                      clk => neg_clk,
                      enable => EM_enable,
-                     reset => ground,
+                     reset => control_reset,
                      D => EM_data,
                      Q => EM
               );
 
-       --------memory stage ---------------
-       memory : ENTITY work.memory_stage
-              PORT MAP(
-                     --- for IN/OUT Port
-                     Io_read => EM (EM_io_read_out_i),
-                     Io_write => EM (EM_io_write_out_i),
-                     IO_reset => '0',
-                     -- for memory 
-                     mem_clk => clk,
-                     mem_address => EM (ALU_result_i0 DOWNTO ALU_result_i1),
-                     memory_read => EM(EM_memory_read_i),
-                     memory_write => EM(EM_memory_write_i),
-                     --data in
-                     operand1 => EM(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1),
-                     instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
-                     --selection 
-                     call_int_instruction => EM(EM_is_call_or_int_instruction_i),
-                     -- signals 
-                     write_back_enable => EM(EM_write_back_enable_i),
-                     write_back_enable_out => MW_data(write_back_enable_i),
+       --- control hazard 
+       PROCESS (clk) IS
+       BEGIN
+              IF (processor_reset = '1') THEN 
+                     control_reset <= '1';
+                            ELSE
+                            control_reset <= '0';
+                     END IF;
+                     IF falling_edge(clk) and (EM(Branch_Control_i0) = '1' or EM(exeception_enable_i) = '1')   THEN 
+                            control_reset <= '1';
+                     END IF;
+              END PROCESS;
+              
 
-                     io_memory_read => MW_data(io_memory_read_i),
-                     execution_stage_result => MW_data(execution_result_i0 DOWNTO execution_result_i1),
+              --------memory stage ---------------
+              memory : ENTITY work.memory_stage
+                     PORT MAP(
+                            --- for IN/OUT Port
+                            Io_read => EM (EM_io_read_out_i),
+                            Io_write => EM (EM_io_write_out_i),
+                            IO_reset => '0',
+                            -- for memory 
+                            mem_clk => clk,
+                            mem_address => EM (ALU_result_i0 DOWNTO ALU_result_i1),
+                            memory_read => EM(EM_memory_read_i),
+                            memory_write => EM(EM_memory_write_i),
+                            --data in
+                            operand1 => EM(EM_ALU_op1_i0 DOWNTO EM_ALU_op1_i1),
+                            instruction_address => EM(EM_instruction_address_i0 DOWNTO EM_instruction_address_i1),
+                            --selection 
+                            call_int_instruction => EM(EM_is_call_or_int_instruction_i),
+                            -- signals 
+                            write_back_enable => EM(EM_write_back_enable_i),
+                            write_back_enable_out => MW_data(write_back_enable_i),
 
-                     int_index_Rdst_address => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
-                     int_index_Rdst_address_out => MW_data(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
+                            io_memory_read => MW_data(io_memory_read_i),
+                            execution_stage_result => MW_data(execution_result_i0 DOWNTO execution_result_i1),
 
-                     IO_read_out => MW_data(IO_read_out_i),
-                     MEM_read_out => MW_data(MEM_read_out_i),
-                      
+                            int_index_Rdst_address => EM(EM_Rdst_address_i0 DOWNTO EM_Rdst_address_i1),
+                            int_index_Rdst_address_out => MW_data(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1),
 
-                     data_out => MW_data(data_out_i0 DOWNTO data_out_i1),
-                     branch_type_in => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
-                     branch_type_out => MW_data(MW_branch_type_i0 DOWNTO MW_branch_type_i1)
-              );
+                            IO_read_out => MW_data(IO_read_out_i),
+                            MEM_read_out => MW_data(MEM_read_out_i),
+                            data_out => MW_data(data_out_i0 DOWNTO data_out_i1),
+                            branch_type_in => EM(Branch_Control_i0 DOWNTO Branch_Control_i1),
+                            branch_type_out => MW_data(MW_branch_type_i0 DOWNTO MW_branch_type_i1)
+                     );
 
-       MW_register : ENTITY work.DFF_register
-              GENERIC MAP(data_width => 46)
-              PORT MAP(
-                     clk => neg_clk,
-                     enable => EM_enable, --TODO
-                     reset => ground,
-                     D => MW_data,
-                     Q => MW
-              );
+              MW_register : ENTITY work.DFF_register
+                     GENERIC MAP(data_width => 62)
+                     PORT MAP(
+                            clk => neg_clk,
+                            enable => EM_enable, --TODO
+                            reset => control_reset,
+                            D => MW_data,
+                            Q => MW
+                     );
 
-       -- write back stage  
-       WB_write_address <= MW(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
-       WB_enable_in <= MW (write_back_enable_i);
-       WB_write_data <= MW(execution_result_i0 DOWNTO execution_result_i1) WHEN MW(io_memory_read_i) = '0' ELSE
-              MW (data_out_i0 DOWNTO data_out_i1);
+              -- write back stage  
+              WB_write_address <= MW(int_index_Rdst_address_i0 DOWNTO int_index_Rdst_address_i1);
+              WB_enable_in <= MW (write_back_enable_i);
+              WB_write_data <= MW(execution_result_i0 DOWNTO execution_result_i1) WHEN MW(io_memory_read_i) = '0' ELSE
+                     MW (data_out_i0 - 16 DOWNTO data_out_i1);
 
-END ARCHITECTURE;
+       END ARCHITECTURE;
